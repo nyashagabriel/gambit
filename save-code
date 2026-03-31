@@ -1,0 +1,170 @@
+#!/usr/bin/env bash
+# ── save-code ─────────────────────────────────────────────────
+# Walks a directory recursively and dumps every code file into
+# one timestamped text file.
+#
+# INSTALL:
+#   sudo cp save-code /usr/local/bin/save-code
+#   sudo chmod +x /usr/local/bin/save-code
+#
+# USAGE:
+#   save-code              scan current directory
+#   save-code /some/path   scan a specific path
+#   save-code --help
+
+# ── Help ──────────────────────────────────────────────────────
+if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+  echo "save-code — dump all code files in a directory into one text file"
+  echo ""
+  echo "Usage:"
+  echo "  save-code              scan current directory"
+  echo "  save-code /path/to/dir scan a specific directory"
+  echo ""
+  echo "Skips: hidden dirs, build/, node_modules/, .dart_tool/, *.g.dart"
+  exit 0
+fi
+
+# ── Config ────────────────────────────────────────────────────
+TARGET_DIR="${1:-$(pwd)}"
+
+if [[ ! -d "$TARGET_DIR" ]]; then
+  echo "❌  Not a directory: $TARGET_DIR"
+  exit 1
+fi
+
+TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
+
+TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
+OUTFILE="${TARGET_DIR}/code_dump_${TIMESTAMP}.txt"
+
+# ── Supported extensions ──────────────────────────────────────
+# Simple newline-separated list. Add anything you need.
+EXTS="dart
+js
+ts
+jsx
+tsx
+mjs
+py
+rb
+go
+rs
+java
+kt
+swift
+c
+cpp
+h
+sql
+sh
+bash
+zsh
+yaml
+yml
+toml
+json
+html
+htm
+css
+scss
+md"
+
+echo "💾 Scanning: $TARGET_DIR"
+echo ""
+
+# ── Collect files ─────────────────────────────────────────────
+# Walk every file with find -print0, filter in bash.
+# This avoids all the -name flag composition bugs and gives full
+# control — every skip reason is printed, nothing is silent.
+
+INCLUDED=()
+SKIPPED=()
+
+while IFS= read -r -d '' FILE; do
+
+  # ── Skip unwanted directories ────────────────────────────────
+  case "$FILE" in
+    */node_modules/*)  SKIPPED+=("EXCLUDED(node_modules) $FILE"); continue ;;
+    */.dart_tool/*)    SKIPPED+=("EXCLUDED(.dart_tool)    $FILE"); continue ;;
+    */build/*)         SKIPPED+=("EXCLUDED(build/)        $FILE"); continue ;;
+    */.gradle/*)       SKIPPED+=("EXCLUDED(.gradle/)      $FILE"); continue ;;
+    */\.*\/*)          SKIPPED+=("EXCLUDED(hidden dir)    $FILE"); continue ;;
+    */code_dump_*.txt) SKIPPED+=("EXCLUDED(self)          $FILE"); continue ;;
+    *.g.dart)          SKIPPED+=("EXCLUDED(generated)     $FILE"); continue ;;
+    *.freezed.dart)    SKIPPED+=("EXCLUDED(generated)     $FILE"); continue ;;
+  esac
+
+  # ── Check extension ──────────────────────────────────────────
+  FILENAME="${FILE##*/}"
+  EXT="${FILENAME##*.}"
+  EXT_LOWER="${EXT,,}"
+
+  # No extension or extensionless file (Makefile, Dockerfile etc.)
+  if [[ "$FILENAME" == "$EXT" || -z "$EXT" ]]; then
+    SKIPPED+=("NO_EXT                  $FILE")
+    continue
+  fi
+
+  # Check if extension is in the supported list
+  if echo "$EXTS" | grep -qx "$EXT_LOWER"; then
+    INCLUDED+=("$FILE")
+  else
+    SKIPPED+=("UNKNOWN_EXT(.$EXT)      $FILE")
+  fi
+
+done < <(find "$TARGET_DIR" -type f -print0 | sort -z)
+
+# ── Nothing found ─────────────────────────────────────────────
+if [[ ${#INCLUDED[@]} -eq 0 ]]; then
+  echo "⚠️  No code files found in $TARGET_DIR"
+  echo ""
+  if [[ ${#SKIPPED[@]} -gt 0 ]]; then
+    echo "These files were seen but skipped:"
+    for s in "${SKIPPED[@]}"; do
+      echo "   ↷ $s"
+    done
+  fi
+  exit 0
+fi
+
+# ── Write output file ─────────────────────────────────────────
+{
+  echo "# CODE DUMP"
+  echo "# Generated : $(date '+%Y-%m-%d %H:%M:%S')"
+  echo "# Directory : $TARGET_DIR"
+  echo "# Files     : ${#INCLUDED[@]}"
+  echo ""
+
+  for FILE in "${INCLUDED[@]}"; do
+    REL="${FILE#"$TARGET_DIR/"}"
+    EXT="${FILE##*.}"
+
+    echo "# =========================================="
+    echo "# FILE: ./$REL"
+    echo "# =========================================="
+    echo ""
+    echo "\`\`\`${EXT}"
+    cat "$FILE"
+    echo ""
+    echo "\`\`\`"
+    echo ""
+  done
+} > "$OUTFILE"
+
+# ── Summary ───────────────────────────────────────────────────
+echo "✅  ${#INCLUDED[@]} file(s) saved to:"
+echo "    $OUTFILE"
+echo ""
+echo "📁  Included:"
+for FILE in "${INCLUDED[@]}"; do
+  echo "    ${FILE#"$TARGET_DIR/"}"
+done
+
+# Always show skipped — no silent failures ever
+if [[ ${#SKIPPED[@]} -gt 0 ]]; then
+  echo ""
+  echo "↷   Skipped (${#SKIPPED[@]}):"
+  for s in "${SKIPPED[@]}"; do
+    echo "    $s"
+  done
+fi

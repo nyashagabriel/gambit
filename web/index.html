@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<!--
+  web/index.html — GAMBIT TSL
+  SEO: Open Graph · Twitter Card · JSON-LD · canonical URL
+  Accessibility: lang, theme-color, skip-link, ARIA on loader
+  Performance: preconnect, font-display swap, no render-blocking scripts
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── Primary SEO ──────────────────────────────────────────────────── -->
+  <title>Gambit TSL — Transport &amp; Logistics Management System</title>
+  <meta name="description"
+    content="Gambit TSL is a transport and logistics ERP built for Zimbabwean and African fleet operators. Manage trips, drivers, fleet, inventory, documents and invoicing from one platform." />
+  <meta name="keywords"
+    content="transport management system Zimbabwe, fleet management software Africa, logistics ERP, trip booking, driver management, Gambit TSL" />
+  <meta name="author" content="Basilmark Solutions" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://gambit.zw/" />
+
+  <!-- ── Open Graph (Facebook / LinkedIn / WhatsApp) ─────────────────── -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://gambit.zw/" />
+  <meta property="og:title"       content="Gambit TSL — Transport &amp; Logistics Management" />
+  <meta property="og:description"
+    content="End-to-end fleet and logistics management for transport companies across Zimbabwe and Africa." />
+  <meta property="og:image"       content="https://gambit.zw/icons/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale"      content="en_ZW" />
+  <meta property="og:site_name"   content="Gambit TSL" />
+
+  <!-- ── Twitter Card ─────────────────────────────────────────────────── -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Gambit TSL — Transport &amp; Logistics Management" />
+  <meta name="twitter:description"
+    content="Fleet, trips, drivers, inventory and invoicing — all in one platform." />
+  <meta name="twitter:image"       content="https://gambit.zw/icons/og-image.png" />
+
+  <!-- ── PWA / App Manifest ───────────────────────────────────────────── -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#F0A500" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Gambit TSL" />
+  <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+
+  <!-- ── Favicon ──────────────────────────────────────────────────────── -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png" />
+
+  <!-- ── Fonts (preconnect first, then load) ──────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
+        rel="stylesheet" />
+
+  <!-- ── JSON-LD Structured Data ──────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Gambit TSL",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web, Android, iOS",
+    "description": "Transport and logistics ERP for fleet operators in Zimbabwe and Africa.",
+    "url": "https://gambit.zw/",
+    "author": {
+      "@type": "Organization",
+      "name": "Basilmark Solutions",
+      "url": "https://basilmark.co.zw"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- ── Loader styles (shown before Flutter boots) ───────────────────── -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #07090E;
+      --surface: #0C0F16;
+      --accent:  #F0A500;
+      --text:    #E8EDF5;
+      --muted:   #3D5070;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Skip-to-content link for keyboard / screen-reader users (AA requirement) */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      padding: .5rem 1rem;
+      background: var(--accent);
+      color: #070400;
+      font-weight: 700;
+      border-radius: 0 0 6px 6px;
+      z-index: 9999;
+      transition: top .1s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* Splash / loader */
+    #loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .loader-logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .loader-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(240,165,0,.12);
+      border: 1.5px solid rgba(240,165,0,.3);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-icon svg { width: 26px; height: 26px; color: var(--accent); }
+
+    .loader-wordmark { display: flex; flex-direction: column; }
+    .loader-name  { font-size: 1.5rem; font-weight: 900; color: var(--accent); letter-spacing: -.02em; }
+    .loader-sub   { font-size: .6rem;  font-weight: 600; color: var(--muted);  letter-spacing: .25em; }
+
+    /* Spinner */
+    .loader-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid rgba(240,165,0,.15);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .75s linear infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .loader-spinner { animation: none; opacity: .4; }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-help {
+      font-size: .78rem;
+      color: var(--muted);
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.5;
+    }
+    .loader-help a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .15s;
+    }
+    .loader-help a:hover,
+    .loader-help a:focus { border-bottom-color: var(--accent); outline: none; }
+
+    /* Informational section — shown when JS/Flutter fails to load */
+    #no-app {
+      display: none;
+      max-width: 480px;
+      width: 100%;
+      padding: 2rem;
+      margin: 0 auto;
+      background: #0C0F16;
+      border: 1.5px solid #1C2840;
+      border-radius: 16px;
+      text-align: left;
+    }
+    #no-app h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: .5rem;
+    }
+    #no-app p { font-size: .85rem; color: #7A90B0; line-height: 1.6; margin-bottom: 1rem; }
+    #no-app ul { padding-left: 1.2rem; }
+    #no-app li { font-size: .82rem; color: #7A90B0; line-height: 1.8; }
+    #no-app .contact-block {
+      margin-top: 1.25rem;
+      padding: .75rem 1rem;
+      background: rgba(240,165,0,.06);
+      border: 1px solid rgba(240,165,0,.2);
+      border-radius: 8px;
+      font-size: .8rem;
+      color: var(--accent);
+    }
+    #no-app .contact-block strong { display: block; margin-bottom: .25rem; font-weight: 700; }
+    #no-app .contact-block a { color: inherit; }
+  </style>
+</head>
+<body>
+
+  <!-- Skip navigation (WCAG 2.1 AA) -->
+  <a class="skip-link" href="#loader">Skip to content</a>
+
+  <!-- Flutter mounts here -->
+  <div id="flutter_target"></div>
+
+  <!-- Splash shown while Flutter boots -->
+  <div id="loader" role="status" aria-label="Loading Gambit TSL application">
+    <div class="loader-logo">
+      <div class="loader-icon" aria-hidden="true">
+        <!-- Truck icon (inline SVG — no external dep) -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             aria-hidden="true">
+          <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/>
+          <rect x="9" y="11" width="14" height="10" rx="2"/>
+          <circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        </svg>
+      </div>
+      <div class="loader-wordmark">
+        <span class="loader-name">GAMBIT</span>
+        <span class="loader-sub">TRANSPORT · LOGISTICS · SYSTEM</span>
+      </div>
+    </div>
+
+    <div class="loader-spinner" aria-hidden="true"></div>
+
+    <p class="loader-help">
+      Having trouble signing in?
+      <a href="#signin-help" id="show-help-link">Get help</a>
+    </p>
+
+    <!-- Sign-in help section (visible without JavaScript issues) -->
+    <div id="no-app" role="complementary" aria-label="Sign-in help">
+      <h2>Can't sign in?</h2>
+      <p>
+        Your account is managed by your company administrator.
+        Gambit TSL does not support self-registration.
+      </p>
+      <ul>
+        <li>Make sure you're using the username given to you by your admin — <strong>not</strong> your email address.</li>
+        <li>Passwords are case-sensitive. Check that Caps Lock is off.</li>
+        <li>If this is your first login, use the temporary password provided and you'll be asked to change it immediately.</li>
+        <li>If you've forgotten your password, ask your company admin to reset it for you.</li>
+        <li>On mobile, ensure you have a stable internet connection before logging in.</li>
+      </ul>
+      <div class="contact-block">
+        <strong>Need further assistance?</strong>
+        Contact your company administrator or reach Basilmark Support at
+        <a href="mailto:support@basilmark.co.zw">support@basilmark.co.zw</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Show the help panel if the anchor is used or after a timeout
+    document.getElementById("show-help-link").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.getElementById("no-app").style.display = "block";
+      document.getElementById("no-app").scrollIntoView({ behavior: "smooth" });
+    });
+
+    // If Flutter hasn't replaced the loader within 12 seconds, reveal the help section
+    // so users on slow connections still have something useful to read
+    var _helpTimer = setTimeout(function () {
+      var loader = document.getElementById("loader");
+      var help   = document.getElementById("no-app");
+      if (loader && loader.style.display !== "none") {
+        help.style.display = "block";
+      }
+    }, 12000);
+
+    // Flutter engine loader
+    window.addEventListener("load", function () {
+      var serviceWorkerVersion = null;
+      var scriptTag = document.createElement("script");
+      scriptTag.src = "flutter.js";
+      scriptTag.type = "application/javascript";
+      document.body.appendChild(scriptTag);
+      scriptTag.addEventListener("load", function () {
+        _flutter.loader.loadEntrypoint({
+          serviceWorker: { serviceWorkerVersion: serviceWorkerVersion },
+          onEntrypointLoaded: function (engineInitializer) {
+            engineInitializer.initializeEngine().then(function (appRunner) {
+              document.getElementById("loader").style.display = "none";
+              clearTimeout(_helpTimer);
+              appRunner.runApp();
+            });
+          },
+        });
+      });
+    });
+  </script>
+</body>
+</html>

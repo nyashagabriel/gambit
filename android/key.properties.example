@@ -1,0 +1,18 @@
+# android/key.properties.example — GAMBIT TSL
+#
+# Copy this file to android/key.properties (already in .gitignore)
+# and fill in the real values for your keystore.
+#
+# Generate the keystore once:
+#   keytool -genkey -v \
+#     -keystore android/app/gambit-release.jks \
+#     -keyalg RSA -keysize 2048 -validity 10000 \
+#     -alias gambit \
+#     -dname "CN=Gambit TSL, OU=Mobile, O=Basilmark Solutions, L=Harare, ST=Harare, C=ZW"
+#
+# Then store the passwords in your password manager — they cannot be recovered.
+
+storePassword=tc3WUQYcbd5gFWr7ywRJQNdPmzVA2xxg
+keyPassword=tc3WUQYcbd5gFWr7ywRJQNdPmzVA2xxg
+keyAlias=gambit
+storeFile=gambit-release.jks
