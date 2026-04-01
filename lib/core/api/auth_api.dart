@@ -14,18 +14,14 @@ class AuthApi {
     required String username,
     required String password,
   }) async {
-    final data = await rpc(
-      "auth",
-      {
-        "action":   "login",
-        "username": username.trim().toLowerCase(),
-        "password": password,
-      },
-      requiresAuth: false,
-    );
+    final data = await rpc("auth", {
+      "action": "login",
+      "username": username.trim().toLowerCase(),
+      "password": password,
+    }, requiresAuth: false);
     return (
       token: data["token"] as String,
-      user:  GambitUser.fromMap(data["user"] as Map<String, dynamic>),
+      user: GambitUser.fromMap(data["user"] as Map<String, dynamic>),
     );
   }
 
@@ -39,7 +35,7 @@ class AuthApi {
     required String newPassword,
   }) async {
     await rpc("auth", {
-      "action":       "change_password",
+      "action": "change_password",
       "old_password": oldPassword,
       "new_password": newPassword,
     });
@@ -48,7 +44,7 @@ class AuthApi {
   static Future<void> setRecoveryEmail(String email) async {
     await rpc("auth", {
       "action": "set_recovery_email",
-      "email":  email.trim().toLowerCase(),
+      "email": email.trim().toLowerCase(),
     });
   }
 
@@ -56,13 +52,13 @@ class AuthApi {
     required String companyId,
     required String username,
     required String password,
-    String?         fullName,
+    String? fullName,
   }) async {
     final data = await rpc("auth", {
-      "action":     "create_company_admin",
+      "action": "create_company_admin",
       "company_id": companyId,
-      "username":   username,
-      "password":   password,
+      "username": username,
+      "password": password,
       if (fullName != null) "full_name": fullName,
     });
     return GambitUser.fromMap(data["user"] as Map<String, dynamic>);

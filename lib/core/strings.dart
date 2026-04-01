@@ -12,7 +12,8 @@ class AppStrings {
   static const String delete = "Delete";
   static const String confirm = "Confirm";
   static const String back = "Back";
-  static const String errorGeneric = "An unexpected error occurred. Please try again.";
+  static const String errorGeneric =
+      "An unexpected error occurred. Please try again.";
   static const String loading = "Loading...";
 
   // ── Auth & Profile ─────────────────────────────────────────────────────────
@@ -23,7 +24,8 @@ class AppStrings {
   static const String forgotPassword = "Forgot password?";
   static const String setRecoveryEmail = "Set recovery email →";
   static const String logout = "Log Out";
-  static const String defaultPasswordNote = "⚡ Admin must change this password on first login.";
+  static const String defaultPasswordNote =
+      "⚡ Admin must change this password on first login.";
 
   // ── Status Labels ──────────────────────────────────────────────────────────
   static const String statusActive = "ACTIVE";
@@ -69,7 +71,15 @@ class AppStrings {
   static const String yearLabel = "YEAR";
   static const String engineNumberLabel = "ENGINE NUMBER";
   static const String chassisNumberLabel = "CHASSIS NUMBER";
-  static const List<String> vehicleTypes = ["Freightliner", "HOWO", "IVECO", "VOLVO", "SHACMAN", "DAF", "MAN"];
+  static const List<String> vehicleTypes = [
+    "Freightliner",
+    "HOWO",
+    "IVECO",
+    "VOLVO",
+    "SHACMAN",
+    "DAF",
+    "MAN",
+  ];
 
   // ── Trip Booking ───────────────────────────────────────────────────────────
   static const String tripsTitle = "Trip Booking";
@@ -86,7 +96,7 @@ class AppStrings {
     "Route risk assessment",
     "POD number",
     "ODO Reading",
-    "Weighbridge site"
+    "Weighbridge site",
   ];
 
   // ── Inventory Management ───────────────────────────────────────────────────
@@ -98,8 +108,20 @@ class AppStrings {
   static const String categoryLabel = "CATEGORY";
   static const String unitRateLabel = "UNIT RATE (\$)";
   static const String vendorLabel = "VENDOR";
-  static const List<String> inventoryUnits = ["Pcs", "Litres", "Sets", "Kg", "Metres"];
-  static const List<String> inventoryCategories = ["Spares", "Lubricants", "Tyres", "Consumables", "Tools"];
+  static const List<String> inventoryUnits = [
+    "Pcs",
+    "Litres",
+    "Sets",
+    "Kg",
+    "Metres",
+  ];
+  static const List<String> inventoryCategories = [
+    "Spares",
+    "Lubricants",
+    "Tyres",
+    "Consumables",
+    "Tools",
+  ];
 
   // ── Drivers ────────────────────────────────────────────────────────────────
   static const String driversTitle = "Drivers";

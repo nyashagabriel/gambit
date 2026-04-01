@@ -1,0 +1,41 @@
+Analyzing gambit...                                             
+
+   info • Missing a newline at the end of the file • lib/core/api/auth_api.dart:70:2 • eol_at_end_of_file
+   info • Constructor declarations should be before non-constructor declarations • lib/core/api/client.dart:20:9 • sort_constructors_first
+   info • Missing a newline at the end of the file • lib/core/api/client.dart:106:2 • eol_at_end_of_file
+   info • Missing a newline at the end of the file • lib/core/api/data_api.dart:323:2 • eol_at_end_of_file
+   info • Missing a newline at the end of the file • lib/core/api/files_api.dart:140:2 • eol_at_end_of_file
+   info • Unnecessary braces in a string interpolation • lib/core/auth/auth_provider.dart:97:37 • unnecessary_brace_in_string_interps
+   info • Use a raw string to avoid using escapes • lib/core/strings.dart:82:35 • use_raw_strings
+   info • Use a raw string to avoid using escapes • lib/core/strings.dart:99:39 • use_raw_strings
+warning • The type argument(s) of the constructor 'Future.delayed' can't be inferred • lib/features/auth/login_screen.dart:374:13 • inference_failure_on_instance_creation
+   info • Missing a newline at the end of the file • lib/features/auth/login_screen.dart:491:2 • eol_at_end_of_file
+   info • Sort directive sections alphabetically • lib/features/company_admin/admin_dashboard.dart:8:1 • directives_ordering
+   info • Statements in an if should be enclosed in a block • lib/features/company_admin/admin_dashboard.dart:176:23 • curly_braces_in_flow_control_structures
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/features/company_admin/admin_dashboard.dart:281:8 • avoid_void_async
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/features/company_admin/admin_dashboard.dart:420:8 • avoid_void_async
+   info • Don't use 'BuildContext's across async gaps • lib/features/company_admin/admin_dashboard.dart:815:13 • use_build_context_synchronously
+   info • The value of the argument is redundant because it matches the default value • lib/features/company_admin/admin_dashboard.dart:945:21 • avoid_redundant_argument_values
+   info • Constructor declarations should be before non-constructor declarations • lib/features/company_admin/admin_dashboard.dart:975:9 • sort_constructors_first
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/features/company_admin/admin_dashboard.dart:1045:8 • avoid_void_async
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/features/company_admin/admin_dashboard.dart:1187:8 • avoid_void_async
+   info • The value of the argument is redundant because it matches the default value • lib/features/company_admin/admin_dashboard.dart:1236:23 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • lib/features/company_admin/admin_dashboard.dart:1380:21 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • lib/features/company_admin/admin_dashboard.dart:1394:23 • avoid_redundant_argument_values
+   info • Unnecessary use of parentheses • lib/features/company_admin/admin_dashboard.dart:1397:30 • unnecessary_parenthesis
+   info • Constructor declarations should be before non-constructor declarations • lib/features/company_admin/driver_form.dart:9:9 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/features/company_admin/fleet_form.dart:9:9 • sort_constructors_first
+  error • Unused import: '../../core/models/models.dart' • lib/features/company_admin/inventory_form.dart:3:8 • unused_import
+   info • Constructor declarations should be before non-constructor declarations • lib/features/company_admin/inventory_form.dart:26:9 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/features/company_admin/trip_form.dart:11:9 • sort_constructors_first
+   info • Required named parameters should be before optional named parameters • lib/features/company_admin/trip_form.dart:11:44 • always_put_required_named_parameters_first
+   info • Required named parameters should be before optional named parameters • lib/features/company_admin/trip_form.dart:11:65 • always_put_required_named_parameters_first
+   info • The value of the argument is redundant because it matches the default value • lib/features/company_admin/trip_form.dart:163:49 • avoid_redundant_argument_values
+   info • The value of the argument is redundant because it matches the default value • lib/features/company_admin/trip_form.dart:190:49 • avoid_redundant_argument_values
+   info • Missing a newline at the end of the file • lib/features/staff/docs_screen.dart:542:2 • eol_at_end_of_file
+   info • Sort directive sections alphabetically • lib/features/staff/staff_dashboard.dart:9:1 • directives_ordering
+   info • Statements in an if should be enclosed in a block • lib/features/staff/staff_dashboard.dart:34:17 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/features/staff/staff_dashboard.dart:217:23 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/features/super_admin/super_dashboard.dart:251:23 • curly_braces_in_flow_control_structures
+   info • Missing a newline at the end of the file • lib/shared/theme/gambit_theme.dart:267:2 • eol_at_end_of_file
+

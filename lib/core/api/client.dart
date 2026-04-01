@@ -14,17 +14,17 @@ import "../constants.dart";
 
 // ─── Exception ────────────────────────────────────────────────────────────────
 class GambitApiException implements Exception {
-  final int    statusCode;
+  final int statusCode;
   final String message;
 
   const GambitApiException({required this.statusCode, required this.message});
 
-  bool get isUnauthorized  => statusCode == 401;
-  bool get isForbidden     => statusCode == 403;
-  bool get isNotFound      => statusCode == 404;
-  bool get isConflict      => statusCode == 409;
+  bool get isUnauthorized => statusCode == 401;
+  bool get isForbidden => statusCode == 403;
+  bool get isNotFound => statusCode == 404;
+  bool get isConflict => statusCode == 409;
   bool get isUnprocessable => statusCode == 422;
-  bool get isServerError   => statusCode >= 500;
+  bool get isServerError => statusCode >= 500;
 
   @override
   String toString() => message;
@@ -35,7 +35,7 @@ class GambitApiException implements Exception {
 String? _jwt;
 
 void setJwt(String? token) => _jwt = token;
-String? getJwt()           => _jwt;
+String? getJwt() => _jwt;
 
 // ─── Core RPC function ────────────────────────────────────────────────────────
 /// POSTs to a Gambit TSL Supabase edge function.
@@ -96,9 +96,10 @@ Future<Map<String, dynamic>> rpc(
   }
 
   if (response.statusCode < 200 || response.statusCode >= 300) {
-    final msg = data["error"] as String?
-        ?? data["message"] as String?
-        ?? "Request failed (${response.statusCode}).";
+    final msg =
+        data["error"] as String? ??
+        data["message"] as String? ??
+        "Request failed (${response.statusCode}).";
     throw GambitApiException(statusCode: response.statusCode, message: msg);
   }
 

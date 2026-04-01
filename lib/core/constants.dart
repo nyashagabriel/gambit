@@ -17,10 +17,10 @@ class GambitConfig {
     // obvious rather than silently hitting the wrong endpoint.
   );
 
-  static const String anonKey =  String.fromEnvironment(
+  static const String anonKey = String.fromEnvironment(
     "GAMBIT_ANON_KEY",
-     // Fallback only used if dart-define is missing — makes the misconfiguration
-     // obvious rather than silently using an invalid key.
+    // Fallback only used if dart-define is missing — makes the misconfiguration
+    // obvious rather than silently using an invalid key.
   );
 
   // ── Role hierarchy ────────────────────────────────────────────────────────

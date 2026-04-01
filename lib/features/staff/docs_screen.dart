@@ -24,12 +24,12 @@ class StaffDocsScreen extends StatefulWidget {
 }
 
 class _StaffDocsScreenState extends State<StaffDocsScreen> {
-  List<GambitDocument> _docs      = [];
-  bool    _loading                = true;
+  List<GambitDocument> _docs = [];
+  bool _loading = true;
   String? _error;
 
   // Upload state
-  bool    _uploading              = false;
+  bool _uploading = false;
   double? _uploadProgress;
   String? _uploadError;
 
@@ -40,7 +40,10 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
   }
 
   Future<void> _load() async {
-    setState(() { _loading = true; _error = null; });
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
     try {
       _docs = await FilesApi.list();
     } catch (e) {
@@ -52,20 +55,32 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
 
   // ── Upload flow ─────────────────────────────────────────────────────────────
   Future<void> _pickAndUpload() async {
-    setState(() { _uploadError = null; });
+    setState(() {
+      _uploadError = null;
+    });
 
     // 1. Open file picker (restricts to supported types)
     final result = await FilePicker.platform.pickFiles(
-      type:             FileType.custom,
-      allowedExtensions: ["pdf", "jpg", "jpeg", "png", "webp", "doc", "docx", "xls", "xlsx"],
-      withData:          true,   // load bytes immediately (required for web)
+      type: FileType.custom,
+      allowedExtensions: [
+        "pdf",
+        "jpg",
+        "jpeg",
+        "png",
+        "webp",
+        "doc",
+        "docx",
+        "xls",
+        "xlsx",
+      ],
+      withData: true, // load bytes immediately (required for web)
     );
 
     if (result == null || result.files.isEmpty) return;
 
-    final file      = result.files.first;
-    final bytes     = file.bytes;
-    final filename  = file.name;
+    final file = result.files.first;
+    final bytes = file.bytes;
+    final filename = file.name;
     final extension = filename.split(".").last.toLowerCase();
 
     if (bytes == null) {
@@ -75,20 +90,24 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
 
     // Size guard (25 MB — mirrors the server-side limit)
     if (bytes.length > 25 * 1024 * 1024) {
-      setState(() => _uploadError = "File is too large. Maximum size is 25 MB.");
+      setState(
+        () => _uploadError = "File is too large. Maximum size is 25 MB.",
+      );
       return;
     }
 
     final mimeMap = {
-      "pdf":  "application/pdf",
-      "jpg":  "image/jpeg",
+      "pdf": "application/pdf",
+      "jpg": "image/jpeg",
       "jpeg": "image/jpeg",
-      "png":  "image/png",
+      "png": "image/png",
       "webp": "image/webp",
-      "doc":  "application/msword",
-      "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "xls":  "application/vnd.ms-excel",
-      "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "doc": "application/msword",
+      "docx":
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "xls": "application/vnd.ms-excel",
+      "xlsx":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     };
 
     final mimeType = mimeMap[extension];
@@ -101,15 +120,18 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
     final meta = await _showMetadataSheet(filename);
     if (meta == null) return; // user cancelled
 
-    setState(() { _uploading = true; _uploadProgress = 0.1; });
+    setState(() {
+      _uploading = true;
+      _uploadProgress = 0.1;
+    });
 
     try {
       // Step 1: get signed upload URL
       final urls = await FilesApi.requestUploadUrl(
-        filename:  filename,
-        mimeType:  mimeType,
-        fileSize:  bytes.length,
-        folder:    meta.folder,
+        filename: filename,
+        mimeType: mimeType,
+        fileSize: bytes.length,
+        folder: meta.folder,
       );
 
       setState(() => _uploadProgress = 0.4);
@@ -117,8 +139,8 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
       // Step 2: PUT bytes directly to Supabase Storage
       await FilesApi.uploadBytes(
         signedUrl: urls.uploadUrl,
-        bytes:     Uint8List.fromList(bytes),
-        mimeType:  mimeType,
+        bytes: Uint8List.fromList(bytes),
+        mimeType: mimeType,
       );
 
       setState(() => _uploadProgress = 0.8);
@@ -126,12 +148,15 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
       // Step 3: confirm and save metadata
       await FilesApi.confirm(
         storagePath: urls.storagePath,
-        title:       meta.title,
-        folder:      meta.folder,
-        expiryDate:  meta.expiryDate,
+        title: meta.title,
+        folder: meta.folder,
+        expiryDate: meta.expiryDate,
       );
 
-      setState(() { _uploading = false; _uploadProgress = null; });
+      setState(() {
+        _uploading = false;
+        _uploadProgress = null;
+      });
       await _load();
 
       if (mounted) {
@@ -144,19 +169,19 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
       }
     } catch (e) {
       setState(() {
-        _uploading     = false;
+        _uploading = false;
         _uploadProgress = null;
-        _uploadError   = e.toString();
+        _uploadError = e.toString();
       });
     }
   }
 
   // ── Metadata sheet ──────────────────────────────────────────────────────────
   Future<_UploadMeta?> _showMetadataSheet(String defaultTitle) async {
-    final titleCtrl  = TextEditingController(
+    final titleCtrl = TextEditingController(
       text: defaultTitle.split(".").first.replaceAll("_", " "),
     );
-    final expCtrl    = TextEditingController();
+    final expCtrl = TextEditingController();
     String selectedFolder = "general";
 
     return showModalBottomSheet<_UploadMeta>(
@@ -169,7 +194,9 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheet) => Padding(
           padding: EdgeInsets.only(
-            left: 20, right: 20, top: 20,
+            left: 20,
+            right: 20,
+            top: 20,
             bottom: MediaQuery.of(ctx).viewInsets.bottom + 32,
           ),
           child: Column(
@@ -178,20 +205,31 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
             children: [
               const Text(
                 "Document details",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: GambitColors.text),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: GambitColors.text,
+                ),
               ),
               const SizedBox(height: 16),
 
               // Title
               GInput(
-                label:      "DOCUMENT TITLE",
+                label: "DOCUMENT TITLE",
                 controller: titleCtrl,
                 prefixIcon: Icons.title_rounded,
                 textInputAction: TextInputAction.next,
               ),
 
               // Folder selector
-              const Text("FOLDER", style: TextStyle(color: GambitColors.textSub, fontSize: 10, letterSpacing: 1)),
+              const Text(
+                "FOLDER",
+                style: TextStyle(
+                  color: GambitColors.textSub,
+                  fontSize: 10,
+                  letterSpacing: 1,
+                ),
+              ),
               const SizedBox(height: 6),
               Wrap(
                 spacing: 8,
@@ -204,18 +242,29 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                     child: GestureDetector(
                       onTap: () => setSheet(() => selectedFolder = f),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 7,
+                        ),
                         decoration: BoxDecoration(
-                          color: sel ? GambitColors.accentDim : GambitColors.card,
+                          color: sel
+                              ? GambitColors.accentDim
+                              : GambitColors.card,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: sel ? GambitColors.accent : GambitColors.border),
+                          border: Border.all(
+                            color: sel
+                                ? GambitColors.accent
+                                : GambitColors.border,
+                          ),
                         ),
                         child: Text(
                           f,
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: sel ? FontWeight.w700 : FontWeight.w400,
-                            color: sel ? GambitColors.accent : GambitColors.textSub,
+                            color: sel
+                                ? GambitColors.accent
+                                : GambitColors.textSub,
                           ),
                         ),
                       ),
@@ -227,10 +276,10 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
 
               // Expiry date (optional)
               GInput(
-                label:       "EXPIRY DATE (optional)",
-                hint:        "yyyy-mm-dd",
-                controller:  expCtrl,
-                prefixIcon:  Icons.calendar_today_rounded,
+                label: "EXPIRY DATE (optional)",
+                hint: "yyyy-mm-dd",
+                controller: expCtrl,
+                prefixIcon: Icons.calendar_today_rounded,
                 keyboardType: TextInputType.datetime,
                 textInputAction: TextInputAction.done,
               ),
@@ -242,26 +291,31 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                 children: [
                   Expanded(
                     child: GButton(
-                      label:   "Cancel",
+                      label: "Cancel",
                       outline: true,
-                      color:   GambitColors.textSub,
+                      color: GambitColors.textSub,
                       onPressed: () => Navigator.pop(ctx),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: GButton(
-                      label:    "Upload",
-                      icon:     Icons.upload_rounded,
-                      color:    GambitColors.success,
+                      label: "Upload",
+                      icon: Icons.upload_rounded,
+                      color: GambitColors.success,
                       onPressed: () {
                         final title = titleCtrl.text.trim();
                         if (title.isEmpty) return;
-                        Navigator.pop(ctx, _UploadMeta(
-                          title:      title,
-                          folder:     selectedFolder,
-                          expiryDate: expCtrl.text.trim().isEmpty ? null : expCtrl.text.trim(),
-                        ));
+                        Navigator.pop(
+                          ctx,
+                          _UploadMeta(
+                            title: title,
+                            folder: selectedFolder,
+                            expiryDate: expCtrl.text.trim().isEmpty
+                                ? null
+                                : expCtrl.text.trim(),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -279,13 +333,19 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title:   const Text("Delete document?"),
+        title: const Text("Delete document?"),
         content: Text('Remove "${doc.title}"? This cannot be undone.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text("Cancel")),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Cancel"),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Delete", style: TextStyle(color: GambitColors.danger)),
+            child: const Text(
+              "Delete",
+              style: TextStyle(color: GambitColors.danger),
+            ),
           ),
         ],
       ),
@@ -299,7 +359,10 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString()), backgroundColor: GambitColors.danger),
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: GambitColors.danger,
+          ),
         );
       }
     }
@@ -308,9 +371,11 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
   // ── Build ────────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
-    final auth      = context.watch<AuthProvider>();
-    final canUpload = auth.claims != null && RoleGuard.canUploadDocuments(auth.claims!);
-    final canDelete = auth.claims != null && RoleGuard.canDeleteDocuments(auth.claims!);
+    final auth = context.watch<AuthProvider>();
+    final canUpload =
+        auth.claims != null && RoleGuard.canUploadDocuments(auth.claims!);
+    final canDelete =
+        auth.claims != null && RoleGuard.canDeleteDocuments(auth.claims!);
 
     return Scaffold(
       backgroundColor: GambitColors.bg,
@@ -326,22 +391,33 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Documents",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: GambitColors.text)),
-                      Text("Licences, permits, PODs & reports",
-                          style: TextStyle(fontSize: 11, color: GambitColors.textMuted)),
+                      Text(
+                        "Documents",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                          color: GambitColors.text,
+                        ),
+                      ),
+                      Text(
+                        "Licences, permits, PODs & reports",
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: GambitColors.textMuted,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 if (canUpload)
                   Semantics(
                     button: true,
-                    label:  "Upload new document",
+                    label: "Upload new document",
                     child: GButton(
-                      label:    "Upload",
-                      icon:     Icons.upload_file_rounded,
-                      small:    true,
-                      loading:  _uploading,
+                      label: "Upload",
+                      icon: Icons.upload_file_rounded,
+                      small: true,
+                      loading: _uploading,
                       onPressed: _uploading ? null : _pickAndUpload,
                     ),
                   ),
@@ -354,10 +430,10 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
-                  value:            _uploadProgress,
-                  backgroundColor:  GambitColors.border,
-                  color:            GambitColors.accent,
-                  minHeight:        4,
+                  value: _uploadProgress,
+                  backgroundColor: GambitColors.border,
+                  color: GambitColors.accent,
+                  minHeight: 4,
                 ),
               ),
               const SizedBox(height: 8),
@@ -369,18 +445,31 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
             ],
 
             if (_uploadError != null)
-              Semantics(liveRegion: true, child: GAlert(message: _uploadError!, type: "danger")),
+              Semantics(
+                liveRegion: true,
+                child: GAlert(message: _uploadError!, type: "danger"),
+              ),
 
-            if (_error != null)
-              GAlert(message: _error!, type: "danger"),
+            if (_error != null) GAlert(message: _error!, type: "danger"),
 
             if (_loading)
-              const Center(child: CircularProgressIndicator(color: GambitColors.accent, strokeWidth: 2)),
+              const Center(
+                child: CircularProgressIndicator(
+                  color: GambitColors.accent,
+                  strokeWidth: 2,
+                ),
+              ),
 
             if (!_loading && _docs.isEmpty)
-              const GAlert(message: "No documents yet", sub: "Tap Upload to add your first document."),
+              const GAlert(
+                message: "No documents yet",
+                sub: "Tap Upload to add your first document.",
+              ),
 
-            ..._docs.map((doc) => _DocTile(doc: doc, canDelete: canDelete, onDelete: _delete)),
+            ..._docs.map(
+              (doc) =>
+                  _DocTile(doc: doc, canDelete: canDelete, onDelete: _delete),
+            ),
           ],
         ),
       ),
@@ -390,20 +479,23 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
 
 // ── Document tile ─────────────────────────────────────────────────────────────
 class _DocTile extends StatelessWidget {
-
-  const _DocTile({required this.doc, required this.canDelete, required this.onDelete});
-  final GambitDocument   doc;
-  final bool             canDelete;
+  const _DocTile({
+    required this.doc,
+    required this.canDelete,
+    required this.onDelete,
+  });
+  final GambitDocument doc;
+  final bool canDelete;
   final void Function(GambitDocument) onDelete;
 
   String get _expiryLabel {
     if (doc.expiryDate == null) return "";
     try {
-      final d    = DateTime.parse(doc.expiryDate!);
+      final d = DateTime.parse(doc.expiryDate!);
       final days = d.difference(DateTime.now()).inDays;
-      if (days < 0)   return "EXPIRED";
-      if (days == 0)  return "EXPIRES TODAY";
-      if (days <= 7)  return "EXPIRES IN $days DAYS";
+      if (days < 0) return "EXPIRED";
+      if (days == 0) return "EXPIRES TODAY";
+      if (days <= 7) return "EXPIRES IN $days DAYS";
       if (days <= 30) return "EXPIRES IN $days DAYS";
       return "EXPIRES ${doc.expiryDate!.split("T")[0]}";
     } catch (_) {
@@ -412,9 +504,9 @@ class _DocTile extends StatelessWidget {
   }
 
   Color get _expiryColor {
-    if (doc.isExpired)              return GambitColors.danger;
-    if (doc.isExpiringSoon(daysAhead: 7))  return GambitColors.danger;
-    if (doc.isExpiringSoon())       return GambitColors.warn;
+    if (doc.isExpired) return GambitColors.danger;
+    if (doc.isExpiringSoon(daysAhead: 7)) return GambitColors.danger;
+    if (doc.isExpiringSoon()) return GambitColors.warn;
     return GambitColors.textMuted;
   }
 
@@ -423,10 +515,10 @@ class _DocTile extends StatelessWidget {
     final borderColor = doc.isExpired
         ? GambitColors.danger.withAlpha(80)
         : doc.isExpiringSoon(daysAhead: 7)
-            ? GambitColors.danger.withAlpha(50)
-            : doc.isExpiringSoon()
-                ? GambitColors.warn.withAlpha(50)
-                : null;
+        ? GambitColors.danger.withAlpha(50)
+        : doc.isExpiringSoon()
+        ? GambitColors.warn.withAlpha(50)
+        : null;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
@@ -465,32 +557,37 @@ class _DocTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 3),
-                  Row(children: [
-                    Text(
-                      doc.folder.replaceAll("_", " ").toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 9,
-                        color: GambitColors.textMuted,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    if (doc.expiryDate != null) ...[
-                      const Text(
-                        " · ",
-                        style: TextStyle(color: GambitColors.textMuted, fontSize: 9),
-                      ),
+                  Row(
+                    children: [
                       Text(
-                        _expiryLabel,
-                        style: TextStyle(
+                        doc.folder.replaceAll("_", " ").toUpperCase(),
+                        style: const TextStyle(
                           fontSize: 9,
-                          color: _expiryColor,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.5,
+                          color: GambitColors.textMuted,
+                          letterSpacing: 0.8,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
+                      if (doc.expiryDate != null) ...[
+                        const Text(
+                          " · ",
+                          style: TextStyle(
+                            color: GambitColors.textMuted,
+                            fontSize: 9,
+                          ),
+                        ),
+                        Text(
+                          _expiryLabel,
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: _expiryColor,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
                     ],
-                  ]),
+                  ),
                 ],
               ),
             ),
@@ -500,7 +597,11 @@ class _DocTile extends StatelessWidget {
                 button: true,
                 label: "Delete ${doc.title}",
                 child: IconButton(
-                  icon: const Icon(Icons.delete_outline_rounded, size: 18, color: GambitColors.textMuted),
+                  icon: const Icon(
+                    Icons.delete_outline_rounded,
+                    size: 18,
+                    color: GambitColors.textMuted,
+                  ),
                   onPressed: () => onDelete(doc),
                   tooltip: "Delete",
                 ),
@@ -513,12 +614,12 @@ class _DocTile extends StatelessWidget {
 
   IconData _iconForFolder(String folder) {
     return switch (folder) {
-      "permits"      => Icons.article_rounded,
-      "insurance"    => Icons.shield_rounded,
+      "permits" => Icons.article_rounded,
+      "insurance" => Icons.shield_rounded,
       "port_permits" => Icons.anchor_rounded,
-      "pod"          => Icons.receipt_rounded,
-      "maintenance"  => Icons.build_rounded,
-      _              => Icons.insert_drive_file_rounded,
+      "pod" => Icons.receipt_rounded,
+      "maintenance" => Icons.build_rounded,
+      _ => Icons.insert_drive_file_rounded,
     };
   }
 }
@@ -535,8 +636,12 @@ const List<String> _kFolders = [
 
 // ── Upload metadata ───────────────────────────────────────────────────────────
 class _UploadMeta {
-  const _UploadMeta({required this.title, required this.folder, this.expiryDate});
-  final String  title;
-  final String  folder;
+  const _UploadMeta({
+    required this.title,
+    required this.folder,
+    this.expiryDate,
+  });
+  final String title;
+  final String folder;
   final String? expiryDate;
 }

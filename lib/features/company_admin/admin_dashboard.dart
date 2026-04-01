@@ -10,6 +10,10 @@ import "../../core/api/files_api.dart";
 import "../../core/models/models.dart";
 import "../../shared/theme/gambit_theme.dart";
 import "../../shared/widgets/widgets.dart";
+import "driver_form.dart";
+import "fleet_form.dart";
+import "inventory_form.dart";
+import "trip_form.dart";
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -250,7 +254,7 @@ class _FleetTab extends StatefulWidget {
 }
 
 class _FleetTabState extends State<_FleetTab> {
-  List<Map<String, dynamic>> _fleet = [];
+  List<GambitFleet> _fleet = [];
   bool _loading = true;
   String? _error;
 
@@ -266,8 +270,7 @@ class _FleetTabState extends State<_FleetTab> {
       _error = null;
     });
     try {
-      final data = await rpc("api", {"action": "fleet_list"});
-      _fleet = List<Map<String, dynamic>>.from(data["fleet"] as List);
+      _fleet = await FleetApi.list();
     } catch (e) {
       _error = e.toString();
     } finally {
@@ -275,10 +278,20 @@ class _FleetTabState extends State<_FleetTab> {
     }
   }
 
+  void _openForm([GambitFleet? initial]) async {
+    final bool? changed = await FleetForm.show(context, initial: initial);
+    if (changed == true) _load();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: GambitColors.bg,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openForm,
+        backgroundColor: GambitColors.accent,
+        child: const Icon(Icons.add_rounded, color: Colors.white),
+      ),
       body: RefreshIndicator(
         onRefresh: _load,
         color: GambitColors.accent,
@@ -313,53 +326,54 @@ class _FleetTabState extends State<_FleetTab> {
             ..._fleet.map(
               (f) => Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: GCard(
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: GambitColors.blueDim,
-                          borderRadius: BorderRadius.circular(8),
+                child: InkWell(
+                  onTap: () => _openForm(f),
+                  borderRadius: BorderRadius.circular(12),
+                  child: GCard(
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: GambitColors.blueDim,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.local_shipping_rounded,
+                            size: 18,
+                            color: GambitColors.blue,
+                            semanticLabel: "",
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.local_shipping_rounded,
-                          size: 18,
-                          color: GambitColors.blue,
-                          semanticLabel: "",
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              f["registration"] as String? ?? "—",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                color: GambitColors.text,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                f.registration,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: GambitColors.text,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "${f["vehicle_type"] ?? ""} · ${f["make"] ?? ""} ${f["model"] ?? ""}"
-                                  .trim(),
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: GambitColors.textMuted,
+                              Text(
+                                f.displayName,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: GambitColors.textMuted,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      GBadge(
-                        label: f["status"] as String? ?? "unknown",
-                        color: GBadge.colorForStatus(
-                          f["status"] as String? ?? "",
+                        GBadge(
+                          label: f.status,
+                          color: GBadge.colorForStatus(f.status),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -403,10 +417,33 @@ class _TripsTabState extends State<_TripsTab> {
     }
   }
 
+  void _openForm() async {
+    setState(() => _loading = true);
+    try {
+      final fleet = await FleetApi.list();
+      final drivers = await DriversApi.list();
+      if (mounted) setState(() => _loading = false);
+      if (mounted) {
+        final changed = await TripForm.show(context, fleet, drivers);
+        if (changed == true) _load();
+      }
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _loading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: GambitColors.bg,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openForm,
+        backgroundColor: GambitColors.accent,
+        child: const Icon(Icons.add_rounded, color: Colors.white),
+      ),
       body: RefreshIndicator(
         onRefresh: _load,
         color: GambitColors.accent,
@@ -981,7 +1018,7 @@ class _DriversTab extends StatefulWidget {
 }
 
 class _DriversTabState extends State<_DriversTab> {
-  List<Map<String, dynamic>> _drivers = [];
+  List<GambitDriver> _drivers = [];
   bool _loading = true;
   String? _error;
 
@@ -997,8 +1034,7 @@ class _DriversTabState extends State<_DriversTab> {
       _error = null;
     });
     try {
-      final data = await rpc("api", {"action": "driver_list"});
-      _drivers = List<Map<String, dynamic>>.from(data["drivers"] as List);
+      _drivers = await DriversApi.list();
     } catch (e) {
       _error = e.toString();
     } finally {
@@ -1006,10 +1042,20 @@ class _DriversTabState extends State<_DriversTab> {
     }
   }
 
+  void _openForm([GambitDriver? initial]) async {
+    final bool? changed = await DriverForm.show(context, initial: initial);
+    if (changed == true) _load();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: GambitColors.bg,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openForm,
+        backgroundColor: GambitColors.accent,
+        child: const Icon(Icons.add_rounded, color: Colors.white),
+      ),
       body: RefreshIndicator(
         onRefresh: _load,
         color: GambitColors.accent,
@@ -1044,55 +1090,57 @@ class _DriversTabState extends State<_DriversTab> {
             ..._drivers.map(
               (driver) => Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: GCard(
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: GambitColors.success.withAlpha(24),
-                          borderRadius: BorderRadius.circular(8),
+                child: InkWell(
+                  onTap: () => _openForm(driver),
+                  borderRadius: BorderRadius.circular(12),
+                  child: GCard(
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: GambitColors.success.withAlpha(24),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.person_rounded,
+                            size: 18,
+                            color: GambitColors.success,
+                            semanticLabel: "",
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.person_rounded,
-                          size: 18,
-                          color: GambitColors.success,
-                          semanticLabel: "",
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              driver["full_name"] as String? ?? "—",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 13,
-                                color: GambitColors.text,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                driver.fullName,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                  color: GambitColors.text,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              "License: ${driver["license_number"] ?? "N/A"}",
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: GambitColors.textMuted,
+                              const SizedBox(height: 2),
+                              Text(
+                                "License: ${driver.licenseNumber}",
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: GambitColors.textMuted,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      GBadge(
-                        label: (driver["is_active"] == true)
-                            ? "active"
-                            : "inactive",
-                        color: GBadge.colorForStatus(
-                          (driver["is_active"] == true) ? "active" : "banned",
+                        GBadge(
+                          label: driver.isActive ? "active" : "inactive",
+                          color: GBadge.colorForStatus(
+                            driver.isActive ? "active" : "banned",
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -1107,146 +1155,146 @@ class _DriversTabState extends State<_DriversTab> {
 // ── Inventory Tab ─────────────────────────────────────────────────────────────
 class _InventoryTab extends StatefulWidget {
   const _InventoryTab();
-
   @override
   State<_InventoryTab> createState() => _InventoryTabState();
 }
 
 class _InventoryTabState extends State<_InventoryTab> {
-  final TextEditingController _itemCtrl = TextEditingController();
-  final TextEditingController _qtyCtrl = TextEditingController();
-  final TextEditingController _noteCtrl = TextEditingController();
-  final List<Map<String, String>> _requests = [];
+  List<GambitInventory> _items = [];
+  bool _loading = true;
+  String? _error;
 
   @override
-  void dispose() {
-    _itemCtrl.dispose();
-    _qtyCtrl.dispose();
-    _noteCtrl.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _load();
   }
 
-  void _addRequest() {
-    final item = _itemCtrl.text.trim();
-    final qty = _qtyCtrl.text.trim();
-    final note = _noteCtrl.text.trim();
-    if (item.isEmpty || qty.isEmpty) return;
-
+  Future<void> _load() async {
     setState(() {
-      _requests.insert(0, {
-        "item": item,
-        "qty": qty,
-        "note": note,
-        "date": DateTime.now().toIso8601String().split("T").first,
-      });
-      _itemCtrl.clear();
-      _qtyCtrl.clear();
-      _noteCtrl.clear();
+      _loading = true;
+      _error = null;
     });
+    try {
+      _items = await InventoryApi.list();
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  void _openForm() async {
+    final bool? changed = await InventoryForm.show(context);
+    if (changed == true) _load();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: GambitColors.bg,
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          const Text(
-            "Inventory Requests",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w900,
-              color: GambitColors.text,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openForm,
+        backgroundColor: GambitColors.accent,
+        child: const Icon(Icons.add_rounded, color: Colors.white),
+      ),
+      body: RefreshIndicator(
+        onRefresh: _load,
+        color: GambitColors.accent,
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            const Text(
+              "Inventory",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+                color: GambitColors.text,
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            "Submit operational stock requests",
-            style: TextStyle(fontSize: 11, color: GambitColors.textMuted),
-          ),
-          const SizedBox(height: 16),
-          GInput(
-            label: "ITEM",
-            hint: "e.g. Brake pads",
-            controller: _itemCtrl,
-            prefixIcon: Icons.inventory_2_rounded,
-          ),
-          GInput(
-            label: "QUANTITY",
-            hint: "e.g. 4",
-            controller: _qtyCtrl,
-            keyboardType: TextInputType.number,
-            prefixIcon: Icons.numbers_rounded,
-          ),
-          GInput(
-            label: "NOTE",
-            hint: "Optional",
-            controller: _noteCtrl,
-            prefixIcon: Icons.notes_rounded,
-          ),
-          GButton(
-            label: "SUBMIT REQUEST",
-            icon: Icons.send_rounded,
-            fullWidth: true,
-            onPressed: _addRequest,
-          ),
-          const SizedBox(height: 16),
-          if (_requests.isEmpty)
-            const GAlert(
-              message: "No requests yet",
-              sub: "Create your first inventory request",
-              type: "info",
+            const SizedBox(height: 4),
+            Text(
+              "${_items.length} items(s)",
+              style: const TextStyle(
+                fontSize: 11,
+                color: GambitColors.textMuted,
+              ),
             ),
-          ..._requests.map(
-            (request) => Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: GCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            request["item"]!,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: GambitColors.text,
-                            ),
-                          ),
+            const SizedBox(height: 16),
+            if (_loading)
+              const Center(
+                child: CircularProgressIndicator(
+                  color: GambitColors.accent,
+                  strokeWidth: 2,
+                ),
+              ),
+            if (_error != null) GAlert(message: _error!, type: "danger"),
+            if (!_loading && _error == null && _items.isEmpty)
+              const GAlert(
+                message: "No inventory yet",
+                sub: "Add your first item",
+                type: "info",
+              ),
+            ..._items.map(
+              (item) => Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: GCard(
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: GambitColors.blueDim,
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        GBadge(
-                          label: "pending",
-                          color: GBadge.colorForStatus("pending"),
+                        child: const Icon(
+                          Icons.inventory_2_rounded,
+                          size: 18,
+                          color: GambitColors.blue,
+                          semanticLabel: "",
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "Qty: ${request["qty"]} · ${request["date"]}",
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: GambitColors.textSub,
                       ),
-                    ),
-                    if ((request["note"] ?? "").isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        request["note"]!,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: GambitColors.textMuted,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                                color: GambitColors.text,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              "Qty: ${item.quantity} ${item.unit} · ${item.category}",
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: GambitColors.textMuted,
+                              ),
+                            ),
+                            if (item.note != null && item.note!.isNotEmpty) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                item.note!,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: GambitColors.textMuted,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -32,11 +32,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _userCtrl  = TextEditingController();
-  final _passCtrl  = TextEditingController();
+  final _userCtrl = TextEditingController();
+  final _passCtrl = TextEditingController();
   final _userFocus = FocusNode();
   final _passFocus = FocusNode();
-  bool  _obscure   = true;
+  bool _obscure = true;
 
   @override
   void dispose() {
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     FocusScope.of(context).unfocus();
 
-    final auth    = context.read<AuthProvider>();
+    final auth = context.read<AuthProvider>();
     final success = await auth.login(username, password);
     if (success && mounted) {
       Navigator.of(context).pushReplacementNamed(auth.homeRoute);
@@ -78,14 +78,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   _Brand(),
                   const SizedBox(height: 32),
                   _LoginCard(
-                    auth:       auth,
-                    userCtrl:   _userCtrl,
-                    passCtrl:   _passCtrl,
-                    userFocus:  _userFocus,
-                    passFocus:  _passFocus,
-                    obscure:    _obscure,
-                    onToggle:   () => setState(() => _obscure = !_obscure),
-                    onLogin:    _login,
+                    auth: auth,
+                    userCtrl: _userCtrl,
+                    passCtrl: _passCtrl,
+                    userFocus: _userFocus,
+                    passFocus: _passFocus,
+                    obscure: _obscure,
+                    onToggle: () => setState(() => _obscure = !_obscure),
+                    onLogin: _login,
                   ),
                   const SizedBox(height: 20),
 
@@ -93,16 +93,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   // not a panel, not a toggle. One clear link.
                   Semantics(
                     button: true,
-                    label:  "Trouble signing in — get help",
+                    label: "Trouble signing in — get help",
                     child: TextButton(
                       onPressed: () =>
                           Navigator.pushNamed(context, "/sign-in-help"),
                       child: const Text(
                         "Trouble signing in?",
-                        style: TextStyle(
-                          color:    _kTextAA,
-                          fontSize: 13,
-                        ),
+                        style: TextStyle(color: _kTextAA, fontSize: 13),
                       ),
                     ),
                   ),
@@ -125,7 +122,8 @@ class _Brand extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 64, height: 64,
+            width: 64,
+            height: 64,
             decoration: BoxDecoration(
               color: GambitColors.accentDim,
               borderRadius: BorderRadius.circular(16),
@@ -134,7 +132,7 @@ class _Brand extends StatelessWidget {
             child: const Icon(
               Icons.local_shipping_rounded,
               size: 30,
-              color:         GambitColors.accent,
+              color: GambitColors.accent,
               semanticLabel: "Gambit TSL",
             ),
           ),
@@ -142,17 +140,17 @@ class _Brand extends StatelessWidget {
           const Text(
             "GAMBIT TSL",
             style: TextStyle(
-              fontSize:   26,
+              fontSize: 26,
               fontWeight: FontWeight.w900,
-              color:      GambitColors.accent,
+              color: GambitColors.accent,
               letterSpacing: -.5,
             ),
           ),
           const Text(
             "TRANSPORT · LOGISTICS · SYSTEM",
             style: TextStyle(
-              fontSize:    9,
-              color:       _kTextAA,      // AA-safe
+              fontSize: 9,
+              color: _kTextAA, // AA-safe
               letterSpacing: 3,
             ),
           ),
@@ -177,11 +175,11 @@ class _LoginCard extends StatelessWidget {
     required this.onLogin,
   });
 
-  final AuthProvider        auth;
+  final AuthProvider auth;
   final TextEditingController userCtrl, passCtrl;
-  final FocusNode           userFocus, passFocus;
-  final bool                obscure;
-  final VoidCallback        onToggle, onLogin;
+  final FocusNode userFocus, passFocus;
+  final bool obscure;
+  final VoidCallback onToggle, onLogin;
 
   @override
   Widget build(BuildContext context) {
@@ -201,11 +199,11 @@ class _LoginCard extends StatelessWidget {
 
           // Username field
           _Field(
-            label:       "USERNAME",
-            hint:        "your username",
-            controller:  userCtrl,
-            focusNode:   userFocus,
-            prefixIcon:  Icons.person_rounded,
+            label: "USERNAME",
+            hint: "your username",
+            controller: userCtrl,
+            focusNode: userFocus,
+            prefixIcon: Icons.person_rounded,
             onSubmitted: (_) => passFocus.requestFocus(),
           ),
 
@@ -215,13 +213,13 @@ class _LoginCard extends StatelessWidget {
           // Affordance: the icon is visually part of the input.
           // Signifier: eye icon universally signals show/hide password.
           _Field(
-            label:       "PASSWORD",
-            hint:        "••••••••",
-            controller:  passCtrl,
-            focusNode:   passFocus,
-            obscure:     obscure,
-            prefixIcon:  Icons.lock_rounded,
-            suffixIcon:  obscure
+            label: "PASSWORD",
+            hint: "••••••••",
+            controller: passCtrl,
+            focusNode: passFocus,
+            obscure: obscure,
+            prefixIcon: Icons.lock_rounded,
+            suffixIcon: obscure
                 ? Icons.visibility_rounded
                 : Icons.visibility_off_rounded,
             suffixLabel: obscure ? "Show password" : "Hide password",
@@ -234,9 +232,9 @@ class _LoginCard extends StatelessWidget {
 
           // Primary action — single, unambiguous call to action.
           GButton(
-            label:     "SIGN IN",
-            icon:      Icons.login_rounded,
-            loading:   auth.isLoading,
+            label: "SIGN IN",
+            icon: Icons.login_rounded,
+            loading: auth.isLoading,
             fullWidth: true,
             onPressed: onLogin,
           ),
@@ -256,7 +254,7 @@ class _Field extends StatelessWidget {
     required this.controller,
     required this.focusNode,
     required this.prefixIcon,
-    this.obscure         = false,
+    this.obscure = false,
     this.suffixIcon,
     this.suffixLabel,
     this.onSuffixTap,
@@ -264,15 +262,15 @@ class _Field extends StatelessWidget {
     this.onSubmitted,
   });
 
-  final String                label, hint;
+  final String label, hint;
   final TextEditingController controller;
-  final FocusNode             focusNode;
-  final IconData              prefixIcon;
-  final bool                  obscure;
-  final IconData?             suffixIcon;
-  final String?               suffixLabel;
-  final VoidCallback?         onSuffixTap;
-  final TextInputAction       textInputAction;
+  final FocusNode focusNode;
+  final IconData prefixIcon;
+  final bool obscure;
+  final IconData? suffixIcon;
+  final String? suffixLabel;
+  final VoidCallback? onSuffixTap;
+  final TextInputAction textInputAction;
   final ValueChanged<String>? onSubmitted;
 
   @override
@@ -280,19 +278,19 @@ class _Field extends StatelessWidget {
     return Semantics(
       label: label,
       child: TextField(
-        controller:      controller,
-        focusNode:       focusNode,
-        obscureText:     obscure,
+        controller: controller,
+        focusNode: focusNode,
+        obscureText: obscure,
         textInputAction: textInputAction,
-        onSubmitted:     onSubmitted,
+        onSubmitted: onSubmitted,
         style: const TextStyle(color: GambitColors.text, fontSize: 14),
         decoration: InputDecoration(
           labelText: label,
-          hintText:  hint,
+          hintText: hint,
           hintStyle: const TextStyle(color: GambitColors.textMuted),
           labelStyle: const TextStyle(
-            color:       _kTextAA,   // AA-safe
-            fontSize:    11,
+            color: _kTextAA, // AA-safe
+            fontSize: 11,
             letterSpacing: 0.5,
             fontWeight: FontWeight.w600,
           ),
@@ -302,14 +300,15 @@ class _Field extends StatelessWidget {
           suffixIcon: suffixIcon != null
               ? Semantics(
                   button: true,
-                  label:  suffixLabel ?? "",
+                  label: suffixLabel ?? "",
                   child: IconButton(
-                    icon:    Icon(suffixIcon, color: _kTextAA, size: 20),
+                    icon: Icon(suffixIcon, color: _kTextAA, size: 20),
                     onPressed: onSuffixTap,
                     splashRadius: 20,
                     // Enforce minimum tap target
                     constraints: const BoxConstraints(
-                      minWidth: 48, minHeight: 48,
+                      minWidth: 48,
+                      minHeight: 48,
                     ),
                   ),
                 )
@@ -330,13 +329,13 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final _oldCtrl     = TextEditingController();
-  final _newCtrl     = TextEditingController();
+  final _oldCtrl = TextEditingController();
+  final _newCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
 
-  bool    _loading = false;
+  bool _loading = false;
   String? _error;
-  bool    _done    = false;
+  bool _done = false;
 
   @override
   void dispose() {
@@ -347,8 +346,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   Future<void> _submit() async {
-    final oldPw     = _oldCtrl.text;
-    final newPw     = _newCtrl.text;
+    final oldPw = _oldCtrl.text;
+    final newPw = _newCtrl.text;
     final confirmPw = _confirmCtrl.text;
 
     if (newPw != confirmPw) {
@@ -364,13 +363,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       return;
     }
 
-    setState(() { _loading = true; _error = null; });
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
 
     try {
       await AuthApi.changePassword(oldPassword: oldPw, newPassword: newPw);
       if (!mounted) return;
       await context.read<AuthProvider>().refreshClaims();
-      setState(() { _loading = false; _done = true; });
+      setState(() {
+        _loading = false;
+        _done = true;
+      });
       await Future.delayed(const Duration(seconds: 2));
       if (mounted) {
         Navigator.pushReplacementNamed(
@@ -381,7 +386,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     } catch (e) {
       setState(() {
         _loading = false;
-        _error   = e.toString().replaceFirst(RegExp(r"^Exception:\s*"), "");
+        _error = e.toString().replaceFirst(RegExp(r"^Exception:\s*"), "");
       });
     }
   }
@@ -401,17 +406,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   children: [
                     const Icon(
                       Icons.lock_reset_rounded,
-                      size:          32,
-                      color:         GambitColors.accent,
+                      size: 32,
+                      color: GambitColors.accent,
                       semanticLabel: "Set new password",
                     ),
                     const SizedBox(height: 12),
                     const Text(
                       "Set New Password",
                       style: TextStyle(
-                        fontSize:   18,
+                        fontSize: 18,
                         fontWeight: FontWeight.w800,
-                        color:      GambitColors.text,
+                        color: GambitColors.text,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -436,35 +441,35 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           padding: EdgeInsets.only(bottom: 14),
                           child: GAlert(
                             message: "Password updated! Redirecting…",
-                            type:    "success",
+                            type: "success",
                           ),
                         ),
                       ),
 
                     _Field(
-                      label:      "CURRENT PASSWORD",
-                      hint:       "••••••••",
+                      label: "CURRENT PASSWORD",
+                      hint: "••••••••",
                       controller: _oldCtrl,
-                      focusNode:  FocusNode(),
-                      obscure:    true,
+                      focusNode: FocusNode(),
+                      obscure: true,
                       prefixIcon: Icons.lock_rounded,
                     ),
                     const SizedBox(height: 14),
                     _Field(
-                      label:      "NEW PASSWORD",
-                      hint:       "min 8 characters",
+                      label: "NEW PASSWORD",
+                      hint: "min 8 characters",
                       controller: _newCtrl,
-                      focusNode:  FocusNode(),
-                      obscure:    true,
+                      focusNode: FocusNode(),
+                      obscure: true,
                       prefixIcon: Icons.lock_open_rounded,
                     ),
                     const SizedBox(height: 14),
                     _Field(
-                      label:      "CONFIRM NEW PASSWORD",
-                      hint:       "••••••••",
+                      label: "CONFIRM NEW PASSWORD",
+                      hint: "••••••••",
                       controller: _confirmCtrl,
-                      focusNode:  FocusNode(),
-                      obscure:    true,
+                      focusNode: FocusNode(),
+                      obscure: true,
                       prefixIcon: Icons.lock_open_rounded,
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) => _submit(),
@@ -472,11 +477,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     const SizedBox(height: 24),
 
                     GButton(
-                      label:     "UPDATE PASSWORD",
-                      icon:      Icons.check_rounded,
-                      loading:   _loading,
+                      label: "UPDATE PASSWORD",
+                      icon: Icons.check_rounded,
+                      loading: _loading,
                       fullWidth: true,
-                      color:     GambitColors.success,
+                      color: GambitColors.success,
                       onPressed: _done ? null : _submit,
                     ),
                   ],

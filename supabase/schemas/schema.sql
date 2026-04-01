@@ -735,6 +735,296 @@ as $$
 $$;
 
 -- ─────────────────────────────────────────────────────────────────────────────
+-- Fleet Mutations
+-- ─────────────────────────────────────────────────────────────────────────────
+create or replace function public.create_fleet(
+	p_company_id uuid,
+	p_reg_number text,
+	p_vehicle_type text,
+	p_make text default null,
+	p_model text default null,
+	p_year int default null,
+	p_created_by uuid default null
+)
+returns table (
+	id uuid,
+	registration text,
+	vehicle_type text,
+	status text,
+	make text,
+	model text,
+	year int,
+	created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	return query
+	insert into gambit.fleet (
+		company_id, reg_number, vehicle_type, model, year, created_by
+	)
+	values (
+		p_company_id, p_reg_number, p_vehicle_type, p_model, p_year, p_created_by
+	)
+	returning fleet.id, fleet.reg_number as registration, fleet.vehicle_type, fleet.status::text, null::text as make, fleet.model, fleet.year, fleet.created_at;
+end;
+$$;
+
+create or replace function public.update_fleet(
+	p_fleet_id uuid,
+	p_reg_number text default null,
+	p_vehicle_type text default null,
+	p_model text default null,
+	p_year int default null,
+	p_status text default null
+)
+returns table (
+	id uuid,
+	registration text,
+	vehicle_type text,
+	status text,
+	make text,
+	model text,
+	year int,
+	created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	update gambit.fleet f
+	set
+		reg_number = coalesce(p_reg_number, f.reg_number),
+		vehicle_type = coalesce(p_vehicle_type, f.vehicle_type),
+		model = coalesce(p_model, f.model),
+		year = coalesce(p_year, f.year),
+		status = case when p_status is not null then p_status::gambit.fleet_status else f.status end
+	where f.id = p_fleet_id;
+
+	if not found then
+		raise exception 'Fleet not found';
+	end if;
+
+	return query
+	select f.id, f.reg_number as registration, f.vehicle_type, f.status::text, null::text as make, f.model, f.year, f.created_at
+	from gambit.fleet f
+	where f.id = p_fleet_id;
+end;
+$$;
+
+create or replace function public.delete_fleet(p_fleet_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	delete from gambit.fleet where id = p_fleet_id;
+	if not found then
+		raise exception 'Fleet not found';
+	end if;
+end;
+$$;
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Driver Mutations
+-- ─────────────────────────────────────────────────────────────────────────────
+create or replace function public.create_driver(
+	p_company_id uuid,
+	p_first_name text,
+	p_last_name text,
+	p_license_number text,
+	p_phone text default null,
+	p_created_by uuid default null
+)
+returns table (
+	id uuid,
+	full_name text,
+	license_number text,
+	phone text,
+	is_active boolean,
+	created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	return query
+	insert into gambit.drivers (
+		company_id, first_name, last_name, license_number, phone, created_by
+	)
+	values (
+		p_company_id, p_first_name, p_last_name, p_license_number, p_phone, p_created_by
+	)
+	returning drivers.id, concat_ws(' ', drivers.first_name, drivers.middle_name, drivers.last_name) as full_name, drivers.license_number, drivers.phone, (coalesce(drivers.status::text, '') <> 'inactive') as is_active, drivers.created_at;
+end;
+$$;
+
+create or replace function public.update_driver(
+	p_driver_id uuid,
+	p_first_name text default null,
+	p_last_name text default null,
+	p_license_number text default null,
+	p_phone text default null,
+	p_status text default null
+)
+returns table (
+	id uuid,
+	full_name text,
+	license_number text,
+	phone text,
+	is_active boolean,
+	created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	update gambit.drivers d
+	set
+		first_name = coalesce(p_first_name, d.first_name),
+		last_name = coalesce(p_last_name, d.last_name),
+		license_number = coalesce(p_license_number, d.license_number),
+		phone = coalesce(p_phone, d.phone),
+		status = case when p_status is not null then p_status::gambit.driver_status else d.status end
+	where d.id = p_driver_id;
+
+	if not found then
+		raise exception 'Driver not found';
+	end if;
+
+	return query
+	select d.id, concat_ws(' ', d.first_name, d.middle_name, d.last_name) as full_name, d.license_number, d.phone, (coalesce(d.status::text, '') <> 'inactive') as is_active, d.created_at
+	from gambit.drivers d
+	where d.id = p_driver_id;
+end;
+$$;
+
+create or replace function public.delete_driver(p_driver_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	delete from gambit.drivers where id = p_driver_id;
+	if not found then
+		raise exception 'Driver not found';
+	end if;
+end;
+$$;
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Inventory Management
+-- ─────────────────────────────────────────────────────────────────────────────
+create or replace function public.list_inventory(p_company_id uuid default null)
+returns table (
+	id uuid,
+	name text,
+	category text,
+	unit text,
+	quantity numeric,
+	note text,
+	created_at timestamptz
+)
+language sql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+	select i.id, i.name, i.category, i.unit, i.quantity, i.vendor as note, i.created_at
+	from gambit.inventory i
+	where p_company_id is null or i.company_id = p_company_id
+	order by i.created_at desc;
+$$;
+
+create or replace function public.create_inventory(
+	p_company_id uuid,
+	p_name text,
+	p_category text,
+	p_unit text,
+	p_quantity numeric,
+	p_note text default null,
+	p_created_by uuid default null
+)
+returns table (
+	id uuid,
+	name text,
+	category text,
+	unit text,
+	quantity numeric,
+	note text,
+	created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	return query
+	insert into gambit.inventory (
+		company_id, name, category, unit, quantity, vendor, created_by
+	)
+	values (
+		p_company_id, p_name, p_category, p_unit, p_quantity, p_note, p_created_by
+	)
+	returning inventory.id, inventory.name, inventory.category, inventory.unit, inventory.quantity, inventory.vendor as note, inventory.created_at;
+end;
+$$;
+
+create or replace function public.update_inventory(
+	p_inventory_id uuid,
+	p_quantity numeric default null
+)
+returns table (
+	id uuid,
+	name text,
+	category text,
+	unit text,
+	quantity numeric,
+	note text,
+	created_at timestamptz
+)
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	update gambit.inventory i
+	set
+		quantity = coalesce(p_quantity, i.quantity)
+	where i.id = p_inventory_id;
+
+	if not found then
+		raise exception 'Inventory item not found';
+	end if;
+
+	return query
+	select i.id, i.name, i.category, i.unit, i.quantity, i.vendor as note, i.created_at
+	from gambit.inventory i
+	where i.id = p_inventory_id;
+end;
+$$;
+
+create or replace function public.delete_inventory(p_inventory_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = gambit, public, pg_temp
+as $$
+begin
+	delete from gambit.inventory where id = p_inventory_id;
+	if not found then
+		raise exception 'Inventory item not found';
+	end if;
+end;
+$$;
+
+-- ─────────────────────────────────────────────────────────────────────────────
 -- Grants (service role only)
 -- ─────────────────────────────────────────────────────────────────────────────
 revoke all on function public.list_companies() from public, anon, authenticated;
@@ -762,6 +1052,17 @@ revoke all on function public.update_trip(uuid, text, text, numeric, text, uuid,
 revoke all on function public.list_fleet(uuid) from public, anon, authenticated;
 revoke all on function public.list_drivers(uuid) from public, anon, authenticated;
 
+revoke all on function public.create_fleet(uuid, text, text, text, text, int, uuid) from public, anon, authenticated;
+revoke all on function public.update_fleet(uuid, text, text, text, int, text) from public, anon, authenticated;
+revoke all on function public.delete_fleet(uuid) from public, anon, authenticated;
+revoke all on function public.create_driver(uuid, text, text, text, text, uuid) from public, anon, authenticated;
+revoke all on function public.update_driver(uuid, text, text, text, text, text) from public, anon, authenticated;
+revoke all on function public.delete_driver(uuid) from public, anon, authenticated;
+revoke all on function public.list_inventory(uuid) from public, anon, authenticated;
+revoke all on function public.create_inventory(uuid, text, text, text, numeric, text, uuid) from public, anon, authenticated;
+revoke all on function public.update_inventory(uuid, numeric) from public, anon, authenticated;
+revoke all on function public.delete_inventory(uuid) from public, anon, authenticated;
+
 grant execute on function public.list_companies() to service_role;
 grant execute on function public.create_company(text, uuid) to service_role;
 grant execute on function public.update_company(uuid, text, text, text) to service_role;
@@ -786,3 +1087,14 @@ grant execute on function public.get_trip_scope(uuid) to service_role;
 grant execute on function public.update_trip(uuid, text, text, numeric, text, uuid, uuid, numeric, date, date) to service_role;
 grant execute on function public.list_fleet(uuid) to service_role;
 grant execute on function public.list_drivers(uuid) to service_role;
+
+grant execute on function public.create_fleet(uuid, text, text, text, text, int, uuid) to service_role;
+grant execute on function public.update_fleet(uuid, text, text, text, int, text) to service_role;
+grant execute on function public.delete_fleet(uuid) to service_role;
+grant execute on function public.create_driver(uuid, text, text, text, text, uuid) to service_role;
+grant execute on function public.update_driver(uuid, text, text, text, text, text) to service_role;
+grant execute on function public.delete_driver(uuid) to service_role;
+grant execute on function public.list_inventory(uuid) to service_role;
+grant execute on function public.create_inventory(uuid, text, text, text, numeric, text, uuid) to service_role;
+grant execute on function public.update_inventory(uuid, numeric) to service_role;
+grant execute on function public.delete_inventory(uuid) to service_role;

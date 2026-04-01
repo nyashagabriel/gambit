@@ -270,6 +270,40 @@ Deno.serve(async (req: Request) => {
     return ok({ fleet: data });
   }
 
+  // ── FLEET · CREATE ────────────────────────────────────────────────────────────
+  if (action === "fleet_create") {
+    if (!hasRole(claims.role as string, "company_admin")) return err("Forbidden", 403);
+    const companyId = scopeToCompany(claims, body.company_id as string | undefined);
+    if (!companyId) return err("company_id is required", 400);
+
+    const { data, error } = await db.rpc("create_fleet", {
+      p_company_id: companyId,
+      p_reg_number: body.reg_number as string,
+      p_vehicle_type: body.vehicle_type as string,
+      p_make: body.make as string | undefined ?? null,
+      p_model: body.model as string | undefined ?? null,
+      p_year: body.year as number | undefined ?? null,
+      p_created_by: String(claims.sub),
+    });
+    if (error) return err("Failed to create fleet", 500);
+    return ok({ fleet: data?.[0] }, 201);
+  }
+
+  // ── FLEET · UPDATE ────────────────────────────────────────────────────────────
+  if (action === "fleet_update") {
+    if (!hasRole(claims.role as string, "company_admin")) return err("Forbidden", 403);
+    const { data, error } = await db.rpc("update_fleet", {
+      p_fleet_id: body.fleet_id as string,
+      p_reg_number: body.reg_number as string | undefined ?? null,
+      p_vehicle_type: body.vehicle_type as string | undefined ?? null,
+      p_model: body.model as string | undefined ?? null,
+      p_year: body.year as number | undefined ?? null,
+      p_status: body.status as string | undefined ?? null,
+    });
+    if (error) return err("Failed to update fleet", 500);
+    return ok({ fleet: data?.[0] });
+  }
+
   // ── DRIVER · LIST ─────────────────────────────────────────────────────────────
   if (action === "driver_list") {
     if (!hasRole(claims.role as string, "staff")) return err("Forbidden", 403);
@@ -285,6 +319,69 @@ Deno.serve(async (req: Request) => {
       return err("Failed to fetch drivers", 500);
     }
     return ok({ drivers: data });
+  }
+
+  // ── DRIVER · CREATE ───────────────────────────────────────────────────────────
+  if (action === "driver_create") {
+    if (!hasRole(claims.role as string, "company_admin")) return err("Forbidden", 403);
+    const companyId = scopeToCompany(claims, body.company_id as string | undefined);
+    if (!companyId) return err("company_id is required", 400);
+
+    const { data, error } = await db.rpc("create_driver", {
+      p_company_id: companyId,
+      p_first_name: body.first_name as string,
+      p_last_name: body.last_name as string,
+      p_license_number: body.license_number as string,
+      p_phone: body.phone as string | undefined ?? null,
+      p_created_by: String(claims.sub),
+    });
+    if (error) return err("Failed to create driver", 500);
+    return ok({ driver: data?.[0] }, 201);
+  }
+
+  // ── DRIVER · UPDATE ───────────────────────────────────────────────────────────
+  if (action === "driver_update") {
+    if (!hasRole(claims.role as string, "company_admin")) return err("Forbidden", 403);
+    const { data, error } = await db.rpc("update_driver", {
+      p_driver_id: body.driver_id as string,
+      p_first_name: body.first_name as string | undefined ?? null,
+      p_last_name: body.last_name as string | undefined ?? null,
+      p_license_number: body.license_number as string | undefined ?? null,
+      p_phone: body.phone as string | undefined ?? null,
+      p_status: body.status as string | undefined ?? null,
+    });
+    if (error) return err("Failed to update driver", 500);
+    return ok({ driver: data?.[0] });
+  }
+
+  // ── INVENTORY · LIST ──────────────────────────────────────────────────────────
+  if (action === "inventory_list") {
+    if (!hasRole(claims.role as string, "staff")) return err("Forbidden", 403);
+    const companyId = scopeToCompany(claims, body.company_id as string | undefined);
+    const { data, error } = await db.rpc("list_inventory", {
+      p_company_id: companyId,
+    });
+    if (error) return err("Failed to fetch inventory", 500);
+    return ok({ inventory: data });
+  }
+
+  // ── INVENTORY · CREATE ────────────────────────────────────────────────────────
+  if (action === "inventory_create") {
+    if (!hasRole(claims.role as string, "staff")) return err("Forbidden", 403);
+    const companyId = scopeToCompany(claims, body.company_id as string | undefined);
+    if (!companyId) return err("company_id is required", 400);
+
+    const { data, error } = await db.rpc("create_inventory", {
+      p_company_id: companyId,
+      p_name: body.name as string,
+      p_category: body.category as string ?? "general",
+      p_unit: body.unit as string ?? "Pcs",
+      p_quantity: body.quantity as number ?? 0,
+      p_note: body.note as string | undefined ?? null,
+      p_created_by: String(claims.sub),
+    });
+    if (error) return err("Failed to create inventory", 500);
+    return ok({ item: data?.[0] }, 201);
   }
 
   return err("Unknown action", 400);

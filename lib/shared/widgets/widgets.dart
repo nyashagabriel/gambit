@@ -11,9 +11,9 @@ import "../theme/gambit_theme.dart";
 
 // ── GButton ───────────────────────────────────────────────────────────────────
 class GButton extends StatelessWidget {
-
   const GButton({
-    required this.label, super.key,
+    required this.label,
+    super.key,
     this.onPressed,
     this.icon,
     this.color,
@@ -110,10 +110,12 @@ class GButton extends StatelessWidget {
 }
 
 // ── GCard ─────────────────────────────────────────────────────────────────────
-class GCard extends StatelessWidget { // for tappable cards
+class GCard extends StatelessWidget {
+  // for tappable cards
 
   const GCard({
-    required this.child, super.key,
+    required this.child,
+    super.key,
     this.padding,
     this.borderColor,
     this.onTap,
@@ -156,7 +158,6 @@ class GCard extends StatelessWidget { // for tappable cards
 
 // ── GBadge ────────────────────────────────────────────────────────────────────
 class GBadge extends StatelessWidget {
-
   const GBadge({required this.label, required this.color, super.key});
   final String label;
   final Color color;
@@ -215,7 +216,6 @@ class GBadge extends StatelessWidget {
 
 // ── GChip ─────────────────────────────────────────────────────────────────────
 class GChip extends StatelessWidget {
-
   const GChip({required this.icon, required this.label, super.key, this.color});
   final IconData icon;
   final String label;
@@ -240,9 +240,11 @@ class GChip extends StatelessWidget {
 
 // ── GStatCard ─────────────────────────────────────────────────────────────────
 class GStatCard extends StatelessWidget {
-
   const GStatCard({
-    required this.icon, required this.label, required this.value, super.key,
+    required this.icon,
+    required this.label,
+    required this.value,
+    super.key,
     this.color,
   });
   final IconData icon;
@@ -296,10 +298,12 @@ class GStatCard extends StatelessWidget {
 }
 
 // ── GAlert ────────────────────────────────────────────────────────────────────
-class GAlert extends StatelessWidget { // danger | warn | info | success
+class GAlert extends StatelessWidget {
+  // danger | warn | info | success
 
   const GAlert({
-    required this.message, super.key,
+    required this.message,
+    super.key,
     this.sub,
     this.type = "info",
   });
@@ -367,9 +371,9 @@ class GAlert extends StatelessWidget { // danger | warn | info | success
 
 // ── GInput ────────────────────────────────────────────────────────────────────
 class GInput extends StatelessWidget {
-
   const GInput({
-    required this.label, super.key,
+    required this.label,
+    super.key,
     this.hint,
     this.controller,
     this.focusNode,
@@ -421,9 +425,10 @@ class GInput extends StatelessWidget {
 
 // ── RoleGate ──────────────────────────────────────────────────────────────────
 class RoleGate extends StatelessWidget {
-
   const RoleGate({
-    required this.minRole, required this.child, super.key,
+    required this.minRole,
+    required this.child,
+    super.key,
     this.fallback,
   });
   final String minRole;
@@ -442,9 +447,13 @@ class RoleGate extends StatelessWidget {
 
 // ── AppShell ──────────────────────────────────────────────────────────────────
 class AppShell extends StatelessWidget {
-
   const AppShell({
-    required this.destinations, required this.currentIndex, required this.onDestinationSelected, required this.body, required this.title, super.key,
+    required this.destinations,
+    required this.currentIndex,
+    required this.onDestinationSelected,
+    required this.body,
+    required this.title,
+    super.key,
   });
   final List<ShellDestination> destinations;
   final int currentIndex;
@@ -504,7 +513,6 @@ class AppShell extends StatelessWidget {
 }
 
 class ShellDestination {
-
   const ShellDestination({
     required this.label,
     required this.icon,
@@ -516,7 +524,6 @@ class ShellDestination {
 }
 
 class _SideNav extends StatelessWidget {
-
   const _SideNav({
     required this.destinations,
     required this.currentIndex,

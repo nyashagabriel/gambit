@@ -21,9 +21,10 @@ class RoleGuard {
       rankOf(actorRole) > rankOf(targetRole);
 
   // ── Claims shortcuts ───────────────────────────────────────────────────────
-  static bool isSuperAdmin(GambitClaims c)     => c.role == "super_admin";
-  static bool isAtLeastAdmin(GambitClaims c)   => hasRole(c.role, "company_admin");
-  static bool isAtLeastStaff(GambitClaims c)   => hasRole(c.role, "staff");
+  static bool isSuperAdmin(GambitClaims c) => c.role == "super_admin";
+  static bool isAtLeastAdmin(GambitClaims c) =>
+      hasRole(c.role, "company_admin");
+  static bool isAtLeastStaff(GambitClaims c) => hasRole(c.role, "staff");
 
   // ── Company scope ──────────────────────────────────────────────────────────
   static bool canAccessCompany(GambitClaims c, String companyId) =>
@@ -33,10 +34,10 @@ class RoleGuard {
   static String homeRouteFor(GambitClaims c) {
     if (c.mustChangePw) return "/change-password";
     return switch (c.role) {
-      "super_admin"   => "/super/dashboard",
+      "super_admin" => "/super/dashboard",
       "company_admin" => "/admin/dashboard",
-      "staff"         => "/staff/dashboard",
-      _               => "/user/dashboard",
+      "staff" => "/staff/dashboard",
+      _ => "/user/dashboard",
     };
   }
 
@@ -48,11 +49,11 @@ class RoleGuard {
       canAccessCompany(actor, target.companyId ?? "") &&
       canActOn(actor.role, target.role);
 
-  static bool canManageCompanies(GambitClaims actor)  => isSuperAdmin(actor);
-  static bool canViewInvoices(GambitClaims actor)     => isAtLeastAdmin(actor);
-  static bool canApproveInvoices(GambitClaims actor)  => isAtLeastAdmin(actor);
-  static bool canManageFleet(GambitClaims actor)      => isAtLeastAdmin(actor);
-  static bool canBookTrips(GambitClaims actor)        => isAtLeastStaff(actor);
-  static bool canUploadDocuments(GambitClaims actor)  => isAtLeastStaff(actor);
-  static bool canDeleteDocuments(GambitClaims actor)  => isAtLeastAdmin(actor);
+  static bool canManageCompanies(GambitClaims actor) => isSuperAdmin(actor);
+  static bool canViewInvoices(GambitClaims actor) => isAtLeastAdmin(actor);
+  static bool canApproveInvoices(GambitClaims actor) => isAtLeastAdmin(actor);
+  static bool canManageFleet(GambitClaims actor) => isAtLeastAdmin(actor);
+  static bool canBookTrips(GambitClaims actor) => isAtLeastStaff(actor);
+  static bool canUploadDocuments(GambitClaims actor) => isAtLeastStaff(actor);
+  static bool canDeleteDocuments(GambitClaims actor) => isAtLeastAdmin(actor);
 }
