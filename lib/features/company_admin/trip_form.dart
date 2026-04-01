@@ -5,10 +5,10 @@ import "../../shared/theme/gambit_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class TripForm extends StatefulWidget {
+
+  const TripForm({required this.fleet, required this.drivers, super.key});
   final List<GambitFleet> fleet;
   final List<GambitDriver> drivers;
-
-  const TripForm({super.key, required this.fleet, required this.drivers});
 
   static Future<bool?> show(
     BuildContext context,
@@ -179,7 +179,6 @@ class _TripFormState extends State<TripForm> {
                 dropdownColor: GambitColors.card,
                 items: [
                   const DropdownMenuItem(
-                    value: null,
                     child: Text(
                       "Unassigned",
                       style: TextStyle(color: GambitColors.textMuted),
@@ -224,7 +223,6 @@ class _TripFormState extends State<TripForm> {
                 dropdownColor: GambitColors.card,
                 items: [
                   const DropdownMenuItem(
-                    value: null,
                     child: Text(
                       "Unassigned",
                       style: TextStyle(color: GambitColors.textMuted),

@@ -89,7 +89,7 @@ class AppStrings {
   static const String driverSelectLabel = "DRIVER";
   static const String cargoTypeLabel = "CARGO TYPE";
   static const String tonnageLabel = "TONNAGE (MT)";
-  static const String rateLabel = "RATE (\$/MT)";
+  static const String rateLabel = r"RATE ($/MT)";
   static const String driverChecklistTitle = "DRIVER CHECKLIST";
   static const List<String> tripChecklist = [
     "Loading instruction",
@@ -106,7 +106,7 @@ class AppStrings {
   static const String qtyLabel = "QTY";
   static const String unitLabel = "UNIT";
   static const String categoryLabel = "CATEGORY";
-  static const String unitRateLabel = "UNIT RATE (\$)";
+  static const String unitRateLabel = r"UNIT RATE ($)";
   static const String vendorLabel = "VENDOR";
   static const List<String> inventoryUnits = [
     "Pcs",

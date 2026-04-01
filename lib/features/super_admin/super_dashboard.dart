@@ -247,8 +247,9 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                   tooltip: "Sign out",
                   onPressed: () async {
                     await context.read<AuthProvider>().logout();
-                    if (context.mounted)
+                    if (context.mounted) {
                       Navigator.pushReplacementNamed(context, "/login");
+                    }
                   },
                 ),
               ],

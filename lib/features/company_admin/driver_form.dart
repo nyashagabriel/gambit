@@ -5,8 +5,8 @@ import "../../shared/theme/gambit_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class DriverForm extends StatefulWidget {
-  final GambitDriver? initial;
   const DriverForm({super.key, this.initial});
+  final GambitDriver? initial;
 
   static Future<bool?> show(BuildContext context, {GambitDriver? initial}) {
     return showModalBottomSheet<bool>(

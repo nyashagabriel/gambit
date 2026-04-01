@@ -5,9 +5,9 @@ import "package:provider/provider.dart";
 import "../../core/api/data_api.dart";
 import "../../core/auth/auth_provider.dart";
 import "../../core/models/models.dart";
-import "docs_screen.dart";
 import "../../shared/theme/gambit_theme.dart";
 import "../../shared/widgets/widgets.dart";
+import "docs_screen.dart";
 
 // UserDashboard is also exported from here — it is the "user" role screen
 class UserDashboard extends StatelessWidget {
@@ -30,8 +30,9 @@ class UserDashboard extends StatelessWidget {
             tooltip: "Sign out",
             onPressed: () async {
               await context.read<AuthProvider>().logout();
-              if (context.mounted)
+              if (context.mounted) {
                 Navigator.pushReplacementNamed(context, "/login");
+              }
             },
           ),
         ],
@@ -213,8 +214,9 @@ class _StaffHomeTabState extends State<_StaffHomeTab> {
                   tooltip: "Sign out",
                   onPressed: () async {
                     await context.read<AuthProvider>().logout();
-                    if (context.mounted)
+                    if (context.mounted) {
                       Navigator.pushReplacementNamed(context, "/login");
+                    }
                   },
                 ),
               ],

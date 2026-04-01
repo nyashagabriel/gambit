@@ -14,10 +14,10 @@ import "../constants.dart";
 
 // ─── Exception ────────────────────────────────────────────────────────────────
 class GambitApiException implements Exception {
-  final int statusCode;
-  final String message;
 
   const GambitApiException({required this.statusCode, required this.message});
+  final int statusCode;
+  final String message;
 
   bool get isUnauthorized => statusCode == 401;
   bool get isForbidden => statusCode == 403;

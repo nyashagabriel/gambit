@@ -3,10 +3,10 @@ import "package:flutter/material.dart";
 import "package:gambit/core/api/client.dart";
 import "package:provider/provider.dart";
 
-import "../../core/auth/auth_provider.dart";
-import "../../core/auth/role_guard.dart";
 import "../../core/api/data_api.dart";
 import "../../core/api/files_api.dart";
+import "../../core/auth/auth_provider.dart";
+import "../../core/auth/role_guard.dart";
 import "../../core/models/models.dart";
 import "../../shared/theme/gambit_theme.dart";
 import "../../shared/widgets/widgets.dart";
@@ -172,8 +172,9 @@ class _HomeTabState extends State<_HomeTab> {
                   tooltip: "Sign out",
                   onPressed: () async {
                     await context.read<AuthProvider>().logout();
-                    if (context.mounted)
+                    if (context.mounted) {
                       Navigator.pushReplacementNamed(context, "/login");
+                    }
                   },
                 ),
               ],
@@ -278,7 +279,7 @@ class _FleetTabState extends State<_FleetTab> {
     }
   }
 
-  void _openForm([GambitFleet? initial]) async {
+  Future<void> _openForm([GambitFleet? initial]) async {
     final bool? changed = await FleetForm.show(context, initial: initial);
     if (changed == true) _load();
   }
@@ -417,7 +418,7 @@ class _TripsTabState extends State<_TripsTab> {
     }
   }
 
-  void _openForm() async {
+  Future<void> _openForm() async {
     setState(() => _loading = true);
     try {
       final fleet = await FleetApi.list();
@@ -812,6 +813,7 @@ class _SettingsTabState extends State<_SettingsTab> {
         "old_password": _oldPwCtrl.text,
         "new_password": _newPwCtrl.text,
       });
+      if (!mounted) return;
       await context.read<AuthProvider>().refreshClaims();
       _oldPwCtrl.clear();
       _newPwCtrl.clear();
@@ -942,7 +944,6 @@ class _SettingsTabState extends State<_SettingsTab> {
               message: "Recovery email is optional",
               sub:
                   "Used only for password reset. You always sign in with your username.",
-              type: "info",
             ),
             GInput(
               label: "EMAIL ADDRESS",
@@ -969,10 +970,10 @@ class _SettingsTabState extends State<_SettingsTab> {
 }
 
 class _TabPill extends StatelessWidget {
+  const _TabPill(this.label, this.index, this.current, this.onTap);
   final String label;
   final int index, current;
   final void Function(int) onTap;
-  const _TabPill(this.label, this.index, this.current, this.onTap);
 
   @override
   Widget build(BuildContext context) {
@@ -1042,7 +1043,7 @@ class _DriversTabState extends State<_DriversTab> {
     }
   }
 
-  void _openForm([GambitDriver? initial]) async {
+  Future<void> _openForm([GambitDriver? initial]) async {
     final bool? changed = await DriverForm.show(context, initial: initial);
     if (changed == true) _load();
   }
@@ -1184,7 +1185,7 @@ class _InventoryTabState extends State<_InventoryTab> {
     }
   }
 
-  void _openForm() async {
+  Future<void> _openForm() async {
     final bool? changed = await InventoryForm.show(context);
     if (changed == true) _load();
   }
@@ -1233,7 +1234,6 @@ class _InventoryTabState extends State<_InventoryTab> {
               const GAlert(
                 message: "No inventory yet",
                 sub: "Add your first item",
-                type: "info",
               ),
             ..._items.map(
               (item) => Padding(
@@ -1377,7 +1377,6 @@ class _InvoicesTabState extends State<_InvoicesTab> {
               message:
                   "Estimated unpaid value: \$${unpaidAmount.toStringAsFixed(2)}",
               sub: "Derived from completed/delivered trips",
-              type: "info",
             ),
             if (_loading)
               const Center(
@@ -1391,10 +1390,9 @@ class _InvoicesTabState extends State<_InvoicesTab> {
               const GAlert(
                 message: "No billable trips yet",
                 sub: "Completed or delivered trips appear here",
-                type: "info",
               ),
             ...billableTrips.map((trip) {
-              final amount = ((trip.tonnage ?? 0) * (trip.freightRate ?? 0));
+              final amount = (trip.tonnage ?? 0) * (trip.freightRate ?? 0);
               final isPaid = _paidTripIds.contains(trip.id);
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),

@@ -94,7 +94,7 @@ class AuthProvider extends ChangeNotifier {
       debugPrint(
         "[AUTH] claims after parse: role=${_claims?.role} username=${_claims?.username} mustChangePw=${_claims?.mustChangePw}",
       );
-      debugPrint("[AUTH] homeRoute: ${homeRoute}");
+      debugPrint("[AUTH] homeRoute: $homeRoute");
 
       _status = AuthStatus.authenticated;
 

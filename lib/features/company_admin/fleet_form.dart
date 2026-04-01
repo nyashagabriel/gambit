@@ -5,8 +5,8 @@ import "../../shared/theme/gambit_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class FleetForm extends StatefulWidget {
-  final GambitFleet? initial;
   const FleetForm({super.key, this.initial});
+  final GambitFleet? initial;
 
   static Future<bool?> show(BuildContext context, {GambitFleet? initial}) {
     return showModalBottomSheet<bool>(

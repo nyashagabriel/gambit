@@ -376,7 +376,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         _loading = false;
         _done = true;
       });
-      await Future.delayed(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(seconds: 2));
       if (mounted) {
         Navigator.pushReplacementNamed(
           context,
