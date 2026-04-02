@@ -77,6 +77,7 @@ jobs:
         run: |
           flutter build web \
             --release \
+            --base-href="/gambit/" \
             --dart-define=GAMBIT_BASE_URL=${{ secrets.GAMBIT_BASE_URL }} \
             --dart-define=GAMBIT_ANON_KEY=${{ secrets.GAMBIT_ANON_KEY }}
 
