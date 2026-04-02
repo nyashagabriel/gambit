@@ -2,7 +2,7 @@
   "name": "Gambit TSL — Transport & Logistics",
   "short_name": "Gambit TSL",
   "description": "Transport and logistics management system for fleet operators across Zimbabwe and Africa.",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#07090E",
   "theme_color": "#F0A500",
@@ -21,22 +21,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "icons/screenshot-wide.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Gambit TSL dashboard on desktop"
-    },
-    {
-      "src": "icons/screenshot-narrow.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Gambit TSL on mobile"
     }
   ]
 }
