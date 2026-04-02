@@ -14,7 +14,6 @@ import "../constants.dart";
 
 // ─── Exception ────────────────────────────────────────────────────────────────
 class GambitApiException implements Exception {
-
   const GambitApiException({required this.statusCode, required this.message});
   final int statusCode;
   final String message;

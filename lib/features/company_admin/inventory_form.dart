@@ -4,7 +4,6 @@ import "../../shared/theme/gambit_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class InventoryForm extends StatefulWidget {
-
   const InventoryForm({super.key});
   static Future<bool?> show(BuildContext context) {
     return showModalBottomSheet<bool>(

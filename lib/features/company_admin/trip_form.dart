@@ -5,7 +5,6 @@ import "../../shared/theme/gambit_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class TripForm extends StatefulWidget {
-
   const TripForm({required this.fleet, required this.drivers, super.key});
   final List<GambitFleet> fleet;
   final List<GambitDriver> drivers;
