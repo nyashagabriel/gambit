@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "../../core/api/data_api.dart";
 import "../../core/models/models.dart";
-import "../../shared/theme/gambit_theme.dart";
+import "../../shared/theme/gonyeti_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class TripForm extends StatefulWidget {
@@ -24,7 +24,7 @@ class TripForm extends StatefulWidget {
         ),
         child: Container(
           decoration: const BoxDecoration(
-            color: GambitColors.elevated,
+            color: GonyetiColors.elevated,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: TripForm(fleet: fleet, drivers: drivers),
@@ -114,13 +114,13 @@ class _TripFormState extends State<TripForm> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
-                  color: GambitColors.text,
+                  color: GonyetiColors.text,
                 ),
               ),
               IconButton(
                 icon: const Icon(
                   Icons.close_rounded,
-                  color: GambitColors.textMuted,
+                  color: GonyetiColors.textMuted,
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
@@ -160,27 +160,27 @@ class _TripFormState extends State<TripForm> {
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.bold,
-              color: GambitColors.textSub,
+              color: GonyetiColors.textSub,
             ),
           ),
           const SizedBox(height: 6),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: GambitColors.card,
+              color: GonyetiColors.card,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: GambitColors.border),
+              border: Border.all(color: GonyetiColors.border),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: _selectedHorseId,
                 isExpanded: true,
-                dropdownColor: GambitColors.card,
+                dropdownColor: GonyetiColors.card,
                 items: [
                   const DropdownMenuItem(
                     child: Text(
                       "Unassigned",
-                      style: TextStyle(color: GambitColors.textMuted),
+                      style: TextStyle(color: GonyetiColors.textMuted),
                     ),
                   ),
                   ...widget.fleet.map(
@@ -188,7 +188,7 @@ class _TripFormState extends State<TripForm> {
                       value: f.id,
                       child: Text(
                         f.displayName,
-                        style: const TextStyle(color: GambitColors.text),
+                        style: const TextStyle(color: GonyetiColors.text),
                       ),
                     ),
                   ),
@@ -204,27 +204,27 @@ class _TripFormState extends State<TripForm> {
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.bold,
-              color: GambitColors.textSub,
+              color: GonyetiColors.textSub,
             ),
           ),
           const SizedBox(height: 6),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: GambitColors.card,
+              color: GonyetiColors.card,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: GambitColors.border),
+              border: Border.all(color: GonyetiColors.border),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: _selectedDriverId,
                 isExpanded: true,
-                dropdownColor: GambitColors.card,
+                dropdownColor: GonyetiColors.card,
                 items: [
                   const DropdownMenuItem(
                     child: Text(
                       "Unassigned",
-                      style: TextStyle(color: GambitColors.textMuted),
+                      style: TextStyle(color: GonyetiColors.textMuted),
                     ),
                   ),
                   ...widget.drivers.map(
@@ -232,7 +232,7 @@ class _TripFormState extends State<TripForm> {
                       value: d.id,
                       child: Text(
                         d.fullName,
-                        style: const TextStyle(color: GambitColors.text),
+                        style: const TextStyle(color: GonyetiColors.text),
                       ),
                     ),
                   ),

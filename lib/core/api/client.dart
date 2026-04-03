@@ -1,10 +1,10 @@
-// lib/core/api/client.dart — GAMBIT TSL
+// lib/core/api/client.dart — GONYETI TLS
 //
 // Every API call in the app goes through rpc().
 // Rules:
 //   1. apikey header on every request — required by the Supabase gateway
 //   2. Authorization: Bearer <jwt> on authenticated requests
-//   3. All errors surface as GambitApiException — callers never see raw http errors
+//   3. All errors surface as GonyetiApiException — callers never see raw http errors
 //   4. Timeout is enforced; network errors are caught and re-thrown uniformly
 //   5. JWT is held in memory only — no persistence here (AuthProvider owns persistence)
 
@@ -13,8 +13,8 @@ import "package:http/http.dart" as http;
 import "../constants.dart";
 
 // ─── Exception ────────────────────────────────────────────────────────────────
-class GambitApiException implements Exception {
-  const GambitApiException({required this.statusCode, required this.message});
+class GonyetiApiException implements Exception {
+  const GonyetiApiException({required this.statusCode, required this.message});
   final int statusCode;
   final String message;
 
@@ -37,7 +37,7 @@ void setJwt(String? token) => _jwt = token;
 String? getJwt() => _jwt;
 
 // ─── Core RPC function ────────────────────────────────────────────────────────
-/// POSTs to a Gambit TSL Supabase edge function.
+/// POSTs to a Gonyeti TLS Supabase edge function.
 ///
 /// [endpoint]    — function file name without extension: "auth", "users", etc.
 /// [body]        — JSON payload; must include an "action" key
@@ -47,24 +47,24 @@ Future<Map<String, dynamic>> rpc(
   Map<String, dynamic> body, {
   bool requiresAuth = true,
 }) async {
-  if (GambitConfig.anonKey.isEmpty) {
-    throw const GambitApiException(
+  if (GonyetiConfig.anonKey.isEmpty) {
+    throw const GonyetiApiException(
       statusCode: 0,
-      message: "App is misconfigured: GAMBIT_ANON_KEY is not set.",
+      message: "App is misconfigured: GONYETI_ANON_KEY is not set.",
     );
   }
 
-  final url = Uri.parse("${GambitConfig.baseUrl}/$endpoint");
+  final url = Uri.parse("${GonyetiConfig.baseUrl}/$endpoint");
 
   final headers = <String, String>{
     "Content-Type": "application/json",
-    "apikey": GambitConfig.anonKey,
+    "apikey": GonyetiConfig.anonKey,
   };
 
   if (requiresAuth) {
     final token = _jwt;
     if (token == null) {
-      throw const GambitApiException(
+      throw const GonyetiApiException(
         statusCode: 401,
         message: "Not signed in.",
       );
@@ -76,9 +76,9 @@ Future<Map<String, dynamic>> rpc(
   try {
     response = await http
         .post(url, headers: headers, body: jsonEncode(body))
-        .timeout(GambitConfig.requestTimeout);
+        .timeout(GonyetiConfig.requestTimeout);
   } on Exception catch (e) {
-    throw GambitApiException(
+    throw GonyetiApiException(
       statusCode: 0,
       message: "Network error. Please check your connection. ($e)",
     );
@@ -88,7 +88,7 @@ Future<Map<String, dynamic>> rpc(
   try {
     data = jsonDecode(response.body) as Map<String, dynamic>;
   } catch (_) {
-    throw GambitApiException(
+    throw GonyetiApiException(
       statusCode: response.statusCode,
       message: "Unexpected server response (${response.statusCode}).",
     );
@@ -99,7 +99,7 @@ Future<Map<String, dynamic>> rpc(
         data["error"] as String? ??
         data["message"] as String? ??
         "Request failed (${response.statusCode}).";
-    throw GambitApiException(statusCode: response.statusCode, message: msg);
+    throw GonyetiApiException(statusCode: response.statusCode, message: msg);
   }
 
   return data;

@@ -1,4 +1,4 @@
-// lib/shared/theme/gambit_theme.dart — GAMBIT TSL
+// lib/shared/theme/gonyeti_theme.dart — GONYETI TLS
 //
 // Colour contrast audit (WCAG 2.1 AA — 4.5:1 normal, 3:1 large/UI):
 //   accent  #F0A500 on bg #07090E  → 8.2:1  ✓ AA large + normal
@@ -13,8 +13,8 @@
 
 import "package:flutter/material.dart";
 
-class GambitColors {
-  GambitColors._();
+class GonyetiColors {
+  GonyetiColors._();
 
   // ── Surfaces ────────────────────────────────────────────────────────────────
   static const Color bg = Color(0xFF07090E);
@@ -42,53 +42,53 @@ class GambitColors {
   ); // decorative only — see note above
 }
 
-class GambitTheme {
-  GambitTheme._();
+class GonyetiTheme {
+  GonyetiTheme._();
 
   static ThemeData get dark {
     const colorScheme = ColorScheme.dark(
-      primary: GambitColors.accent,
-      secondary: GambitColors.blue,
-      surface: GambitColors.card,
-      error: GambitColors.danger,
+      primary: GonyetiColors.accent,
+      secondary: GonyetiColors.blue,
+      surface: GonyetiColors.card,
+      error: GonyetiColors.danger,
       onPrimary: Color(0xFF070400),
       onSecondary: Colors.white,
-      onSurface: GambitColors.text,
+      onSurface: GonyetiColors.text,
       onError: Colors.white,
     );
 
     return ThemeData.dark().copyWith(
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: GambitColors.bg,
-      cardColor: GambitColors.card,
-      dividerColor: GambitColors.border,
-      splashColor: GambitColors.accentDim,
-      highlightColor: GambitColors.accentDim,
+      scaffoldBackgroundColor: GonyetiColors.bg,
+      cardColor: GonyetiColors.card,
+      dividerColor: GonyetiColors.border,
+      splashColor: GonyetiColors.accentDim,
+      highlightColor: GonyetiColors.accentDim,
 
       // ── AppBar ─────────────────────────────────────────────────────────────
       appBarTheme: const AppBarTheme(
-        backgroundColor: GambitColors.surface,
-        foregroundColor: GambitColors.text,
+        backgroundColor: GonyetiColors.surface,
+        foregroundColor: GonyetiColors.text,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontSize: 14,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.3,
         ),
-        iconTheme: IconThemeData(color: GambitColors.textSub, size: 22),
+        iconTheme: IconThemeData(color: GonyetiColors.textSub, size: 22),
       ),
 
       // ── Navigation bar (bottom nav, mobile) ────────────────────────────────
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: GambitColors.surface,
-        indicatorColor: GambitColors.accentDim,
+        backgroundColor: GonyetiColors.surface,
+        indicatorColor: GonyetiColors.accentDim,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return TextStyle(
-            color: selected ? GambitColors.accent : GambitColors.textMuted,
+            color: selected ? GonyetiColors.accent : GonyetiColors.textMuted,
             fontSize: 10,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
           );
@@ -98,7 +98,7 @@ class GambitTheme {
       // ── Buttons ────────────────────────────────────────────────────────────
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: GambitColors.accent,
+          backgroundColor: GonyetiColors.accent,
           foregroundColor: const Color(0xFF070400),
           minimumSize: const Size(48, 48),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
@@ -116,7 +116,7 @@ class GambitTheme {
 
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: GambitColors.accent,
+          foregroundColor: GonyetiColors.accent,
           minimumSize: const Size(48, 48),
           textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
         ),
@@ -124,9 +124,9 @@ class GambitTheme {
 
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: GambitColors.accent,
+          foregroundColor: GonyetiColors.accent,
           minimumSize: const Size(48, 48),
-          side: const BorderSide(color: GambitColors.accent),
+          side: const BorderSide(color: GonyetiColors.accent),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
@@ -137,108 +137,108 @@ class GambitTheme {
       // ── Inputs ─────────────────────────────────────────────────────────────
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: GambitColors.surface,
-        hintStyle: const TextStyle(color: GambitColors.textMuted, fontSize: 13),
+        fillColor: GonyetiColors.surface,
+        hintStyle: const TextStyle(color: GonyetiColors.textMuted, fontSize: 13),
         labelStyle: const TextStyle(
-          color: GambitColors.textSub,
+          color: GonyetiColors.textSub,
           fontSize: 11,
           letterSpacing: 0.8,
           fontWeight: FontWeight.w600,
         ),
         floatingLabelStyle: const TextStyle(
-          color: GambitColors.accent,
+          color: GonyetiColors.accent,
           fontSize: 11,
           letterSpacing: 0.8,
           fontWeight: FontWeight.w700,
         ),
-        prefixIconColor: GambitColors.textMuted,
+        prefixIconColor: GonyetiColors.textMuted,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
           vertical: 13,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: GambitColors.border),
+          borderSide: const BorderSide(color: GonyetiColors.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: GambitColors.border),
+          borderSide: const BorderSide(color: GonyetiColors.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: GambitColors.accent, width: 1.5),
+          borderSide: const BorderSide(color: GonyetiColors.accent, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: GambitColors.danger),
+          borderSide: const BorderSide(color: GonyetiColors.danger),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: GambitColors.danger, width: 1.5),
+          borderSide: const BorderSide(color: GonyetiColors.danger, width: 1.5),
         ),
-        errorStyle: const TextStyle(color: GambitColors.danger, fontSize: 11),
+        errorStyle: const TextStyle(color: GonyetiColors.danger, fontSize: 11),
       ),
 
       // ── Text ───────────────────────────────────────────────────────────────
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontWeight: FontWeight.w900,
         ),
         displayMedium: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontWeight: FontWeight.w800,
         ),
         headlineLarge: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontWeight: FontWeight.w800,
         ),
         headlineMedium: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontWeight: FontWeight.w700,
         ),
         titleLarge: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontWeight: FontWeight.w700,
           fontSize: 17,
         ),
         titleMedium: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontWeight: FontWeight.w600,
           fontSize: 14,
         ),
         titleSmall: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontWeight: FontWeight.w600,
           fontSize: 12,
         ),
         bodyLarge: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontSize: 14,
           height: 1.5,
         ),
         bodyMedium: TextStyle(
-          color: GambitColors.textSub,
+          color: GonyetiColors.textSub,
           fontSize: 13,
           height: 1.5,
         ),
         bodySmall: TextStyle(
-          color: GambitColors.textSub,
+          color: GonyetiColors.textSub,
           fontSize: 11,
           height: 1.4,
         ),
         labelLarge: TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontWeight: FontWeight.w700,
           fontSize: 13,
         ),
         labelMedium: TextStyle(
-          color: GambitColors.textSub,
+          color: GonyetiColors.textSub,
           fontWeight: FontWeight.w600,
           fontSize: 11,
         ),
         labelSmall: TextStyle(
-          color: GambitColors.textMuted,
+          color: GonyetiColors.textMuted,
           fontSize: 10,
           letterSpacing: 1.0,
         ),
@@ -246,15 +246,15 @@ class GambitTheme {
 
       // ── Dialog ─────────────────────────────────────────────────────────────
       dialogTheme: DialogThemeData(
-        backgroundColor: GambitColors.elevated,
+        backgroundColor: GonyetiColors.elevated,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         titleTextStyle: const TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontSize: 16,
           fontWeight: FontWeight.w800,
         ),
         contentTextStyle: const TextStyle(
-          color: GambitColors.textSub,
+          color: GonyetiColors.textSub,
           fontSize: 13,
           height: 1.5,
         ),
@@ -262,9 +262,9 @@ class GambitTheme {
 
       // ── Snackbar ───────────────────────────────────────────────────────────
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: GambitColors.elevated,
+        backgroundColor: GonyetiColors.elevated,
         contentTextStyle: const TextStyle(
-          color: GambitColors.text,
+          color: GonyetiColors.text,
           fontSize: 13,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -273,55 +273,55 @@ class GambitTheme {
 
       // ── Divider ────────────────────────────────────────────────────────────
       dividerTheme: const DividerThemeData(
-        color: GambitColors.border,
+        color: GonyetiColors.border,
         thickness: 1,
         space: 1,
       ),
 
       // ── Chip ───────────────────────────────────────────────────────────────
       chipTheme: ChipThemeData(
-        backgroundColor: GambitColors.elevated,
-        labelStyle: const TextStyle(color: GambitColors.textSub, fontSize: 12),
-        side: const BorderSide(color: GambitColors.border),
+        backgroundColor: GonyetiColors.elevated,
+        labelStyle: const TextStyle(color: GonyetiColors.textSub, fontSize: 12),
+        side: const BorderSide(color: GonyetiColors.border),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       ),
 
       // ── Progress indicator ──────────────────────────────────────────────────
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: GambitColors.accent,
-        linearTrackColor: GambitColors.border,
+        color: GonyetiColors.accent,
+        linearTrackColor: GonyetiColors.border,
       ),
 
       // ── Switch / checkbox ──────────────────────────────────────────────────
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
           (states) => states.contains(WidgetState.selected)
-              ? GambitColors.accent
-              : GambitColors.textMuted,
+              ? GonyetiColors.accent
+              : GonyetiColors.textMuted,
         ),
         trackColor: WidgetStateProperty.resolveWith(
           (states) => states.contains(WidgetState.selected)
-              ? GambitColors.accentDim
-              : GambitColors.border,
+              ? GonyetiColors.accentDim
+              : GonyetiColors.border,
         ),
       ),
 
       checkboxTheme: CheckboxThemeData(
         fillColor: WidgetStateProperty.resolveWith(
           (states) => states.contains(WidgetState.selected)
-              ? GambitColors.accent
+              ? GonyetiColors.accent
               : Colors.transparent,
         ),
         checkColor: WidgetStateProperty.all(const Color(0xFF070400)),
-        side: const BorderSide(color: GambitColors.border, width: 1.5),
+        side: const BorderSide(color: GonyetiColors.border, width: 1.5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
 
       // ── Dropdown ───────────────────────────────────────────────────────────
       dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
-          backgroundColor: WidgetStateProperty.all(GambitColors.elevated),
+          backgroundColor: WidgetStateProperty.all(GonyetiColors.elevated),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),

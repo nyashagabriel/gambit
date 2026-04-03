@@ -1,4 +1,4 @@
-// lib/features/super_admin/super_dashboard.dart — GAMBIT TSL
+// lib/features/super_admin/super_dashboard.dart — GONYETI TLS
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
@@ -6,7 +6,7 @@ import "../../core/api/auth_api.dart";
 import "../../core/api/data_api.dart";
 import "../../core/auth/auth_provider.dart";
 import "../../core/models/models.dart";
-import "../../shared/theme/gambit_theme.dart";
+import "../../shared/theme/gonyeti_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class SuperDashboard extends StatefulWidget {
@@ -106,7 +106,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("${co.name} → $status"),
-            backgroundColor: GambitColors.success,
+            backgroundColor: GonyetiColors.success,
           ),
         );
       }
@@ -115,7 +115,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
-            backgroundColor: GambitColors.danger,
+            backgroundColor: GonyetiColors.danger,
           ),
         );
       }
@@ -125,7 +125,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
   void _showActions(GambitCompany co) {
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: GambitColors.elevated,
+      backgroundColor: GonyetiColors.elevated,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -139,7 +139,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
               style: const TextStyle(
                 fontWeight: FontWeight.w800,
                 fontSize: 16,
-                color: GambitColors.text,
+                color: GonyetiColors.text,
               ),
             ),
             const SizedBox(height: 6),
@@ -149,7 +149,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
               GButton(
                 label: "Reinstate",
                 icon: Icons.check_circle_rounded,
-                color: GambitColors.success,
+                color: GonyetiColors.success,
                 fullWidth: true,
                 onPressed: () {
                   Navigator.pop(context);
@@ -161,7 +161,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
               GButton(
                 label: "Send Warning",
                 icon: Icons.warning_rounded,
-                color: GambitColors.warn,
+                color: GonyetiColors.warn,
                 outline: true,
                 fullWidth: true,
                 onPressed: () {
@@ -178,7 +178,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
               GButton(
                 label: "Ban Company",
                 icon: Icons.block_rounded,
-                color: GambitColors.danger,
+                color: GonyetiColors.danger,
                 outline: true,
                 fullWidth: true,
                 onPressed: () {
@@ -189,7 +189,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
             const SizedBox(height: 8),
             GButton(
               label: "Cancel",
-              color: GambitColors.textSub,
+              color: GonyetiColors.textSub,
               outline: true,
               fullWidth: true,
               onPressed: () => Navigator.pop(context),
@@ -206,10 +206,10 @@ class _CompaniesTabState extends State<_CompaniesTab> {
     final issues = _companies.where((c) => !c.isActive).length;
 
     return Scaffold(
-      backgroundColor: GambitColors.bg,
+      backgroundColor: GonyetiColors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GambitColors.accent,
+        color: GonyetiColors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
@@ -224,14 +224,14 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: GambitColors.text,
+                          color: GonyetiColors.text,
                         ),
                       ),
                       Text(
                         "SUPER ADMIN",
                         style: TextStyle(
                           fontSize: 10,
-                          color: GambitColors.textMuted,
+                          color: GonyetiColors.textMuted,
                           letterSpacing: 1.5,
                         ),
                       ),
@@ -241,7 +241,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                 IconButton(
                   icon: const Icon(
                     Icons.logout_rounded,
-                    color: GambitColors.textSub,
+                    color: GonyetiColors.textSub,
                     size: 20,
                   ),
                   tooltip: "Sign out",
@@ -267,7 +267,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                   icon: Icons.check_circle_rounded,
                   label: "ACTIVE",
                   value: "$active",
-                  color: GambitColors.success,
+                  color: GonyetiColors.success,
                 ),
                 const SizedBox(width: 10),
                 GStatCard(
@@ -275,8 +275,8 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                   label: "ISSUES",
                   value: "$issues",
                   color: issues > 0
-                      ? GambitColors.danger
-                      : GambitColors.textSub,
+                      ? GonyetiColors.danger
+                      : GonyetiColors.textSub,
                 ),
               ],
             ),
@@ -285,7 +285,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
             if (_loading)
               const Center(
                 child: CircularProgressIndicator(
-                  color: GambitColors.accent,
+                  color: GonyetiColors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -313,7 +313,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w800,
                                       fontSize: 14,
-                                      color: GambitColors.text,
+                                      color: GonyetiColors.text,
                                     ),
                                   ),
                                 ),
@@ -329,7 +329,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                               "Joined: ${co.createdAt.split("T")[0]}",
                               style: const TextStyle(
                                 fontSize: 11,
-                                color: GambitColors.textMuted,
+                                color: GonyetiColors.textMuted,
                               ),
                             ),
                           ],
@@ -337,7 +337,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                       ),
                       const Icon(
                         Icons.chevron_right_rounded,
-                        color: GambitColors.textMuted,
+                        color: GonyetiColors.textMuted,
                         semanticLabel: "",
                       ),
                     ],
@@ -435,7 +435,7 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GambitColors.bg,
+      backgroundColor: GonyetiColors.bg,
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -444,12 +444,12 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
-              color: GambitColors.text,
+              color: GonyetiColors.text,
             ),
           ),
           const Text(
-            "New Gambit TSL tenant",
-            style: TextStyle(fontSize: 11, color: GambitColors.textMuted),
+            "New Gonyeti TLS tenant",
+            style: TextStyle(fontSize: 11, color: GonyetiColors.textMuted),
           ),
           const SizedBox(height: 20),
 
@@ -474,7 +474,7 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
             const Text(
               "COMPANY",
               style: TextStyle(
-                color: GambitColors.textSub,
+                color: GonyetiColors.textSub,
                 fontSize: 10,
                 letterSpacing: 1,
               ),
@@ -487,11 +487,11 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
               prefixIcon: Icons.business_rounded,
               textInputAction: TextInputAction.next,
             ),
-            const Divider(color: GambitColors.border, height: 24),
+            const Divider(color: GonyetiColors.border, height: 24),
             const Text(
               "ADMIN ACCOUNT",
               style: TextStyle(
-                color: GambitColors.textSub,
+                color: GonyetiColors.textSub,
                 fontSize: 10,
                 letterSpacing: 1,
               ),
@@ -524,13 +524,13 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
               padding: const EdgeInsets.all(12),
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: GambitColors.accentDim,
+                color: GonyetiColors.accentDim,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: GambitColors.accent.withAlpha(50)),
+                border: Border.all(color: GonyetiColors.accent.withAlpha(50)),
               ),
               child: const Text(
                 "Admin will be required to change this password on first login.",
-                style: TextStyle(color: GambitColors.accent, fontSize: 11),
+                style: TextStyle(color: GonyetiColors.accent, fontSize: 11),
               ),
             ),
             GButton(
@@ -596,7 +596,7 @@ class _AuditTabState extends State<_AuditTab> {
               title: "Company onboarded",
               sub: "${c.name} · ${c.status.toUpperCase()}",
               icon: Icons.business_rounded,
-              color: GambitColors.blue,
+              color: GonyetiColors.blue,
             ),
           ),
           ..._users.map(
@@ -605,7 +605,7 @@ class _AuditTabState extends State<_AuditTab> {
               title: "User created",
               sub: "@${u.username} · ${u.role.replaceAll("_", " ")}",
               icon: Icons.person_add_alt_rounded,
-              color: GambitColors.success,
+              color: GonyetiColors.success,
             ),
           ),
         ]..sort((a, b) => b.at.compareTo(a.at));
@@ -615,10 +615,10 @@ class _AuditTabState extends State<_AuditTab> {
         .length;
 
     return Scaffold(
-      backgroundColor: GambitColors.bg,
+      backgroundColor: GonyetiColors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GambitColors.accent,
+        color: GonyetiColors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
@@ -627,13 +627,13 @@ class _AuditTabState extends State<_AuditTab> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GambitColors.text,
+                color: GonyetiColors.text,
               ),
             ),
             const SizedBox(height: 4),
             const Text(
               "Recent platform activity",
-              style: TextStyle(fontSize: 11, color: GambitColors.textMuted),
+              style: TextStyle(fontSize: 11, color: GonyetiColors.textMuted),
             ),
             const SizedBox(height: 16),
             Row(
@@ -642,21 +642,21 @@ class _AuditTabState extends State<_AuditTab> {
                   icon: Icons.business_rounded,
                   label: "COMPANIES",
                   value: "${_companies.length}",
-                  color: GambitColors.blue,
+                  color: GonyetiColors.blue,
                 ),
                 const SizedBox(width: 10),
                 GStatCard(
                   icon: Icons.people_alt_rounded,
                   label: "USERS",
                   value: "${_users.length}",
-                  color: GambitColors.success,
+                  color: GonyetiColors.success,
                 ),
                 const SizedBox(width: 10),
                 GStatCard(
                   icon: Icons.warning_rounded,
                   label: "ATTENTION",
                   value: "$warnedOrBlocked",
-                  color: GambitColors.warn,
+                  color: GonyetiColors.warn,
                 ),
               ],
             ),
@@ -666,7 +666,7 @@ class _AuditTabState extends State<_AuditTab> {
                 padding: EdgeInsets.only(top: 16),
                 child: Center(
                   child: CircularProgressIndicator(
-                    color: GambitColors.accent,
+                    color: GonyetiColors.accent,
                     strokeWidth: 2,
                   ),
                 ),
@@ -710,7 +710,7 @@ class _AuditTabState extends State<_AuditTab> {
                                     style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w700,
-                                      color: GambitColors.text,
+                                      color: GonyetiColors.text,
                                     ),
                                   ),
                                   const SizedBox(height: 3),
@@ -718,7 +718,7 @@ class _AuditTabState extends State<_AuditTab> {
                                     event.sub,
                                     style: const TextStyle(
                                       fontSize: 11,
-                                      color: GambitColors.textSub,
+                                      color: GonyetiColors.textSub,
                                     ),
                                   ),
                                 ],
@@ -728,7 +728,7 @@ class _AuditTabState extends State<_AuditTab> {
                               "${event.at.year}-${event.at.month.toString().padLeft(2, "0")}-${event.at.day.toString().padLeft(2, "0")}",
                               style: const TextStyle(
                                 fontSize: 10,
-                                color: GambitColors.textMuted,
+                                color: GonyetiColors.textMuted,
                               ),
                             ),
                           ],

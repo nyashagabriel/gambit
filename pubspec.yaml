@@ -1,5 +1,5 @@
-name: gambit
-description: Gambit TSL — Transport & Logistics Management System
+name: gonyeti_tls
+description: Gonyeti TLS — Transport & Logistics System by Basilmark Solutions
 publish_to: "none"
 version: 1.0.0+1
 
@@ -35,3 +35,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/login_bg_1.jpeg
+    - assets/images/login_bg_2.jpeg
+    - assets/images/login_bg_3.jpeg
+    - assets/images/login_bg_4.jpeg

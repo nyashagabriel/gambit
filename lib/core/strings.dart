@@ -1,10 +1,10 @@
-// lib/core/strings.dart — GAMBIT TSL
+// lib/core/strings.dart — GONYETI TLS
 
 class AppStrings {
   AppStrings._();
 
   // ── Brand & General ────────────────────────────────────────────────────────
-  static const String appName = "GAMBIT TSL";
+  static const String appName = "GONYETI TLS";
   static const String appTagline = "TRANSPORT · LOGISTICS · SYSTEM";
   static const String cancel = "Cancel";
   static const String save = "Save";
@@ -46,7 +46,7 @@ class AppStrings {
 
   // ── Role 1: Super Admin (Platform Control) ─────────────────────────────────
   static const String superDashTitle = "Platform Control";
-  static const String superDashSub = "Gambit TSL · Super Admin";
+  static const String superDashSub = "Gonyeti TLS · Super Admin";
   static const String registerCompany = "Register Company";
   static const String companyNameLabel = "COMPANY NAME";
   static const String adminUsernameLabel = "ADMIN USERNAME";

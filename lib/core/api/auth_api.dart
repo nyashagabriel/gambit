@@ -1,7 +1,7 @@
-// lib/core/api/auth_api.dart — GAMBIT TSL
+// lib/core/api/auth_api.dart — GONYETI TLS
 // Typed wrappers around the /auth edge function.
 // AuthProvider calls these — nothing else should.
-import "package:gambit/core/models/models.dart";
+import "package:gonyeti_tls/core/models/models.dart";
 
 import "client.dart";
 

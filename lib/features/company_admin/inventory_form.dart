@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "../../core/api/data_api.dart";
-import "../../shared/theme/gambit_theme.dart";
+import "../../shared/theme/gonyeti_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class InventoryForm extends StatefulWidget {
@@ -16,7 +16,7 @@ class InventoryForm extends StatefulWidget {
         ),
         child: Container(
           decoration: const BoxDecoration(
-            color: GambitColors.elevated,
+            color: GonyetiColors.elevated,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: const InventoryForm(),
@@ -97,13 +97,13 @@ class _InventoryFormState extends State<InventoryForm> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
-                  color: GambitColors.text,
+                  color: GonyetiColors.text,
                 ),
               ),
               IconButton(
                 icon: const Icon(
                   Icons.close_rounded,
-                  color: GambitColors.textMuted,
+                  color: GonyetiColors.textMuted,
                 ),
                 onPressed: () => Navigator.pop(context),
               ),

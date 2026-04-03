@@ -1,7 +1,7 @@
 {
-  "name": "Gambit TSL — Transport & Logistics",
-  "short_name": "Gambit TSL",
-  "description": "Transport and logistics management system for fleet operators across Zimbabwe and Africa.",
+  "name": "Gonyeti TLS — Transport & Logistics",
+  "short_name": "Gonyeti TLS",
+  "description": "Gonyeti TLS is a transport and logistics management system developed by Basilmark Solutions for fleet operators across Zimbabwe and Africa.",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#07090E",

@@ -1,11 +1,11 @@
-// lib/features/staff/staff_dashboard.dart — GAMBIT TSL
+// lib/features/staff/staff_dashboard.dart — GONYETI TLS
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 import "../../core/api/data_api.dart";
 import "../../core/auth/auth_provider.dart";
 import "../../core/models/models.dart";
-import "../../shared/theme/gambit_theme.dart";
+import "../../shared/theme/gonyeti_theme.dart";
 import "../../shared/widgets/widgets.dart";
 import "docs_screen.dart";
 
@@ -17,14 +17,14 @@ class UserDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     return Scaffold(
-      backgroundColor: GambitColors.bg,
+      backgroundColor: GonyetiColors.bg,
       appBar: AppBar(
         title: const Text("My Dashboard"),
         actions: [
           IconButton(
             icon: const Icon(
               Icons.logout_rounded,
-              color: GambitColors.danger,
+              color: GonyetiColors.danger,
               semanticLabel: "Sign out",
             ),
             tooltip: "Sign out",
@@ -45,14 +45,14 @@ class UserDashboard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
-              color: GambitColors.text,
+              color: GonyetiColors.text,
             ),
           ),
           const Text(
             "DRIVER / USER",
             style: TextStyle(
               fontSize: 10,
-              color: GambitColors.textMuted,
+              color: GonyetiColors.textMuted,
               letterSpacing: 2,
             ),
           ),
@@ -66,28 +66,28 @@ class UserDashboard extends StatelessWidget {
             icon: Icons.route_rounded,
             label: "My Active Trip",
             sub: "View details & update status",
-            color: GambitColors.blue,
+            color: GonyetiColors.blue,
             onTap: () {},
           ),
           _ActionRow(
             icon: Icons.check_circle_rounded,
             label: "Submit POD",
             sub: "Proof of delivery",
-            color: GambitColors.success,
+            color: GonyetiColors.success,
             onTap: () {},
           ),
           _ActionRow(
             icon: Icons.speed_rounded,
             label: "ODO Reading",
             sub: "Submit odometer reading",
-            color: GambitColors.warn,
+            color: GonyetiColors.warn,
             onTap: () {},
           ),
           _ActionRow(
             icon: Icons.lock_rounded,
             label: "Change Password",
             sub: "Update your credentials",
-            color: GambitColors.textSub,
+            color: GonyetiColors.textSub,
             onTap: () => Navigator.pushNamed(context, "/change-password"),
           ),
         ],
@@ -174,10 +174,10 @@ class _StaffHomeTabState extends State<_StaffHomeTab> {
     final pending = _trips.where((t) => t.status == "pending").length;
 
     return Scaffold(
-      backgroundColor: GambitColors.bg,
+      backgroundColor: GonyetiColors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GambitColors.accent,
+        color: GonyetiColors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
@@ -192,14 +192,14 @@ class _StaffHomeTabState extends State<_StaffHomeTab> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: GambitColors.text,
+                          color: GonyetiColors.text,
                         ),
                       ),
                       Text(
                         "STAFF · ${auth.username.toUpperCase()}",
                         style: const TextStyle(
                           fontSize: 11,
-                          color: GambitColors.textMuted,
+                          color: GonyetiColors.textMuted,
                         ),
                       ),
                     ],
@@ -208,7 +208,7 @@ class _StaffHomeTabState extends State<_StaffHomeTab> {
                 IconButton(
                   icon: const Icon(
                     Icons.logout_rounded,
-                    color: GambitColors.textSub,
+                    color: GonyetiColors.textSub,
                     size: 20,
                   ),
                   tooltip: "Sign out",
@@ -234,14 +234,14 @@ class _StaffHomeTabState extends State<_StaffHomeTab> {
                   icon: Icons.local_fire_department_rounded,
                   label: "ACTIVE",
                   value: "$activeTrips",
-                  color: GambitColors.blue,
+                  color: GonyetiColors.blue,
                 ),
                 const SizedBox(width: 10),
                 GStatCard(
                   icon: Icons.pending_actions_rounded,
                   label: "PENDING",
                   value: "$pending",
-                  color: GambitColors.warn,
+                  color: GonyetiColors.warn,
                 ),
               ],
             ),
@@ -255,7 +255,7 @@ class _StaffHomeTabState extends State<_StaffHomeTab> {
             const Text(
               "QUICK ACTIONS",
               style: TextStyle(
-                color: GambitColors.textSub,
+                color: GonyetiColors.textSub,
                 fontSize: 10,
                 letterSpacing: 1,
               ),
@@ -265,21 +265,21 @@ class _StaffHomeTabState extends State<_StaffHomeTab> {
               icon: Icons.route_rounded,
               label: "My Trips",
               sub: "Track & update progress",
-              color: GambitColors.blue,
+              color: GonyetiColors.blue,
               onTap: () {},
             ),
             _ActionRow(
               icon: Icons.folder_rounded,
               label: "Submit Documents",
               sub: "POD, permits & reports",
-              color: GambitColors.success,
+              color: GonyetiColors.success,
               onTap: () {},
             ),
             _ActionRow(
               icon: Icons.lock_rounded,
               label: "Change Password",
               sub: "Update your credentials",
-              color: GambitColors.textSub,
+              color: GonyetiColors.textSub,
               onTap: () => Navigator.pushNamed(context, "/change-password"),
             ),
           ],
@@ -296,7 +296,7 @@ class _ActiveTripCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GCard(
-      borderColor: GambitColors.blue.withAlpha(80),
+      borderColor: GonyetiColors.blue.withAlpha(80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -305,13 +305,13 @@ class _ActiveTripCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: GambitColors.blueDim,
+                  color: GonyetiColors.blueDim,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
                   Icons.route_rounded,
                   size: 18,
-                  color: GambitColors.blue,
+                  color: GonyetiColors.blue,
                   semanticLabel: "",
                 ),
               ),
@@ -323,7 +323,7 @@ class _ActiveTripCard extends StatelessWidget {
                     Text(
                       "ACTIVE · ${trip.reference}",
                       style: const TextStyle(
-                        color: GambitColors.blue,
+                        color: GonyetiColors.blue,
                         fontWeight: FontWeight.w700,
                         fontSize: 10,
                         letterSpacing: .8,
@@ -332,7 +332,7 @@ class _ActiveTripCard extends StatelessWidget {
                     Text(
                       "${trip.origin} → ${trip.destination}",
                       style: const TextStyle(
-                        color: GambitColors.text,
+                        color: GonyetiColors.text,
                         fontWeight: FontWeight.w800,
                         fontSize: 15,
                       ),
@@ -360,7 +360,7 @@ class _ActiveTripCard extends StatelessWidget {
               GButton(
                 label: "Update POD",
                 icon: Icons.check_circle_rounded,
-                color: GambitColors.success,
+                color: GonyetiColors.success,
                 small: true,
                 onPressed: () {},
               ),
@@ -369,7 +369,7 @@ class _ActiveTripCard extends StatelessWidget {
                 label: "ODO",
                 icon: Icons.speed_rounded,
                 outline: true,
-                color: GambitColors.textSub,
+                color: GonyetiColors.textSub,
                 small: true,
                 onPressed: () {},
               ),
@@ -416,10 +416,10 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GambitColors.bg,
+      backgroundColor: GonyetiColors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GambitColors.accent,
+        color: GonyetiColors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
@@ -428,7 +428,7 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GambitColors.text,
+                color: GonyetiColors.text,
               ),
             ),
             const SizedBox(height: 4),
@@ -436,14 +436,14 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
               "${_trips.length} trip(s)",
               style: const TextStyle(
                 fontSize: 11,
-                color: GambitColors.textMuted,
+                color: GonyetiColors.textMuted,
               ),
             ),
             const SizedBox(height: 16),
             if (_loading)
               const Center(
                 child: CircularProgressIndicator(
-                  color: GambitColors.accent,
+                  color: GonyetiColors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -453,7 +453,7 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: GCard(
                   borderColor: t.isActive
-                      ? GambitColors.blue.withAlpha(60)
+                      ? GonyetiColors.blue.withAlpha(60)
                       : null,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -466,7 +466,7 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
-                                color: GambitColors.text,
+                                color: GonyetiColors.text,
                               ),
                             ),
                           ),
@@ -481,7 +481,7 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
                         "${t.origin} → ${t.destination}",
                         style: const TextStyle(
                           fontSize: 12,
-                          color: GambitColors.textSub,
+                          color: GonyetiColors.textSub,
                         ),
                       ),
                       if (t.isActive) ...[
@@ -492,7 +492,7 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
                               label: "Update Status",
                               icon: Icons.edit_rounded,
                               small: true,
-                              color: GambitColors.blue,
+                              color: GonyetiColors.blue,
                               onPressed: () => _showUpdateSheet(t),
                             ),
                           ],
@@ -518,7 +518,7 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: GambitColors.elevated,
+      backgroundColor: GonyetiColors.elevated,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -539,13 +539,13 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
                 style: const TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 15,
-                  color: GambitColors.text,
+                  color: GonyetiColors.text,
                 ),
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: "STATUS"),
-                dropdownColor: GambitColors.elevated,
+                dropdownColor: GonyetiColors.elevated,
                 initialValue: selectedStatus,
                 items: const [
                   DropdownMenuItem(
@@ -582,7 +582,7 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
               GButton(
                 label: "SAVE UPDATE",
                 icon: Icons.check_rounded,
-                color: GambitColors.success,
+                color: GonyetiColors.success,
                 fullWidth: true,
                 loading: loading,
                 onPressed: () async {
@@ -606,7 +606,7 @@ class _StaffTripsTabState extends State<_StaffTripsTab> {
                       ScaffoldMessenger.of(ctx).showSnackBar(
                         SnackBar(
                           content: Text(e.toString()),
-                          backgroundColor: GambitColors.danger,
+                          backgroundColor: GonyetiColors.danger,
                         ),
                       );
                     }
@@ -669,14 +669,14 @@ class _ActionRow extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
-                      color: GambitColors.text,
+                      color: GonyetiColors.text,
                     ),
                   ),
                   Text(
                     sub,
                     style: const TextStyle(
                       fontSize: 11,
-                      color: GambitColors.textMuted,
+                      color: GonyetiColors.textMuted,
                     ),
                   ),
                 ],
@@ -684,7 +684,7 @@ class _ActionRow extends StatelessWidget {
             ),
             const Icon(
               Icons.chevron_right_rounded,
-              color: GambitColors.textMuted,
+              color: GonyetiColors.textMuted,
               semanticLabel: "",
             ),
           ],

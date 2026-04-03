@@ -1,12 +1,12 @@
-# .github/workflows/web.yml — GAMBIT TSL
+# .github/workflows/web.yml — GONYETI TLS
 #
 # Deploys the Flutter web app to GitHub Pages on every push to main.
 #
 # ── How secrets flow ────────────────────────────────────────────────────────
 #  1. Go to your repo → Settings → Secrets and Variables → Actions
 #  2. Add two repository secrets:
-#       GAMBIT_ANON_KEY   — Supabase publishable anon key (safe to embed in JS)
-#       GAMBIT_BASE_URL   — https://<project>.supabase.co/functions/v1
+#       GONYETI_ANON_KEY   — Supabase publishable anon key (safe to embed in JS)
+#       GONYETI_BASE_URL   — https://<project>.supabase.co/functions/v1
 #  3. This workflow injects them via --dart-define at build time.
 #     The Dart compiler bakes the values into the JS bundle — no .env file
 #     is ever needed on the runner or the deployed server.
@@ -19,7 +19,7 @@
 #
 # ── One-time GitHub repo setup ───────────────────────────────────────────────
 #  1. Settings → Pages → Source: GitHub Actions
-#  2. Settings → Secrets → Actions → add GAMBIT_BASE_URL and GAMBIT_ANON_KEY
+#  2. Settings → Secrets → Actions → add GONYETI_BASE_URL and GONYETI_ANON_KEY
 # ─────────────────────────────────────────────────────────────────────────────
 
 name: Flutter Web CI/CD
@@ -120,8 +120,8 @@ jobs:
           flutter build web \
             --release \
             --base-href="/gambit/" \
-            --dart-define=GAMBIT_BASE_URL=${{ secrets.GAMBIT_BASE_URL }} \
-            --dart-define=GAMBIT_ANON_KEY=${{ secrets.GAMBIT_ANON_KEY }}
+            --dart-define=GONYETI_BASE_URL=${{ secrets.GONYETI_BASE_URL }} \
+            --dart-define=GONYETI_ANON_KEY=${{ secrets.GONYETI_ANON_KEY }}
         # base-href must match the GitHub Pages sub-path: /<repo-name>/
         # Secrets are injected here and baked into the compiled JS output.
         # The deployed web server never needs an .env file — values are
@@ -145,4 +145,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4
-        

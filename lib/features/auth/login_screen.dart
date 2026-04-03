@@ -1,4 +1,4 @@
-// lib/features/auth/login_screen.dart — GAMBIT TSL
+// lib/features/auth/login_screen.dart — GONYETI TLS
 //
 // Design principles applied:
 //   Hick's Law    — exactly ONE primary decision on screen: sign in.
@@ -10,19 +10,26 @@
 //                   textSub raised to #8FA3BF (4.6:1 on #07090E).
 //                   accent #F0A500 on #07090E = 8.3:1 — passes AAA.
 //                   error red #EF4444 on #07090E = 4.7:1 — passes AA.
+//
+// Login screen uses a full-screen landscape background image with a dark
+// gradient overlay so form text remains legible at WCAG AA.
 
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 import "../../core/api/auth_api.dart";
 import "../../core/auth/auth_provider.dart";
-import "../../shared/theme/gambit_theme.dart";
+import "../../shared/theme/gonyeti_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 // ── AA-SAFE COLOUR OVERRIDE ───────────────────────────────────
-// GambitColors.textSub (#7A90B0) = 3.8:1 — FAILS AA at small sizes.
+// GonyetiColors.textSub (#7A90B0) = 3.8:1 — FAILS AA at small sizes.
 // Use this locally until the theme is patched globally.
 const _kTextAA = Color(0xFF8FA3BF); // 4.6:1 on #07090E — passes AA
+
+// Background images — one is shown on the login screen.
+// Rotate or swap by changing _kLoginBg.
+const String _kLoginBg = "assets/images/login_bg_1.jpeg";
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -66,48 +73,91 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = context.watch<AuthProvider>();
 
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _Brand(),
-                  const SizedBox(height: 32),
-                  _LoginCard(
-                    auth: auth,
-                    userCtrl: _userCtrl,
-                    passCtrl: _passCtrl,
-                    userFocus: _userFocus,
-                    passFocus: _passFocus,
-                    obscure: _obscure,
-                    onToggle: () => setState(() => _obscure = !_obscure),
-                    onLogin: _login,
-                  ),
-                  const SizedBox(height: 20),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // ── Full-screen background image ──────────────────────
+          Image.asset(
+            _kLoginBg,
+            fit: BoxFit.cover,
+            semanticLabel: "Gonyeti TLS — Transport & Logistics",
+          ),
 
-                  // ONE quiet secondary action — not an accordion,
-                  // not a panel, not a toggle. One clear link.
-                  Semantics(
-                    button: true,
-                    label: "Trouble signing in — get help",
-                    child: TextButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, "/sign-in-help"),
-                      child: const Text(
-                        "Trouble signing in?",
-                        style: TextStyle(color: _kTextAA, fontSize: 13),
-                      ),
-                    ),
-                  ),
+          // ── Dark gradient overlay — ensures WCAG AA legibility ─
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xCC07090E), // 80% opacity dark at top
+                  Color(0xF007090E), // 94% opacity dark at bottom
                 ],
               ),
             ),
           ),
-        ),
+
+          // ── Login content ─────────────────────────────────────
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 32,
+                ),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 400),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _Brand(),
+                      const SizedBox(height: 32),
+                      _LoginCard(
+                        auth: auth,
+                        userCtrl: _userCtrl,
+                        passCtrl: _passCtrl,
+                        userFocus: _userFocus,
+                        passFocus: _passFocus,
+                        obscure: _obscure,
+                        onToggle: () => setState(() => _obscure = !_obscure),
+                        onLogin: _login,
+                      ),
+                      const SizedBox(height: 20),
+
+                      // ONE quiet secondary action — not an accordion,
+                      // not a panel, not a toggle. One clear link.
+                      Semantics(
+                        button: true,
+                        label: "Trouble signing in — get help",
+                        child: TextButton(
+                          onPressed: () =>
+                              Navigator.pushNamed(context, "/sign-in-help"),
+                          child: const Text(
+                            "Trouble signing in?",
+                            style: TextStyle(color: _kTextAA, fontSize: 13),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // ── Powered-by badge ─────────────────────────
+                      const Text(
+                        "Powered by Greyway.co Solutions",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0x66FFFFFF),
+                          fontSize: 10,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -121,37 +171,62 @@ class _Brand extends StatelessWidget {
       header: true,
       child: Column(
         children: [
+          // Logo container with glass morphism border
           Container(
-            width: 64,
-            height: 64,
+            width: 72,
+            height: 72,
             decoration: BoxDecoration(
-              color: GambitColors.accentDim,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: GambitColors.accent.withAlpha(60)),
+              color: GonyetiColors.accentDim,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: GonyetiColors.accent.withAlpha(80),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: GonyetiColors.accent.withAlpha(40),
+                  blurRadius: 20,
+                  spreadRadius: 2,
+                ),
+              ],
             ),
             child: const Icon(
               Icons.local_shipping_rounded,
-              size: 30,
-              color: GambitColors.accent,
-              semanticLabel: "Gambit TSL",
+              size: 34,
+              color: GonyetiColors.accent,
+              semanticLabel: "Gonyeti TLS",
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
           const Text(
-            "GAMBIT TSL",
+            "GONYETI TLS",
             style: TextStyle(
-              fontSize: 26,
+              fontSize: 28,
               fontWeight: FontWeight.w900,
-              color: GambitColors.accent,
+              color: GonyetiColors.accent,
               letterSpacing: -.5,
+              shadows: [
+                Shadow(
+                  color: Color(0x80000000),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
             ),
           ),
+          const SizedBox(height: 4),
           const Text(
             "TRANSPORT · LOGISTICS · SYSTEM",
             style: TextStyle(
               fontSize: 9,
               color: _kTextAA, // AA-safe
               letterSpacing: 3,
+              shadows: [
+                Shadow(
+                  color: Color(0x80000000),
+                  blurRadius: 6,
+                ),
+              ],
             ),
           ),
         ],
@@ -283,18 +358,18 @@ class _Field extends StatelessWidget {
         obscureText: obscure,
         textInputAction: textInputAction,
         onSubmitted: onSubmitted,
-        style: const TextStyle(color: GambitColors.text, fontSize: 14),
+        style: const TextStyle(color: GonyetiColors.text, fontSize: 14),
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
-          hintStyle: const TextStyle(color: GambitColors.textMuted),
+          hintStyle: const TextStyle(color: GonyetiColors.textMuted),
           labelStyle: const TextStyle(
             color: _kTextAA, // AA-safe
             fontSize: 11,
             letterSpacing: 0.5,
             fontWeight: FontWeight.w600,
           ),
-          prefixIcon: Icon(prefixIcon, color: GambitColors.textMuted),
+          prefixIcon: Icon(prefixIcon, color: GonyetiColors.textMuted),
           // Suffix — only rendered when provided.
           // Uses Semantics + IconButton for proper 48dp tap target.
           suffixIcon: suffixIcon != null
@@ -407,7 +482,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     const Icon(
                       Icons.lock_reset_rounded,
                       size: 32,
-                      color: GambitColors.accent,
+                      color: GonyetiColors.accent,
                       semanticLabel: "Set new password",
                     ),
                     const SizedBox(height: 12),
@@ -416,7 +491,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
-                        color: GambitColors.text,
+                        color: GonyetiColors.text,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -481,7 +556,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       icon: Icons.check_rounded,
                       loading: _loading,
                       fullWidth: true,
-                      color: GambitColors.success,
+                      color: GonyetiColors.success,
                       onPressed: _done ? null : _submit,
                     ),
                   ],

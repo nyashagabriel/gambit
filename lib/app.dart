@@ -1,4 +1,4 @@
-// lib/app.dart — GAMBIT TSL
+// lib/app.dart — GONYETI TLS
 // App entry point: sets up the ChangeNotifierProvider, theme, and named routes.
 // _RoleGuarded handles the three redirect cases cleanly:
 //   • not authenticated  → /login
@@ -14,19 +14,19 @@ import "features/auth/login_screen.dart";
 import "features/company_admin/admin_dashboard.dart";
 import "features/staff/staff_dashboard.dart";
 import "features/super_admin/super_dashboard.dart";
-import "shared/theme/gambit_theme.dart";
+import "shared/theme/gonyeti_theme.dart";
 
-class GambitApp extends StatelessWidget {
-  const GambitApp({super.key});
+class GonyetiApp extends StatelessWidget {
+  const GonyetiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => AuthProvider()..init(),
       child: MaterialApp(
-        title: "Gambit TSL",
+        title: "Gonyeti TLS",
         debugShowCheckedModeBanner: false,
-        theme: GambitTheme.dark,
+        theme: GonyetiTheme.dark,
         initialRoute: "/login",
         routes: _routes,
         onGenerateRoute: _onGenerateRoute,
@@ -56,7 +56,7 @@ class GambitApp extends StatelessWidget {
         body: Center(
           child: Text(
             "Page not found",
-            style: TextStyle(color: GambitColors.textSub),
+            style: TextStyle(color: GonyetiColors.textSub),
           ),
         ),
       ),
@@ -133,7 +133,7 @@ class _Splash extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(
-          color: GambitColors.accent,
+          color: GonyetiColors.accent,
           strokeWidth: 2.5,
         ),
       ),

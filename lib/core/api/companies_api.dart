@@ -1,7 +1,7 @@
-// ── GAMBIT TSL · COMPANIES API ────────────────────────────────
+// ── GONYETI TLS · COMPANIES API ────────────────────────────────
 // All calls to /functions/v1/companies (super_admin only)
 
-import 'package:gambit/core/models/models.dart';
+import 'package:gonyeti_tls/core/models/models.dart';
 
 import 'client.dart';
 
@@ -39,7 +39,7 @@ class CompaniesApi {
   }
 }
 
-// ── GAMBIT TSL · USERS API ────────────────────────────────────
+// ── GONYETI TLS · USERS API ────────────────────────────────────
 // All calls to /functions/v1/users
 
 class UsersApi {

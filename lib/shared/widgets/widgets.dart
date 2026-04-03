@@ -1,13 +1,13 @@
-// lib/shared/widgets/widgets.dart — GAMBIT TSL
+// lib/shared/widgets/widgets.dart — GONYETI TLS
 // Shared widget library. Accessibility: WCAG 2.1 AA throughout.
 
 import "package:flutter/material.dart";
-import "package:gambit/core/api/auth_api.dart";
+import "package:gonyeti_tls/core/api/auth_api.dart";
 import "package:provider/provider.dart";
 
 import "../../core/auth/auth_provider.dart";
 import "../../core/auth/role_guard.dart";
-import "../theme/gambit_theme.dart";
+import "../theme/gonyeti_theme.dart";
 
 // ── GButton ───────────────────────────────────────────────────────────────────
 class GButton extends StatelessWidget {
@@ -33,7 +33,7 @@ class GButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ?? GambitColors.accent;
+    final c = color ?? GonyetiColors.accent;
 
     final child = loading
         ? SizedBox(
@@ -43,7 +43,7 @@ class GButton extends StatelessWidget {
               strokeWidth: 2.5,
               color: outline
                   ? c
-                  : (c == GambitColors.accent
+                  : (c == GonyetiColors.accent
                         ? const Color(0xFF070400)
                         : Colors.white),
             ),
@@ -78,7 +78,7 @@ class GButton extends StatelessWidget {
           )
         : ElevatedButton.styleFrom(
             backgroundColor: c,
-            foregroundColor: c == GambitColors.accent
+            foregroundColor: c == GonyetiColors.accent
                 ? const Color(0xFF070400)
                 : Colors.white,
             minimumSize: const Size(48, 48),
@@ -132,10 +132,10 @@ class GCard extends StatelessWidget {
     final container = Container(
       padding: padding ?? const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: GambitColors.card,
+        color: GonyetiColors.card,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: borderColor ?? GambitColors.border,
+          color: borderColor ?? GonyetiColors.border,
           width: 1.5,
         ),
       ),
@@ -169,23 +169,23 @@ class GBadge extends StatelessWidget {
       case "paid":
       case "available":
       case "completed":
-        return GambitColors.success;
+        return GonyetiColors.success;
       case "warned":
       case "expiring":
       case "pending":
       case "in_transit":
-        return GambitColors.warn;
+        return GonyetiColors.warn;
       case "banned":
       case "expired":
       case "unpaid":
       case "maintenance":
       case "cancelled":
-        return GambitColors.danger;
+        return GonyetiColors.danger;
       case "on_trip":
       case "active_trip":
-        return GambitColors.blue;
+        return GonyetiColors.blue;
       default:
-        return GambitColors.textSub;
+        return GonyetiColors.textSub;
     }
   }
 
@@ -223,7 +223,7 @@ class GChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ?? GambitColors.textSub;
+    final c = color ?? GonyetiColors.textSub;
     return Semantics(
       label: label,
       child: Row(
@@ -254,7 +254,7 @@ class GStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ?? GambitColors.accent;
+    final c = color ?? GonyetiColors.accent;
     return Expanded(
       child: Semantics(
         label: "$label: $value",
@@ -285,7 +285,7 @@ class GStatCard extends StatelessWidget {
                 label,
                 style: const TextStyle(
                   fontSize: 10,
-                  color: GambitColors.textMuted,
+                  color: GonyetiColors.textMuted,
                   letterSpacing: .5,
                 ),
               ),
@@ -314,12 +314,12 @@ class GAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cfg = {
-      "danger": (GambitColors.danger, Icons.error_rounded),
-      "warn": (GambitColors.warn, Icons.warning_rounded),
-      "info": (GambitColors.blue, Icons.info_rounded),
-      "success": (GambitColors.success, Icons.check_circle_rounded),
+      "danger": (GonyetiColors.danger, Icons.error_rounded),
+      "warn": (GonyetiColors.warn, Icons.warning_rounded),
+      "info": (GonyetiColors.blue, Icons.info_rounded),
+      "success": (GonyetiColors.success, Icons.check_circle_rounded),
     };
-    final (color, icon) = cfg[type] ?? (GambitColors.blue, Icons.info_rounded);
+    final (color, icon) = cfg[type] ?? (GonyetiColors.blue, Icons.info_rounded);
 
     return Semantics(
       liveRegion: type == "danger",
@@ -354,7 +354,7 @@ class GAlert extends StatelessWidget {
                     Text(
                       sub!,
                       style: const TextStyle(
-                        color: GambitColors.textSub,
+                        color: GonyetiColors.textSub,
                         fontSize: 11,
                       ),
                     ),
@@ -409,7 +409,7 @@ class GInput extends StatelessWidget {
         textInputAction: textInputAction,
         onChanged: onChanged,
         onSubmitted: onSubmitted,
-        style: const TextStyle(color: GambitColors.text, fontSize: 13),
+        style: const TextStyle(color: GonyetiColors.text, fontSize: 13),
         decoration: InputDecoration(
           labelText: label.toUpperCase(),
           hintText: hint,
@@ -484,8 +484,8 @@ class AppShell extends StatelessWidget {
     return Scaffold(
       body: body,
       bottomNavigationBar: NavigationBar(
-        backgroundColor: GambitColors.surface,
-        indicatorColor: GambitColors.accentDim,
+        backgroundColor: GonyetiColors.surface,
+        indicatorColor: GonyetiColors.accentDim,
         selectedIndex: currentIndex,
         onDestinationSelected: onDestinationSelected,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
@@ -495,12 +495,12 @@ class AppShell extends StatelessWidget {
               (d) => NavigationDestination(
                 icon: Icon(
                   d.icon,
-                  color: GambitColors.textMuted,
+                  color: GonyetiColors.textMuted,
                   semanticLabel: d.label,
                 ),
                 selectedIcon: Icon(
                   d.icon,
-                  color: GambitColors.accent,
+                  color: GonyetiColors.accent,
                   semanticLabel: d.label,
                 ),
                 label: d.label,
@@ -540,30 +540,30 @@ class _SideNav extends StatelessWidget {
     return SizedBox(
       width: 190,
       child: Container(
-        color: GambitColors.bg,
+        color: GonyetiColors.bg,
         child: Column(
           children: [
             // Brand
             Container(
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
               decoration: const BoxDecoration(
-                border: Border(bottom: BorderSide(color: GambitColors.border)),
+                border: Border(bottom: BorderSide(color: GonyetiColors.border)),
               ),
               child: Row(
                 children: [
                   Container(
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
-                      color: GambitColors.accentDim,
+                      color: GonyetiColors.accentDim,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: GambitColors.accent.withAlpha(50),
+                        color: GonyetiColors.accent.withAlpha(50),
                       ),
                     ),
                     child: const Icon(
                       Icons.local_shipping_rounded,
                       size: 16,
-                      color: GambitColors.accent,
+                      color: GonyetiColors.accent,
                       semanticLabel: "",
                     ),
                   ),
@@ -572,18 +572,18 @@ class _SideNav extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "GAMBIT",
+                        "GONYETI",
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w900,
-                          color: GambitColors.accent,
+                          color: GonyetiColors.accent,
                         ),
                       ),
                       Text(
-                        "TSL",
+                        "TLS",
                         style: TextStyle(
                           fontSize: 8,
-                          color: GambitColors.textMuted,
+                          color: GonyetiColors.textMuted,
                           letterSpacing: 3,
                         ),
                       ),
@@ -613,12 +613,12 @@ class _SideNav extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: selected
-                              ? GambitColors.accentDim
+                              ? GonyetiColors.accentDim
                               : Colors.transparent,
                           border: Border(
                             left: BorderSide(
                               color: selected
-                                  ? GambitColors.accent
+                                  ? GonyetiColors.accent
                                   : Colors.transparent,
                               width: 2,
                             ),
@@ -630,8 +630,8 @@ class _SideNav extends StatelessWidget {
                               destinations[i].icon,
                               size: 16,
                               color: selected
-                                  ? GambitColors.accent
-                                  : GambitColors.textMuted,
+                                  ? GonyetiColors.accent
+                                  : GonyetiColors.textMuted,
                               semanticLabel: "",
                             ),
                             const SizedBox(width: 10),
@@ -639,8 +639,8 @@ class _SideNav extends StatelessWidget {
                               destinations[i].label,
                               style: TextStyle(
                                 color: selected
-                                    ? GambitColors.accent
-                                    : GambitColors.textSub,
+                                    ? GonyetiColors.accent
+                                    : GonyetiColors.textSub,
                                 fontSize: 12,
                                 fontWeight: selected
                                     ? FontWeight.w700
@@ -661,17 +661,17 @@ class _SideNav extends StatelessWidget {
               builder: (_, auth, _) => Container(
                 padding: const EdgeInsets.all(14),
                 decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: GambitColors.border)),
+                  border: Border(top: BorderSide(color: GonyetiColors.border)),
                 ),
                 child: Row(
                   children: [
                     const CircleAvatar(
                       radius: 14,
-                      backgroundColor: GambitColors.elevated,
+                      backgroundColor: GonyetiColors.elevated,
                       child: Icon(
                         Icons.person,
                         size: 14,
-                        color: GambitColors.textSub,
+                        color: GonyetiColors.textSub,
                         semanticLabel: "",
                       ),
                     ),
@@ -685,7 +685,7 @@ class _SideNav extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: GambitColors.text,
+                              color: GonyetiColors.text,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -693,7 +693,7 @@ class _SideNav extends StatelessWidget {
                             auth.role.replaceAll("_", " "),
                             style: const TextStyle(
                               fontSize: 9,
-                              color: GambitColors.textMuted,
+                              color: GonyetiColors.textMuted,
                             ),
                           ),
                         ],
@@ -738,7 +738,7 @@ class _GChangePasswordBannerState extends State<GChangePasswordBanner> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Password updated"),
-            backgroundColor: GambitColors.success,
+            backgroundColor: GonyetiColors.success,
           ),
         );
       }
@@ -754,13 +754,13 @@ class _GChangePasswordBannerState extends State<GChangePasswordBanner> {
     if (!auth.mustChangePw) return const SizedBox.shrink();
 
     return Container(
-      color: GambitColors.danger.withAlpha(20),
+      color: GonyetiColors.danger.withAlpha(20),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
           const Icon(
             Icons.warning_rounded,
-            color: GambitColors.danger,
+            color: GonyetiColors.danger,
             size: 20,
           ),
           const SizedBox(width: 12),
@@ -773,7 +773,7 @@ class _GChangePasswordBannerState extends State<GChangePasswordBanner> {
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 13,
-                    color: GambitColors.text,
+                    color: GonyetiColors.text,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -781,7 +781,7 @@ class _GChangePasswordBannerState extends State<GChangePasswordBanner> {
                   "Please set a new password for your account",
                   style: TextStyle(
                     fontSize: 11,
-                    color: GambitColors.textSub.withAlpha(200),
+                    color: GonyetiColors.textSub.withAlpha(200),
                   ),
                 ),
               ],
@@ -862,7 +862,7 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: GambitColors.surface,
+      backgroundColor: GonyetiColors.surface,
       title: const Text("Change Password"),
       content: SingleChildScrollView(
         child: Column(
@@ -872,15 +872,15 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: GambitColors.danger.withAlpha(20),
+                  color: GonyetiColors.danger.withAlpha(20),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: GambitColors.danger.withAlpha(100)),
+                  border: Border.all(color: GonyetiColors.danger.withAlpha(100)),
                 ),
                 child: Row(
                   children: [
                     const Icon(
                       Icons.error_rounded,
-                      color: GambitColors.danger,
+                      color: GonyetiColors.danger,
                       size: 16,
                     ),
                     const SizedBox(width: 8),
@@ -889,7 +889,7 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
                         _error!,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: GambitColors.danger,
+                          color: GonyetiColors.danger,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,

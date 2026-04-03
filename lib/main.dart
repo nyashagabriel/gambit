@@ -1,4 +1,4 @@
-// lib/main.dart — GAMBIT TSL
+// lib/main.dart — GONYETI TLS
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "app.dart";
@@ -21,5 +21,5 @@ void main() async {
     ),
   );
 
-  runApp(const GambitApp());
+  runApp(const GonyetiApp());
 }

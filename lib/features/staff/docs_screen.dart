@@ -1,4 +1,4 @@
-// lib/features/staff/docs_screen.dart — GAMBIT TSL
+// lib/features/staff/docs_screen.dart — GONYETI TLS
 // Document list + upload for staff.
 // Upload uses the three-step signed URL flow (no binary through the edge function).
 // file_picker opens the system file browser; we read bytes in-memory and PUT
@@ -13,7 +13,7 @@ import "../../core/api/files_api.dart";
 import "../../core/auth/auth_provider.dart";
 import "../../core/auth/role_guard.dart";
 import "../../core/models/models.dart";
-import "../../shared/theme/gambit_theme.dart";
+import "../../shared/theme/gonyeti_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 class StaffDocsScreen extends StatefulWidget {
@@ -163,7 +163,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Document uploaded successfully"),
-            backgroundColor: GambitColors.success,
+            backgroundColor: GonyetiColors.success,
           ),
         );
       }
@@ -187,7 +187,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
     return showModalBottomSheet<_UploadMeta>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: GambitColors.elevated,
+      backgroundColor: GonyetiColors.elevated,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -208,7 +208,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
-                  color: GambitColors.text,
+                  color: GonyetiColors.text,
                 ),
               ),
               const SizedBox(height: 16),
@@ -225,7 +225,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
               const Text(
                 "FOLDER",
                 style: TextStyle(
-                  color: GambitColors.textSub,
+                  color: GonyetiColors.textSub,
                   fontSize: 10,
                   letterSpacing: 1,
                 ),
@@ -248,13 +248,13 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                         ),
                         decoration: BoxDecoration(
                           color: sel
-                              ? GambitColors.accentDim
-                              : GambitColors.card,
+                              ? GonyetiColors.accentDim
+                              : GonyetiColors.card,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
                             color: sel
-                                ? GambitColors.accent
-                                : GambitColors.border,
+                                ? GonyetiColors.accent
+                                : GonyetiColors.border,
                           ),
                         ),
                         child: Text(
@@ -263,8 +263,8 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                             fontSize: 12,
                             fontWeight: sel ? FontWeight.w700 : FontWeight.w400,
                             color: sel
-                                ? GambitColors.accent
-                                : GambitColors.textSub,
+                                ? GonyetiColors.accent
+                                : GonyetiColors.textSub,
                           ),
                         ),
                       ),
@@ -293,7 +293,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                     child: GButton(
                       label: "Cancel",
                       outline: true,
-                      color: GambitColors.textSub,
+                      color: GonyetiColors.textSub,
                       onPressed: () => Navigator.pop(ctx),
                     ),
                   ),
@@ -302,7 +302,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                     child: GButton(
                       label: "Upload",
                       icon: Icons.upload_rounded,
-                      color: GambitColors.success,
+                      color: GonyetiColors.success,
                       onPressed: () {
                         final title = titleCtrl.text.trim();
                         if (title.isEmpty) return;
@@ -344,7 +344,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
             onPressed: () => Navigator.pop(context, true),
             child: const Text(
               "Delete",
-              style: TextStyle(color: GambitColors.danger),
+              style: TextStyle(color: GonyetiColors.danger),
             ),
           ),
         ],
@@ -361,7 +361,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
-            backgroundColor: GambitColors.danger,
+            backgroundColor: GonyetiColors.danger,
           ),
         );
       }
@@ -378,10 +378,10 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
         auth.claims != null && RoleGuard.canDeleteDocuments(auth.claims!);
 
     return Scaffold(
-      backgroundColor: GambitColors.bg,
+      backgroundColor: GonyetiColors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GambitColors.accent,
+        color: GonyetiColors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
@@ -396,14 +396,14 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: GambitColors.text,
+                          color: GonyetiColors.text,
                         ),
                       ),
                       Text(
                         "Licences, permits, PODs & reports",
                         style: TextStyle(
                           fontSize: 11,
-                          color: GambitColors.textMuted,
+                          color: GonyetiColors.textMuted,
                         ),
                       ),
                     ],
@@ -431,15 +431,15 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   value: _uploadProgress,
-                  backgroundColor: GambitColors.border,
-                  color: GambitColors.accent,
+                  backgroundColor: GonyetiColors.border,
+                  color: GonyetiColors.accent,
                   minHeight: 4,
                 ),
               ),
               const SizedBox(height: 8),
               const Text(
                 "Uploading…",
-                style: TextStyle(fontSize: 11, color: GambitColors.textSub),
+                style: TextStyle(fontSize: 11, color: GonyetiColors.textSub),
               ),
               const SizedBox(height: 12),
             ],
@@ -455,7 +455,7 @@ class _StaffDocsScreenState extends State<StaffDocsScreen> {
             if (_loading)
               const Center(
                 child: CircularProgressIndicator(
-                  color: GambitColors.accent,
+                  color: GonyetiColors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -504,20 +504,20 @@ class _DocTile extends StatelessWidget {
   }
 
   Color get _expiryColor {
-    if (doc.isExpired) return GambitColors.danger;
-    if (doc.isExpiringSoon(daysAhead: 7)) return GambitColors.danger;
-    if (doc.isExpiringSoon()) return GambitColors.warn;
-    return GambitColors.textMuted;
+    if (doc.isExpired) return GonyetiColors.danger;
+    if (doc.isExpiringSoon(daysAhead: 7)) return GonyetiColors.danger;
+    if (doc.isExpiringSoon()) return GonyetiColors.warn;
+    return GonyetiColors.textMuted;
   }
 
   @override
   Widget build(BuildContext context) {
     final borderColor = doc.isExpired
-        ? GambitColors.danger.withAlpha(80)
+        ? GonyetiColors.danger.withAlpha(80)
         : doc.isExpiringSoon(daysAhead: 7)
-        ? GambitColors.danger.withAlpha(50)
+        ? GonyetiColors.danger.withAlpha(50)
         : doc.isExpiringSoon()
-        ? GambitColors.warn.withAlpha(50)
+        ? GonyetiColors.warn.withAlpha(50)
         : null;
 
     return Padding(
@@ -530,13 +530,13 @@ class _DocTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: GambitColors.elevated,
+                color: GonyetiColors.elevated,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
                 _iconForFolder(doc.folder),
                 size: 18,
-                color: GambitColors.textSub,
+                color: GonyetiColors.textSub,
                 semanticLabel: "",
               ),
             ),
@@ -551,7 +551,7 @@ class _DocTile extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
-                      color: GambitColors.text,
+                      color: GonyetiColors.text,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -563,7 +563,7 @@ class _DocTile extends StatelessWidget {
                         doc.folder.replaceAll("_", " ").toUpperCase(),
                         style: const TextStyle(
                           fontSize: 9,
-                          color: GambitColors.textMuted,
+                          color: GonyetiColors.textMuted,
                           letterSpacing: 0.8,
                           fontWeight: FontWeight.w600,
                         ),
@@ -572,7 +572,7 @@ class _DocTile extends StatelessWidget {
                         const Text(
                           " · ",
                           style: TextStyle(
-                            color: GambitColors.textMuted,
+                            color: GonyetiColors.textMuted,
                             fontSize: 9,
                           ),
                         ),
@@ -600,7 +600,7 @@ class _DocTile extends StatelessWidget {
                   icon: const Icon(
                     Icons.delete_outline_rounded,
                     size: 18,
-                    color: GambitColors.textMuted,
+                    color: GonyetiColors.textMuted,
                   ),
                   onPressed: () => onDelete(doc),
                   tooltip: "Delete",

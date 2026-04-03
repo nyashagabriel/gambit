@@ -1,8 +1,8 @@
-// lib/core/auth/role_guard.dart — GAMBIT TSL
+// lib/core/auth/role_guard.dart — GONYETI TLS
 //
 // UI-side role logic. The server enforces the same rules independently.
 // If the server rejects a request, it wins — this guard is UX-only.
-import "package:gambit/core/models/models.dart";
+import "package:gonyeti_tls/core/models/models.dart";
 
 import "../constants.dart";
 
@@ -10,7 +10,7 @@ class RoleGuard {
   RoleGuard._();
 
   // ── Hierarchy helpers ──────────────────────────────────────────────────────
-  static int rankOf(String role) => GambitConfig.roleHierarchy.indexOf(role);
+  static int rankOf(String role) => GonyetiConfig.roleHierarchy.indexOf(role);
 
   /// True if [actorRole] meets or exceeds [requiredRole].
   static bool hasRole(String actorRole, String requiredRole) =>

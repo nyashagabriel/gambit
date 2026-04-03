@@ -1,4 +1,4 @@
-// lib/core/models/models.dart — GAMBIT TSL
+// lib/core/models/models.dart — GONYETI TLS
 // Single file for all domain value objects.
 //
 // fromMap rules:

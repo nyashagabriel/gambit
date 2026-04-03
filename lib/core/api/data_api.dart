@@ -1,8 +1,8 @@
-// lib/core/api/data_api.dart — GAMBIT TSL
+// lib/core/api/data_api.dart — GONYETI TLS
 // Typed wrappers for companies, users, trips, fleet, drivers.
 // All calls go through rpc() in client.dart.
 
-import "package:gambit/core/models/models.dart";
+import "package:gonyeti_tls/core/models/models.dart";
 import "client.dart";
 
 // ─── Companies (super_admin only) ─────────────────────────────────────────────

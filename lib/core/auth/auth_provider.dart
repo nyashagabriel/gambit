@@ -1,4 +1,4 @@
-// lib/core/auth/auth_provider.dart — GAMBIT TSL
+// lib/core/auth/auth_provider.dart — GONYETI TLS
 
 import "dart:convert";
 
@@ -104,7 +104,7 @@ class AuthProvider extends ChangeNotifier {
       _setBusy(false);
       notifyListeners();
       return true;
-    } on api.GambitApiException catch (e) {
+    } on api.GonyetiApiException catch (e) {
       debugPrint("[AUTH] login api error: ${e.statusCode} ${e.message}");
       _error = e.message;
       _status = AuthStatus.unauthenticated;
@@ -151,7 +151,7 @@ class AuthProvider extends ChangeNotifier {
         exp: _claims!.exp,
       );
       notifyListeners();
-    } on api.GambitApiException catch (e) {
+    } on api.GonyetiApiException catch (e) {
       if (e.isUnauthorized) await logout();
     } catch (_) {
       // Non-critical network hiccup — keep existing claims

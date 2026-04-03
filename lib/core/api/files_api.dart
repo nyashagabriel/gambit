@@ -1,4 +1,4 @@
-// lib/core/api/files_api.dart — GAMBIT TSL
+// lib/core/api/files_api.dart — GONYETI TLS
 // Typed wrappers for the /files edge function.
 //
 // Upload flow (no binary through the edge function):
@@ -52,7 +52,7 @@ class FilesApi {
         .timeout(const Duration(minutes: 5)); // large files need more time
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw GambitApiException(
+      throw GonyetiApiException(
         statusCode: response.statusCode,
         message: "File upload failed (${response.statusCode}).",
       );

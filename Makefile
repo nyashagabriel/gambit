@@ -2,7 +2,7 @@ SHELL := /bin/bash
 .PHONY: run run-dev run-prod help
 
 help:
-	@echo "Gambit TSL — Flutter Run Targets"
+	@echo "Gonyeti TLS — Flutter Run Targets"
 	@echo ""
 	@echo "  make run          → Interactive prompt for BASE_URL & ANON_KEY"
 	@echo "  make run-dev      → Run against local Supabase (localhost:54321)"
@@ -11,27 +11,27 @@ help:
 
 run:
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@echo "GAMBIT TSL • Flutter Run — Custom Configuration"
+	@echo "GONYETI TLS • Flutter Run — Custom Configuration"
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@read -p "Enter GAMBIT_BASE_URL (e.g. https://xxx.supabase.co/functions/v1): " BASE_URL; \
-	read -p "Enter GAMBIT_ANON_KEY (e.g. sb_publishable_...): " ANON_KEY; \
+	@read -p "Enter GONYETI_BASE_URL (e.g. https://xxx.supabase.co/functions/v1): " BASE_URL; \
+	read -p "Enter GONYETI_ANON_KEY (e.g. sb_publishable_...): " ANON_KEY; \
 	flutter run \
-		--dart-define=GAMBIT_BASE_URL=$$BASE_URL \
-		--dart-define=GAMBIT_ANON_KEY=$$ANON_KEY
+		--dart-define=GONYETI_BASE_URL=$$BASE_URL \
+		--dart-define=GONYETI_ANON_KEY=$$ANON_KEY
 
 run-dev:
 	@echo "🚀 Running against LOCAL Supabase (localhost:54321)"
 	flutter run \
-		--dart-define=GAMBIT_BASE_URL=http://localhost:54321/functions/v1 \
-		--dart-define=GAMBIT_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlc3QiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcwMDAwMDAwMCwiZXhwIjoxODAwMDAwMDAwfQ.PLACEHOLDER
+		--dart-define=GONYETI_BASE_URL=http://localhost:54321/functions/v1 \
+		--dart-define=GONYETI_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlc3QiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcwMDAwMDAwMCwiZXhwIjoxODAwMDAwMDAwfQ.PLACEHOLDER
 
 run-prod:
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@echo "⚠️  PRODUCTION CREDENTIALS — Handle with care!"
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@read -p "Enter PRODUCTION GAMBIT_BASE_URL: " PROD_URL; \
-	read -sp "Enter PRODUCTION GAMBIT_ANON_KEY: " PROD_KEY; \
+	@read -p "Enter PRODUCTION GONYETI_BASE_URL: " PROD_URL; \
+	read -sp "Enter PRODUCTION GONYETI_ANON_KEY: " PROD_KEY; \
 	echo ""; \
 	flutter run \
-		--dart-define=GAMBIT_BASE_URL=$$PROD_URL \
-		--dart-define=GAMBIT_ANON_KEY=$$PROD_KEY
+		--dart-define=GONYETI_BASE_URL=$$PROD_URL \
+		--dart-define=GONYETI_ANON_KEY=$$PROD_KEY
