@@ -33,7 +33,7 @@ run-prod:
 	@echo "⚠️  PRODUCTION CREDENTIALS — Handle with care!"
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@read -p "Enter PRODUCTION GONYETI_BASE_URL: " PROD_URL; \
-	read -sp "Enter PRODUCTION GONYETI_ANON_KEY: " PROD_KEY; \
+	read -p "Enter PRODUCTION GONYETI_ANON_KEY: " PROD_KEY; \
 	echo ""; \
 	flutter run \
 		--dart-define=GONYETI_BASE_URL=$$PROD_URL \
@@ -43,10 +43,10 @@ build-web:
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@echo "GONYETI TLS • Flutter Web Build (Release)"
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@BASE_URL="$$GONYETI_BASE_URL"; \
+	BASE_URL="$$GONYETI_BASE_URL"; \
 	ANON_KEY="$$GONYETI_ANON_KEY"; \
 	if [[ -z "$$BASE_URL" ]]; then read -p "Enter GONYETI_BASE_URL: " BASE_URL; fi; \
-	if [[ -z "$$ANON_KEY" ]]; then read -sp "Enter GONYETI_ANON_KEY: " ANON_KEY; echo ""; fi; \
+	if [[ -z "$$ANON_KEY" ]]; then read -p "Enter GONYETI_ANON_KEY: " ANON_KEY; echo ""; fi; \
 	flutter build web --release \
 		--dart-define=GONYETI_BASE_URL=$$BASE_URL \
 		--dart-define=GONYETI_ANON_KEY=$$ANON_KEY
