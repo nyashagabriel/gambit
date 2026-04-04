@@ -47,7 +47,7 @@ build-web:
 	ANON_KEY="$$GONYETI_ANON_KEY"; \
 	if [[ -z "$$BASE_URL" ]]; then read -p "Enter GONYETI_BASE_URL: " BASE_URL; fi; \
 	if [[ -z "$$ANON_KEY" ]]; then read -p "Enter GONYETI_ANON_KEY: " ANON_KEY; echo ""; fi; \
-	flutter build web --release \
+	flutter build web --release --pwa-strategy=none --no-wasm-dry-run \
 		--dart-define=GONYETI_BASE_URL=$$BASE_URL \
 		--dart-define=GONYETI_ANON_KEY=$$ANON_KEY
 
