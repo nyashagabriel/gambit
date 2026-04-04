@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: run run-dev run-prod help
+.PHONY: help run run-dev run-prod build-web push-src push-web
 
 help:
 	@echo "Gonyeti TLS — Flutter Run Targets"
@@ -7,6 +7,9 @@ help:
 	@echo "  make run          → Interactive prompt for BASE_URL & ANON_KEY"
 	@echo "  make run-dev      → Run against local Supabase (localhost:54321)"
 	@echo "  make run-prod     → Prompt for production credentials"
+	@echo "  make build-web    → Build web release (reads env or prompts)"
+	@echo "  make push-src     → Commit and push source changes"
+	@echo "  make push-web     → Force-add build/web and push (if you want artifacts in git)"
 	@echo ""
 
 run:
@@ -35,3 +38,27 @@ run-prod:
 	flutter run \
 		--dart-define=GONYETI_BASE_URL=$$PROD_URL \
 		--dart-define=GONYETI_ANON_KEY=$$PROD_KEY
+
+build-web:
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "GONYETI TLS • Flutter Web Build (Release)"
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@BASE_URL="$$GONYETI_BASE_URL"; \
+	ANON_KEY="$$GONYETI_ANON_KEY"; \
+	if [[ -z "$$BASE_URL" ]]; then read -p "Enter GONYETI_BASE_URL: " BASE_URL; fi; \
+	if [[ -z "$$ANON_KEY" ]]; then read -sp "Enter GONYETI_ANON_KEY: " ANON_KEY; echo ""; fi; \
+	flutter build web --release \
+		--dart-define=GONYETI_BASE_URL=$$BASE_URL \
+		--dart-define=GONYETI_ANON_KEY=$$ANON_KEY
+
+push-src:
+	@read -p "Commit message: " MSG; \
+	git add .; \
+	git commit -m "$$MSG"; \
+	git push
+
+push-web:
+	@read -p "Commit message for web artifacts: " MSG; \
+	git add build/web; \
+	git commit -m "$$MSG"; \
+	git push

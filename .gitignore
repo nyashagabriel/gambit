@@ -30,7 +30,6 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
 /coverage/
 
 # Symbolication related
@@ -49,8 +48,10 @@ android/key.properties
 android/app/*.jks
 android/app/*.keystore
 
-# Build outputs
-build/
+# Build outputs (allow committing web artifacts only)
+/build/*
+!/build/web/
+!/build/web/**
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
