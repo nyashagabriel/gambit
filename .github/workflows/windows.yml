@@ -1,56 +1,43 @@
-# .github/workflows/web.yml — GONYETI TLS
+# .github/workflows/windows.yml — GONYETI TLS
 #
-# ⚠️  PAUSED — This workflow is disabled due to misbehaving web builds.
-# ⚠️  To re-enable, replace the workflow_dispatch trigger below with:
-# ⚠️    on:
-# ⚠️      push:
-# ⚠️        branches: [main]
-# ⚠️      pull_request:
-# ⚠️        branches: [main]
-#
-# Deploys the Flutter web app to GitHub Pages on every push to main.
+# Builds a Windows release (.zip) of the Flutter desktop app on every push to main.
 #
 # ── How secrets flow ────────────────────────────────────────────────────────
 #  1. Go to your repo → Settings → Secrets and Variables → Actions
 #  2. Add two repository secrets:
-#       GONYETI_ANON_KEY   — Supabase publishable anon key (safe to embed in JS)
+#       GONYETI_ANON_KEY   — Supabase publishable anon key
 #       GONYETI_BASE_URL   — https://<project>.supabase.co/functions/v1
 #  3. This workflow injects them via --dart-define at build time.
-#     The Dart compiler bakes the values into the JS bundle — no .env file
-#     is ever needed on the runner or the deployed server.
 #
 # ── Jobs ────────────────────────────────────────────────────────────────────
-#   lint   → static analysis only (non-blocking — won't stop deploy)
+#   lint   → static analysis (non-blocking)
 #   test   → unit tests
-#   build  → web release build
-#   deploy → push to GitHub Pages (main only)
+#   build  → Windows release build + zip artifact upload
 #
 # ── One-time GitHub repo setup ───────────────────────────────────────────────
-#  1. Settings → Pages → Source: GitHub Actions
-#  2. Settings → Secrets → Actions → add GONYETI_BASE_URL and GONYETI_ANON_KEY
+#  1. Settings → Secrets → Actions → add GONYETI_BASE_URL and GONYETI_ANON_KEY
 # ─────────────────────────────────────────────────────────────────────────────
 
-name: Flutter Web CI/CD (PAUSED)
+name: Flutter Windows CI
 
 on:
-  workflow_dispatch:  # Manual-only — will not run on push or PR
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-# Required for checkout (read) and Pages deploy (write)
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# Only allow one deploy at a time; cancel in-progress runs on new push
 concurrency:
-  group: pages
+  group: windows-${{ github.ref }}
   cancel-in-progress: true
 
 env:
   FLUTTER_VERSION: "3.41.6"
 
 jobs:
-  # ── Static analysis (non-blocking on PRs, informational) ──────────────────
+  # ── Static analysis (non-blocking) ────────────────────────────────────────
   lint:
     name: Analyse
     runs-on: ubuntu-latest
@@ -69,12 +56,10 @@ jobs:
 
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
-        # Non-blocking — formatting issues are reported but don't fail the pipeline
         continue-on-error: true
 
       - name: Analyse code
         run: flutter analyze --fatal-warnings
-        # --fatal-warnings (not --fatal-infos) so info-level hints don't block deploy
 
   # ── Unit tests ────────────────────────────────────────────────────────────
   test:
@@ -102,10 +87,10 @@ jobs:
           files: coverage/lcov.info
         continue-on-error: true
 
-  # ── Web release build ─────────────────────────────────────────────────────
+  # ── Windows release build ─────────────────────────────────────────────────
   build:
-    name: Build Web
-    runs-on: ubuntu-latest
+    name: Build Windows
+    runs-on: windows-latest
     needs: [test]
     steps:
       - uses: actions/checkout@v4
@@ -117,36 +102,23 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Enable Windows desktop support
+        run: flutter config --enable-windows-desktop
+
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build web release
-        run: |
-          flutter build web \
-            --release \
-            --base-href="/gambit/" \
-            --dart-define=GONYETI_BASE_URL=${{ secrets.GONYETI_BASE_URL }} \
-            --dart-define=GONYETI_ANON_KEY=${{ secrets.GONYETI_ANON_KEY }}
-        # base-href must match the GitHub Pages sub-path: /<repo-name>/
-        # Secrets are injected here and baked into the compiled JS output.
-        # The deployed web server never needs an .env file — values are
-        # compiled in at this step.
+      - name: Build Windows release
+        run: >
+          flutter build windows
+          --release
+          --dart-define=GONYETI_BASE_URL=${{ secrets.GONYETI_BASE_URL }}
+          --dart-define=GONYETI_ANON_KEY=${{ secrets.GONYETI_ANON_KEY }}
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Archive release bundle
+        uses: actions/upload-artifact@v4
         with:
-          path: build/web
-
-  # ── Deploy to GitHub Pages (main branch pushes only) ──────────────────────
-  deploy:
-    name: Deploy to Pages
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v4
+          name: gonyeti-tls-windows
+          path: build/windows/x64/runner/Release/
+          retention-days: 30
+          if-no-files-found: error

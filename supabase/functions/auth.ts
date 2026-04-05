@@ -25,12 +25,27 @@ const ISSUER     = "gambit-tsl";
 const TTL        = 60 * 60 * 24 * 7; // 7 days
 
 // ─── CORS ──────────────────────────────────────────────────────────────────────
-const CORS: Record<string, string> = {
-  "Access-Control-Allow-Origin":  FRONTEND_URL ?? "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Authorization, Content-Type, apikey",
-  "Content-Type": "application/json",
-};
+const VERCEL_GONYETI_ORIGIN = /^https:\/\/gonyeti-tls(?:-[a-z0-9-]+)*\.vercel\.app$/i;
+
+function isAllowedOrigin(origin: string): boolean {
+  if (FRONTEND_URL && origin === FRONTEND_URL) return true;
+  return VERCEL_GONYETI_ORIGIN.test(origin);
+}
+
+function cors(req: Request): Record<string, string> {
+  const origin = req.headers.get("origin")?.trim();
+  const allowOrigin = origin && isAllowedOrigin(origin)
+    ? origin
+    : (FRONTEND_URL ?? "*");
+
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Authorization, Content-Type, apikey",
+    "Vary": "Origin",
+    "Content-Type": "application/json",
+  };
+}
 
 // ─── JWT ───────────────────────────────────────────────────────────────────────
 function b64uEncode(buf: ArrayBuffer | string): string {
@@ -85,13 +100,6 @@ async function verifyJwt(token: string): Promise<Record<string, unknown> | null>
   }
 }
 
-// ─── Response helpers ──────────────────────────────────────────────────────────
-const ok  = (data: unknown, status = 200) =>
-  new Response(JSON.stringify(data), { status, headers: CORS });
-
-const err = (message: string, status = 400) =>
-  new Response(JSON.stringify({ error: message }), { status, headers: CORS });
-
 const logDbError = (scope: string, error: { code?: string; message?: string; details?: string; hint?: string } | null) => {
   if (!error) return;
   console.error(`[${scope}] error:`, {
@@ -104,7 +112,14 @@ const logDbError = (scope: string, error: { code?: string; message?: string; det
 
 // ─── Handler ───────────────────────────────────────────────────────────────────
 Deno.serve(async (req: Request) => {
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
+  const headers = cors(req);
+  const ok  = (data: unknown, status = 200) =>
+    new Response(JSON.stringify(data), { status, headers });
+
+  const err = (message: string, status = 400) =>
+    new Response(JSON.stringify({ error: message }), { status, headers });
+
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers });
   if (req.method !== "POST")    return err("Method not allowed", 405);
 
   let body: Record<string, unknown>;
