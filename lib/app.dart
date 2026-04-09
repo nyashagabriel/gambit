@@ -26,7 +26,9 @@ class GonyetiApp extends StatelessWidget {
       child: MaterialApp(
         title: "Gonyeti TLS",
         debugShowCheckedModeBanner: false,
-        theme: GonyetiTheme.dark,
+        theme: GonyetiTheme.light,
+        darkTheme: GonyetiTheme.dark,
+        themeMode: ThemeMode.system,
         initialRoute: "/login",
         routes: _routes,
         onGenerateRoute: _onGenerateRoute,
