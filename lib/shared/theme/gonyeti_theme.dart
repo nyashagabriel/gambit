@@ -2,21 +2,6 @@
 import "package:flutter/material.dart";
 
 class GonyetiThemeExtension extends ThemeExtension<GonyetiThemeExtension> {
-  final Color bg;
-  final Color surface;
-  final Color card;
-  final Color elevated;
-  final Color border;
-  final Color accent;
-  final Color accentDim;
-  final Color blue;
-  final Color blueDim;
-  final Color success;
-  final Color danger;
-  final Color warn;
-  final Color text;
-  final Color textSub;
-  final Color textMuted;
 
   const GonyetiThemeExtension({
     required this.bg,
@@ -35,6 +20,21 @@ class GonyetiThemeExtension extends ThemeExtension<GonyetiThemeExtension> {
     required this.textSub,
     required this.textMuted,
   });
+  final Color bg;
+  final Color surface;
+  final Color card;
+  final Color elevated;
+  final Color border;
+  final Color accent;
+  final Color accentDim;
+  final Color blue;
+  final Color blueDim;
+  final Color success;
+  final Color danger;
+  final Color warn;
+  final Color text;
+  final Color textSub;
+  final Color textMuted;
 
   @override
   GonyetiThemeExtension copyWith({
@@ -160,8 +160,8 @@ class GonyetiTheme {
   );
 
   static ThemeData get dark {
-    final colors = _darkColors;
-    final colorScheme = const ColorScheme.dark(
+    const colors = _darkColors;
+    const colorScheme = ColorScheme.dark(
       primary: Color(0xFFF0A500),
       secondary: Color(0xFF3B82F6),
       surface: Color(0xFF111620),
@@ -175,16 +175,14 @@ class GonyetiTheme {
   }
 
   static ThemeData get light {
-    final colors = _lightColors;
-    final colorScheme = const ColorScheme.light(
+    const colors = _lightColors;
+    const colorScheme = ColorScheme.light(
       primary: Color(0xFFD97706),
       secondary: Color(0xFF2563EB),
       surface: Color(0xFFF1F5F9),
       error: Color(0xFFDC2626),
-      onPrimary: Colors.white,
       onSecondary: Colors.white,
       onSurface: Color(0xFF0F172A),
-      onError: Colors.white,
     );
     return _buildTheme(ThemeData.light(), colorScheme, colors);
   }
