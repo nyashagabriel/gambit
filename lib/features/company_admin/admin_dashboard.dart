@@ -132,10 +132,10 @@ class _HomeTabState extends State<_HomeTab> {
     final expiredDocs = _docs.where((d) => d.isExpired).length;
 
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: context.colors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: context.colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
@@ -145,28 +145,28 @@ class _HomeTabState extends State<_HomeTab> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         "Dashboard",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: GonyetiColors.text,
+                          color: context.colors.text,
                         ),
                       ),
                       Text(
                         auth.username.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
-                          color: GonyetiColors.textMuted,
+                          color: context.colors.textMuted,
                         ),
                       ),
                     ],
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.logout_rounded,
-                    color: GonyetiColors.textSub,
+                    color: context.colors.textSub,
                     size: 20,
                   ),
                   tooltip: "Sign out",
@@ -182,9 +182,9 @@ class _HomeTabState extends State<_HomeTab> {
             const SizedBox(height: 16),
 
             if (_loading)
-              const Center(
+              Center(
                 child: CircularProgressIndicator(
-                  color: GonyetiColors.accent,
+                  color: context.colors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -198,7 +198,7 @@ class _HomeTabState extends State<_HomeTab> {
                     icon: Icons.route_rounded,
                     label: "ACTIVE TRIPS",
                     value: "$activeTrips",
-                    color: GonyetiColors.blue,
+                    color: context.colors.blue,
                   ),
                   const SizedBox(width: 10),
                   GStatCard(
@@ -221,7 +221,7 @@ class _HomeTabState extends State<_HomeTab> {
                     icon: Icons.warning_rounded,
                     label: "EXPIRING",
                     value: "$expiringDocs",
-                    color: GonyetiColors.warn,
+                    color: context.colors.warn,
                   ),
                 ],
               ),
@@ -287,39 +287,39 @@ class _FleetTabState extends State<_FleetTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: context.colors.bg,
       floatingActionButton: FloatingActionButton(
         onPressed: _openForm,
-        backgroundColor: GonyetiColors.accent,
+        backgroundColor: context.colors.accent,
         child: const Icon(Icons.add_rounded, color: Colors.white),
       ),
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: context.colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const Text(
+            Text(
               "Fleet",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GonyetiColors.text,
+                color: context.colors.text,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               "${_fleet.length} vehicle(s)",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
-                color: GonyetiColors.textMuted,
+                color: context.colors.textMuted,
               ),
             ),
             const SizedBox(height: 16),
             if (_loading)
-              const Center(
+              Center(
                 child: CircularProgressIndicator(
-                  color: GonyetiColors.accent,
+                  color: context.colors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -336,13 +336,13 @@ class _FleetTabState extends State<_FleetTab> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: GonyetiColors.blueDim,
+                            color: context.colors.blueDim,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.local_shipping_rounded,
                             size: 18,
-                            color: GonyetiColors.blue,
+                            color: context.colors.blue,
                             semanticLabel: "",
                           ),
                         ),
@@ -353,17 +353,17 @@ class _FleetTabState extends State<_FleetTab> {
                             children: [
                               Text(
                                 f.registration,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14,
-                                  color: GonyetiColors.text,
+                                  color: context.colors.text,
                                 ),
                               ),
                               Text(
                                 f.displayName,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
-                                  color: GonyetiColors.textMuted,
+                                  color: context.colors.textMuted,
                                 ),
                               ),
                             ],
@@ -371,7 +371,7 @@ class _FleetTabState extends State<_FleetTab> {
                         ),
                         GBadge(
                           label: f.status,
-                          color: GBadge.colorForStatus(f.status),
+                          color: GBadge.colorForStatus(context, f.status),
                         ),
                       ],
                     ),
@@ -439,39 +439,39 @@ class _TripsTabState extends State<_TripsTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: context.colors.bg,
       floatingActionButton: FloatingActionButton(
         onPressed: _openForm,
-        backgroundColor: GonyetiColors.accent,
+        backgroundColor: context.colors.accent,
         child: const Icon(Icons.add_rounded, color: Colors.white),
       ),
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: context.colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const Text(
+            Text(
               "Trips",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GonyetiColors.text,
+                color: context.colors.text,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               "${_trips.length} trip(s)",
-              style: const TextStyle(
+              style:  TextStyle(
                 fontSize: 11,
-                color: GonyetiColors.textMuted,
+                color: context.colors.textMuted,
               ),
             ),
             const SizedBox(height: 16),
             if (_loading)
-              const Center(
+               Center(
                 child: CircularProgressIndicator(
-                  color: GonyetiColors.accent,
+                  color: context.colors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -481,7 +481,7 @@ class _TripsTabState extends State<_TripsTab> {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: GCard(
                   borderColor: t.isActive
-                      ? GonyetiColors.blue.withAlpha(60)
+                      ? context.colors.blue.withAlpha(60)
                       : null,
                   child: Row(
                     children: [
@@ -491,18 +491,18 @@ class _TripsTabState extends State<_TripsTab> {
                           children: [
                             Text(
                               t.reference,
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
-                                color: GonyetiColors.text,
+                                color: context.colors.text,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               "${t.origin} → ${t.destination}",
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 fontSize: 12,
-                                color: GonyetiColors.textSub,
+                                color: context.colors.textSub,
                               ),
                             ),
                             if (t.cargoType != null) ...[
@@ -518,7 +518,7 @@ class _TripsTabState extends State<_TripsTab> {
                       const SizedBox(width: 8),
                       GBadge(
                         label: t.status,
-                        color: GBadge.colorForStatus(t.status),
+                        color: GBadge.colorForStatus(context, t.status),
                       ),
                     ],
                   ),
@@ -568,17 +568,17 @@ class _DocumentsTabState extends State<_DocumentsTab> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: GonyetiColors.elevated,
-        title: const Text(
+        backgroundColor: context.colors.elevated,
+        title:  Text(
           "Delete document?",
           style: TextStyle(
-            color: GonyetiColors.text,
+            color: context.colors.text,
             fontWeight: FontWeight.w800,
           ),
         ),
         content: Text(
           'Remove "${doc.title}"?',
-          style: const TextStyle(color: GonyetiColors.textSub),
+          style:  TextStyle(color: context.colors.textSub),
         ),
         actions: [
           TextButton(
@@ -587,9 +587,9 @@ class _DocumentsTabState extends State<_DocumentsTab> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text(
+            child:  Text(
               "Delete",
-              style: TextStyle(color: GonyetiColors.danger),
+              style: TextStyle(color: context.colors.danger),
             ),
           ),
         ],
@@ -606,7 +606,7 @@ class _DocumentsTabState extends State<_DocumentsTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
-            backgroundColor: GonyetiColors.danger,
+            backgroundColor: context.colors.danger,
           ),
         );
       }
@@ -634,34 +634,34 @@ class _DocumentsTabState extends State<_DocumentsTab> {
         auth.claims != null && RoleGuard.canDeleteDocuments(auth.claims!);
 
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: context.colors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: context.colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const Text(
+            Text(
               "Documents",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GonyetiColors.text,
+                color: context.colors.text,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               "${_docs.length} file(s)",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
-                color: GonyetiColors.textMuted,
+                color: context.colors.textMuted,
               ),
             ),
             const SizedBox(height: 16),
             if (_loading)
-              const Center(
+              Center(
                 child: CircularProgressIndicator(
-                  color: GonyetiColors.accent,
+                  color: context.colors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -670,9 +670,9 @@ class _DocumentsTabState extends State<_DocumentsTab> {
               final expired = doc.isExpired;
               final expiring = doc.isExpiringSoon();
               final borderColor = expired
-                  ? GonyetiColors.danger.withAlpha(80)
+                  ? context.colors.danger.withAlpha(80)
                   : expiring
-                  ? GonyetiColors.warn.withAlpha(80)
+                  ? context.colors.warn.withAlpha(80)
                   : null;
 
               return Padding(
@@ -681,10 +681,10 @@ class _DocumentsTabState extends State<_DocumentsTab> {
                   borderColor: borderColor,
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.insert_drive_file_rounded,
                         size: 20,
-                        color: GonyetiColors.textSub,
+                        color: context.colors.textSub,
                         semanticLabel: "",
                       ),
                       const SizedBox(width: 12),
@@ -694,10 +694,10 @@ class _DocumentsTabState extends State<_DocumentsTab> {
                           children: [
                             Text(
                               doc.title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 13,
-                                color: GonyetiColors.text,
+                                color: context.colors.text,
                               ),
                             ),
                             const SizedBox(height: 2),
@@ -705,17 +705,17 @@ class _DocumentsTabState extends State<_DocumentsTab> {
                               children: [
                                 Text(
                                   doc.folder.toUpperCase(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 9,
-                                    color: GonyetiColors.textMuted,
+                                    color: context.colors.textMuted,
                                     letterSpacing: .8,
                                   ),
                                 ),
                                 if (doc.expiryDate != null) ...[
-                                  const Text(
+                                  Text(
                                     " · ",
                                     style: TextStyle(
-                                      color: GonyetiColors.textMuted,
+                                      color: context.colors.textMuted,
                                       fontSize: 9,
                                     ),
                                   ),
@@ -724,10 +724,10 @@ class _DocumentsTabState extends State<_DocumentsTab> {
                                     style: TextStyle(
                                       fontSize: 9,
                                       color: expired
-                                          ? GonyetiColors.danger
+                                          ? context.colors.danger
                                           : expiring
-                                          ? GonyetiColors.warn
-                                          : GonyetiColors.textMuted,
+                                          ? context.colors.warn
+                                          : context.colors.textMuted,
                                       fontWeight: (expired || expiring)
                                           ? FontWeight.w700
                                           : FontWeight.w400,
@@ -744,10 +744,10 @@ class _DocumentsTabState extends State<_DocumentsTab> {
                           button: true,
                           label: "Delete ${doc.title}",
                           child: IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.delete_rounded,
                               size: 16,
-                              color: GonyetiColors.textMuted,
+                              color: context.colors.textMuted,
                             ),
                             onPressed: () => _delete(doc),
                             tooltip: "Delete",
@@ -858,16 +858,16 @@ class _SettingsTabState extends State<_SettingsTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: context.colors.bg,
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          const Text(
+          Text(
             "Settings",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
-              color: GonyetiColors.text,
+              color: context.colors.text,
             ),
           ),
           const SizedBox(height: 16),
@@ -934,7 +934,7 @@ class _SettingsTabState extends State<_SettingsTab> {
             GButton(
               label: "UPDATE PASSWORD",
               icon: Icons.check_rounded,
-              color: GonyetiColors.success,
+              color: context.colors.success,
               fullWidth: true,
               loading: _loading,
               onPressed: _changePassword,
@@ -957,7 +957,7 @@ class _SettingsTabState extends State<_SettingsTab> {
             GButton(
               label: "SAVE EMAIL",
               icon: Icons.check_rounded,
-              color: GonyetiColors.success,
+              color: context.colors.success,
               fullWidth: true,
               loading: _loading,
               onPressed: _saveEmail,
@@ -988,10 +988,10 @@ class _TabPill extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
-              color: sel ? GonyetiColors.accentDim : GonyetiColors.card,
+              color: sel ? context.colors.accentDim : context.colors.card,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: sel ? GonyetiColors.accent : GonyetiColors.border,
+                color: sel ? context.colors.accent : context.colors.border,
               ),
             ),
             child: Text(
@@ -1000,7 +1000,7 @@ class _TabPill extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: sel ? GonyetiColors.accent : GonyetiColors.textSub,
+                color: sel ? context.colors.accent : context.colors.textSub,
               ),
             ),
           ),
@@ -1051,39 +1051,39 @@ class _DriversTabState extends State<_DriversTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: context.colors.bg,
       floatingActionButton: FloatingActionButton(
         onPressed: _openForm,
-        backgroundColor: GonyetiColors.accent,
+        backgroundColor: context.colors.accent,
         child: const Icon(Icons.add_rounded, color: Colors.white),
       ),
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: context.colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const Text(
+            Text(
               "Drivers",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GonyetiColors.text,
+                color: context.colors.text,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               "${_drivers.length} driver(s)",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
-                color: GonyetiColors.textMuted,
+                color: context.colors.textMuted,
               ),
             ),
             const SizedBox(height: 16),
             if (_loading)
-              const Center(
+              Center(
                 child: CircularProgressIndicator(
-                  color: GonyetiColors.accent,
+                  color: context.colors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -1100,13 +1100,13 @@ class _DriversTabState extends State<_DriversTab> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: GonyetiColors.success.withAlpha(24),
+                            color: context.colors.success.withAlpha(24),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.person_rounded,
                             size: 18,
-                            color: GonyetiColors.success,
+                            color: context.colors.success,
                             semanticLabel: "",
                           ),
                         ),
@@ -1117,18 +1117,18 @@ class _DriversTabState extends State<_DriversTab> {
                             children: [
                               Text(
                                 driver.fullName,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 13,
-                                  color: GonyetiColors.text,
+                                  color: context.colors.text,
                                 ),
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 "License: ${driver.licenseNumber}",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
-                                  color: GonyetiColors.textMuted,
+                                  color: context.colors.textMuted,
                                 ),
                               ),
                             ],
@@ -1137,7 +1137,8 @@ class _DriversTabState extends State<_DriversTab> {
                         GBadge(
                           label: driver.isActive ? "active" : "inactive",
                           color: GBadge.colorForStatus(
-                            driver.isActive ? "active" : "banned",
+                            (driver.isActive ? "active" : "banned") as BuildContext,
+                            context as String,
                           ),
                         ),
                       ],
@@ -1193,39 +1194,39 @@ class _InventoryTabState extends State<_InventoryTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: context.colors.bg,
       floatingActionButton: FloatingActionButton(
         onPressed: _openForm,
-        backgroundColor: GonyetiColors.accent,
+        backgroundColor: context.colors.accent,
         child: const Icon(Icons.add_rounded, color: Colors.white),
       ),
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: context.colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const Text(
+            Text(
               "Inventory",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GonyetiColors.text,
+                color: context.colors.text,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               "${_items.length} items(s)",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
-                color: GonyetiColors.textMuted,
+                color: context.colors.textMuted,
               ),
             ),
             const SizedBox(height: 16),
             if (_loading)
-              const Center(
+              Center(
                 child: CircularProgressIndicator(
-                  color: GonyetiColors.accent,
+                  color: context.colors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -1244,13 +1245,13 @@ class _InventoryTabState extends State<_InventoryTab> {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: GonyetiColors.blueDim,
+                          color: context.colors.blueDim,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.inventory_2_rounded,
                           size: 18,
-                          color: GonyetiColors.blue,
+                          color: context.colors.blue,
                           semanticLabel: "",
                         ),
                       ),
@@ -1261,27 +1262,27 @@ class _InventoryTabState extends State<_InventoryTab> {
                           children: [
                             Text(
                               item.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 13,
-                                color: GonyetiColors.text,
+                                color: context.colors.text,
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               "Qty: ${item.quantity} ${item.unit} · ${item.category}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
-                                color: GonyetiColors.textMuted,
+                                color: context.colors.textMuted,
                               ),
                             ),
                             if (item.note != null && item.note!.isNotEmpty) ...[
                               const SizedBox(height: 4),
                               Text(
                                 item.note!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
-                                  color: GonyetiColors.textMuted,
+                                  color: context.colors.textMuted,
                                 ),
                               ),
                             ],
@@ -1349,27 +1350,27 @@ class _InvoicesTabState extends State<_InvoicesTab> {
         );
 
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: context.colors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: context.colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const Text(
+            Text(
               "Invoices",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GonyetiColors.text,
+                color: context.colors.text,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               "Billable trips: ${billableTrips.length}",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
-                color: GonyetiColors.textMuted,
+                color: context.colors.textMuted,
               ),
             ),
             const SizedBox(height: 16),
@@ -1379,9 +1380,9 @@ class _InvoicesTabState extends State<_InvoicesTab> {
               sub: "Derived from completed/delivered trips",
             ),
             if (_loading)
-              const Center(
+              Center(
                 child: CircularProgressIndicator(
-                  color: GonyetiColors.accent,
+                  color: context.colors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -1405,26 +1406,26 @@ class _InvoicesTabState extends State<_InvoicesTab> {
                           children: [
                             Text(
                               trip.reference,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
-                                color: GonyetiColors.text,
+                                color: context.colors.text,
                               ),
                             ),
                             const SizedBox(height: 3),
                             Text(
                               "${trip.origin} → ${trip.destination}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
-                                color: GonyetiColors.textSub,
+                                color: context.colors.textSub,
                               ),
                             ),
                             const SizedBox(height: 3),
                             Text(
                               "\$${amount.toStringAsFixed(2)}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
-                                color: GonyetiColors.accent,
+                                color: context.colors.accent,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -1439,8 +1440,8 @@ class _InvoicesTabState extends State<_InvoicesTab> {
                             : Icons.payments_rounded,
                         small: true,
                         color: isPaid
-                            ? GonyetiColors.success
-                            : GonyetiColors.blue,
+                            ? context.colors.success
+                            : context.colors.blue,
                         onPressed: () {
                           setState(() {
                             if (isPaid) {

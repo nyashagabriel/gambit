@@ -9,6 +9,7 @@ class FleetForm extends StatefulWidget {
   final GambitFleet? initial;
 
   static Future<bool?> show(BuildContext context, {GambitFleet? initial}) {
+    final colors = context.colors;
     return showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
@@ -18,9 +19,9 @@ class FleetForm extends StatefulWidget {
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: Container(
-          decoration: const BoxDecoration(
-            color: GonyetiColors.elevated,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          decoration: BoxDecoration(
+            color: colors.elevated,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: FleetForm(initial: initial),
         ),
@@ -104,6 +105,7 @@ class _FleetFormState extends State<FleetForm> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -115,16 +117,16 @@ class _FleetFormState extends State<FleetForm> {
             children: [
               Text(
                 widget.initial == null ? "Add Truck" : "Edit Truck",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
-                  color: GonyetiColors.text,
+                  color: colors.text,
                 ),
               ),
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.close_rounded,
-                  color: GonyetiColors.textMuted,
+                  color: colors.textMuted,
                 ),
                 onPressed: () => Navigator.pop(context),
               ),

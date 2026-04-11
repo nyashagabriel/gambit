@@ -109,14 +109,14 @@ class GonyetiColors {
   static const Color elevated = Color(0xFF182030);
   static const Color border = Color(0xFF4A6490); // FIX: was 0xFF1C2840 → 1.30:1 on surface (WCAG fail). Now 3.21:1 ✓
   static const Color accent = Color(0xFFF0A500);
-  static const Color accentDim = Color(0x1FF0A500);
+  static const Color accentDim = Color(0x2FF0A500);
   static const Color blue = Color(0xFF3B82F6);
-  static const Color blueDim = Color(0x1F3B82F6);
+  static const Color blueDim = Color(0x2F3B82F6);
   static const Color success = Color(0xFF22C55E);
   static const Color danger = Color(0xFFEF4444);
   static const Color warn = Color(0xFFF97316);
   static const Color text = Color(0xFFE8EDF5);
-  static const Color textSub = Color(0xFF7A90B0);
+  static const Color textSub = Color(0xFF94A3B8);
   static const Color textMuted = Color(0xFF64748B); // FIX: was 0xFF3D5070 → 2.63:1 on dark bg (WCAG fail). Now 4.18:1 ✓
 }
 
@@ -170,8 +170,12 @@ class GonyetiTheme {
       onSecondary: Colors.white,
       onSurface: Color(0xFFE8EDF5),
       onError: Colors.white,
-      outline: Color(0xFF4A6490),         // ADD: M3 input borders pull from this role
-      outlineVariant: Color(0xFF1C2840),  // ADD: subtle dividers
+      outline: Color(0xFF4A6490),
+      outlineVariant: Color(0xFF1C2840),
+      surfaceContainerHighest: Color(0xFF182030),
+      surfaceContainer: Color(0xFF111620),
+      surfaceContainerLow: Color(0xFF0C0F16),
+      onSurfaceVariant: Color(0xFF94A3B8),
     );
     return _buildTheme(ThemeData.dark(), colorScheme, colors);
   }
@@ -181,14 +185,14 @@ class GonyetiTheme {
     const colorScheme = ColorScheme.light(
       primary: Color(0xFFC2410C), // Matching the updated accent
       secondary: Color(0xFF2563EB),
-      surface: Color(0xFFFFFFFF),
       error: Color(0xFFDC2626),
-      onPrimary: Colors.white, // Now clearly contrasting
       onSecondary: Colors.white,
       onSurface: Color(0xFF0F172A),
-      onError: Colors.white,
-      outline: Color(0xFF64748B),         // ADD: M3 input borders pull from this role
-      outlineVariant: Color(0xFFCBD5E1),  // ADD: subtle dividers
+      outline: Color(0xFF64748B),
+      surfaceContainerHighest: Color(0xFFE2E8F0),
+      surfaceContainer: Color(0xFFF1F5F9),
+      surfaceContainerLow: Color(0xFFF8FAFC),
+      onSurfaceVariant: Color(0xFF475569),
     );
     return _buildTheme(ThemeData.light(), colorScheme, colors);
   }

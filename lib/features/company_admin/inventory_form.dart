@@ -6,6 +6,7 @@ import "../../shared/widgets/widgets.dart";
 class InventoryForm extends StatefulWidget {
   const InventoryForm({super.key});
   static Future<bool?> show(BuildContext context) {
+    final colors = context.colors;
     return showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
@@ -15,9 +16,9 @@ class InventoryForm extends StatefulWidget {
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: Container(
-          decoration: const BoxDecoration(
-            color: GonyetiColors.elevated,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          decoration: BoxDecoration(
+            color: colors.elevated,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: const InventoryForm(),
         ),
@@ -83,6 +84,7 @@ class _InventoryFormState extends State<InventoryForm> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -92,18 +94,18 @@ class _InventoryFormState extends State<InventoryForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 "Add Inventory Item",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
-                  color: GonyetiColors.text,
+                  color: colors.text,
                 ),
               ),
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.close_rounded,
-                  color: GonyetiColors.textMuted,
+                  color: colors.textMuted,
                 ),
                 onPressed: () => Navigator.pop(context),
               ),

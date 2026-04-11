@@ -10,12 +10,12 @@ import "package:provider/provider.dart";
 
 import "core/auth/auth_provider.dart";
 import "core/auth/role_guard.dart";
+import "core/theme_provider.dart";
 import "features/auth/login_screen.dart";
 import "features/company_admin/admin_dashboard.dart";
 import "features/staff/staff_dashboard.dart";
 import "features/super_admin/super_dashboard.dart";
 import "shared/theme/gonyeti_theme.dart";
-import "core/theme_provider.dart";
 
 class GonyetiApp extends StatelessWidget {
   const GonyetiApp({super.key});

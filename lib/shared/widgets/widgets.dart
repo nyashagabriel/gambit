@@ -129,13 +129,14 @@ class GCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final container = Container(
       padding: padding ?? const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: GonyetiColors.card,
+        color: colors.card,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: borderColor ?? GonyetiColors.border,
+          color: borderColor ?? colors.border,
           width: 1.5,
         ),
       ),
@@ -254,7 +255,8 @@ class GStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ?? GonyetiColors.accent;
+    final colors = context.colors;
+    final c = color ?? colors.accent;
     return Expanded(
       child: Semantics(
         label: "$label: $value",
@@ -283,9 +285,9 @@ class GStatCard extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 10,
-                  color: GonyetiColors.textMuted,
+                  color: context.colors.textMuted,
                   letterSpacing: .5,
                 ),
               ),
@@ -409,7 +411,7 @@ class GInput extends StatelessWidget {
         textInputAction: textInputAction,
         onChanged: onChanged,
         onSubmitted: onSubmitted,
-        style: const TextStyle(color: GonyetiColors.text, fontSize: 13),
+        style: TextStyle(color: context.colors.text, fontSize: 13),
         decoration: InputDecoration(
           labelText: label.toUpperCase(),
           hintText: hint,
@@ -464,6 +466,7 @@ class AppShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isWide = MediaQuery.of(context).size.width >= 600;
+    final colors = context.colors;
 
     if (isWide) {
       return Scaffold(
@@ -484,8 +487,8 @@ class AppShell extends StatelessWidget {
     return Scaffold(
       body: body,
       bottomNavigationBar: NavigationBar(
-        backgroundColor: GonyetiColors.surface,
-        indicatorColor: GonyetiColors.accentDim,
+        backgroundColor: colors.surface,
+        indicatorColor: colors.accentDim,
         selectedIndex: currentIndex,
         onDestinationSelected: onDestinationSelected,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
@@ -495,12 +498,12 @@ class AppShell extends StatelessWidget {
               (d) => NavigationDestination(
                 icon: Icon(
                   d.icon,
-                  color: GonyetiColors.textMuted,
+                  color: colors.textMuted,
                   semanticLabel: d.label,
                 ),
                 selectedIcon: Icon(
                   d.icon,
-                  color: GonyetiColors.accent,
+                  color: colors.accent,
                   semanticLabel: d.label,
                 ),
                 label: d.label,
@@ -754,26 +757,22 @@ class _GChangePasswordBannerState extends State<GChangePasswordBanner> {
     if (!auth.mustChangePw) return const SizedBox.shrink();
 
     return Container(
-      color: GonyetiColors.danger.withAlpha(20),
+      color: context.colors.danger.withAlpha(20),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
-          const Icon(
-            Icons.warning_rounded,
-            color: GonyetiColors.danger,
-            size: 20,
-          ),
+          Icon(Icons.warning_rounded, color: context.colors.danger, size: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Change Password Required",
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 13,
-                    color: GonyetiColors.text,
+                    color: context.colors.text,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -781,7 +780,7 @@ class _GChangePasswordBannerState extends State<GChangePasswordBanner> {
                   "Please set a new password for your account",
                   style: TextStyle(
                     fontSize: 11,
-                    color: GonyetiColors.textSub.withAlpha(200),
+                    color: context.colors.textSub.withAlpha(200),
                   ),
                 ),
               ],
@@ -861,8 +860,9 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return AlertDialog(
-      backgroundColor: GonyetiColors.surface,
+      backgroundColor: colors.surface,
       title: const Text("Change Password"),
       content: SingleChildScrollView(
         child: Column(
@@ -872,24 +872,20 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: GonyetiColors.danger.withAlpha(20),
+                  color: colors.danger.withAlpha(20),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: GonyetiColors.danger.withAlpha(100)),
+                  border: Border.all(color: colors.danger.withAlpha(100)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(
-                      Icons.error_rounded,
-                      color: GonyetiColors.danger,
-                      size: 16,
-                    ),
+                    Icon(Icons.error_rounded, color: colors.danger, size: 16),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         _error!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: GonyetiColors.danger,
+                          color: colors.danger,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,

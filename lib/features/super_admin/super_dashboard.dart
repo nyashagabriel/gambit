@@ -95,6 +95,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
     String status, {
     String? warningMsg,
   }) async {
+    final colors = context.colors;
     try {
       await CompaniesApi.update(
         companyId: co.id,
@@ -106,7 +107,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("${co.name} → $status"),
-            backgroundColor: GonyetiColors.success,
+            backgroundColor: colors.success,
           ),
         );
       }
@@ -115,7 +116,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
-            backgroundColor: GonyetiColors.danger,
+            backgroundColor: colors.danger,
           ),
         );
       }
@@ -123,9 +124,10 @@ class _CompaniesTabState extends State<_CompaniesTab> {
   }
 
   void _showActions(GambitCompany co) {
+    final colors = context.colors;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: GonyetiColors.elevated,
+      backgroundColor: colors.elevated,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -136,20 +138,20 @@ class _CompaniesTabState extends State<_CompaniesTab> {
           children: [
             Text(
               co.name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w800,
                 fontSize: 16,
-                color: GonyetiColors.text,
+                color: colors.text,
               ),
             ),
             const SizedBox(height: 6),
-            GBadge(label: co.status, color: GBadge.colorForStatus(co.status)),
+            GBadge(label: co.status, color: GBadge.colorForStatus(context, co.status)),
             const SizedBox(height: 20),
             if (!co.isActive)
               GButton(
                 label: "Reinstate",
                 icon: Icons.check_circle_rounded,
-                color: GonyetiColors.success,
+                color: context.colors.success,
                 fullWidth: true,
                 onPressed: () {
                   Navigator.pop(context);
@@ -161,7 +163,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
               GButton(
                 label: "Send Warning",
                 icon: Icons.warning_rounded,
-                color: GonyetiColors.warn,
+                color: context.colors.warn,
                 outline: true,
                 fullWidth: true,
                 onPressed: () {
@@ -178,7 +180,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
               GButton(
                 label: "Ban Company",
                 icon: Icons.block_rounded,
-                color: GonyetiColors.danger,
+                color: context.colors.danger,
                 outline: true,
                 fullWidth: true,
                 onPressed: () {
@@ -189,7 +191,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
             const SizedBox(height: 8),
             GButton(
               label: "Cancel",
-              color: GonyetiColors.textSub,
+              color: context.colors.textSub,
               outline: true,
               fullWidth: true,
               onPressed: () => Navigator.pop(context),
@@ -202,20 +204,21 @@ class _CompaniesTabState extends State<_CompaniesTab> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final active = _companies.where((c) => c.isActive).length;
     final issues = _companies.where((c) => !c.isActive).length;
 
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: colors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
             Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -224,14 +227,14 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: GonyetiColors.text,
+                          color: colors.text,
                         ),
                       ),
                       Text(
                         "SUPER ADMIN",
                         style: TextStyle(
                           fontSize: 10,
-                          color: GonyetiColors.textMuted,
+                          color: colors.textMuted,
                           letterSpacing: 1.5,
                         ),
                       ),
@@ -239,11 +242,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(
-                    Icons.logout_rounded,
-                    color: GonyetiColors.textSub,
-                    size: 20,
-                  ),
+                  icon: Icon(Icons.logout_rounded, color: colors.textSub, size: 20),
                   tooltip: "Sign out",
                   onPressed: () async {
                     await context.read<AuthProvider>().logout();
@@ -267,25 +266,23 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                   icon: Icons.check_circle_rounded,
                   label: "ACTIVE",
                   value: "$active",
-                  color: GonyetiColors.success,
+                  color: context.colors.success,
                 ),
                 const SizedBox(width: 10),
                 GStatCard(
                   icon: Icons.warning_rounded,
                   label: "ISSUES",
                   value: "$issues",
-                  color: issues > 0
-                      ? GonyetiColors.danger
-                      : GonyetiColors.textSub,
+                  color: issues > 0 ? context.colors.danger : colors.textSub,
                 ),
               ],
             ),
             const SizedBox(height: 20),
             if (_error != null) GAlert(message: _error!, type: "danger"),
             if (_loading)
-              const Center(
+              Center(
                 child: CircularProgressIndicator(
-                  color: GonyetiColors.accent,
+                  color: context.colors.accent,
                   strokeWidth: 2,
                 ),
               ),
@@ -294,7 +291,7 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: GCard(
                   borderColor: !co.isActive
-                      ? GBadge.colorForStatus(co.status).withAlpha(80)
+                      ? GBadge.colorForStatus(context, co.status).withAlpha(80)
                       : null,
                   semanticLabel:
                       "${co.name}, status: ${co.status}. Tap for actions.",
@@ -310,36 +307,32 @@ class _CompaniesTabState extends State<_CompaniesTab> {
                                 Flexible(
                                   child: Text(
                                     co.name,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w800,
                                       fontSize: 14,
-                                      color: GonyetiColors.text,
+                                      color: colors.text,
                                     ),
                                   ),
                                 ),
                                 const SizedBox(width: 8),
                                 GBadge(
                                   label: co.status,
-                                  color: GBadge.colorForStatus(co.status),
+                                  color: GBadge.colorForStatus(context, co.status),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 4),
                             Text(
                               "Joined: ${co.createdAt.split("T")[0]}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
-                                color: GonyetiColors.textMuted,
+                                color: colors.textMuted,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const Icon(
-                        Icons.chevron_right_rounded,
-                        color: GonyetiColors.textMuted,
-                        semanticLabel: "",
-                      ),
+                      Icon(Icons.chevron_right_rounded, color: colors.textMuted, semanticLabel: ""),
                     ],
                   ),
                 ),
@@ -434,22 +427,23 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: colors.bg,
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          const Text(
+          Text(
             "Register Company",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
-              color: GonyetiColors.text,
+              color: colors.text,
             ),
           ),
-          const Text(
+          Text(
             "New Gonyeti TLS tenant",
-            style: TextStyle(fontSize: 11, color: GonyetiColors.textMuted),
+            style: TextStyle(fontSize: 11, color: colors.textMuted),
           ),
           const SizedBox(height: 20),
 
@@ -471,10 +465,10 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
                 liveRegion: true,
                 child: GAlert(message: _error!, type: "danger"),
               ),
-            const Text(
+            Text(
               "COMPANY",
               style: TextStyle(
-                color: GonyetiColors.textSub,
+                color: colors.textSub,
                 fontSize: 10,
                 letterSpacing: 1,
               ),
@@ -487,11 +481,11 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
               prefixIcon: Icons.business_rounded,
               textInputAction: TextInputAction.next,
             ),
-            const Divider(color: GonyetiColors.border, height: 24),
-            const Text(
+            Divider(color: colors.border, height: 24),
+            Text(
               "ADMIN ACCOUNT",
               style: TextStyle(
-                color: GonyetiColors.textSub,
+                color: colors.textSub,
                 fontSize: 10,
                 letterSpacing: 1,
               ),
@@ -524,13 +518,13 @@ class _CreateCompanyTabState extends State<_CreateCompanyTab> {
               padding: const EdgeInsets.all(12),
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: GonyetiColors.accentDim,
+                color: colors.accentDim,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: GonyetiColors.accent.withAlpha(50)),
+                border: Border.all(color: colors.accent.withAlpha(50)),
               ),
-              child: const Text(
+              child: Text(
                 "Admin will be required to change this password on first login.",
-                style: TextStyle(color: GonyetiColors.accent, fontSize: 11),
+                style: TextStyle(color: colors.accent, fontSize: 11),
               ),
             ),
             GButton(
@@ -588,6 +582,7 @@ class _AuditTabState extends State<_AuditTab> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final events =
         <({DateTime at, String title, String sub, IconData icon, Color color})>[
           ..._companies.map(
@@ -596,7 +591,7 @@ class _AuditTabState extends State<_AuditTab> {
               title: "Company onboarded",
               sub: "${c.name} · ${c.status.toUpperCase()}",
               icon: Icons.business_rounded,
-              color: GonyetiColors.blue,
+              color: context.colors.blue,
             ),
           ),
           ..._users.map(
@@ -605,7 +600,7 @@ class _AuditTabState extends State<_AuditTab> {
               title: "User created",
               sub: "@${u.username} · ${u.role.replaceAll("_", " ")}",
               icon: Icons.person_add_alt_rounded,
-              color: GonyetiColors.success,
+              color: context.colors.success,
             ),
           ),
         ]..sort((a, b) => b.at.compareTo(a.at));
@@ -615,25 +610,25 @@ class _AuditTabState extends State<_AuditTab> {
         .length;
 
     return Scaffold(
-      backgroundColor: GonyetiColors.bg,
+      backgroundColor: colors.bg,
       body: RefreshIndicator(
         onRefresh: _load,
-        color: GonyetiColors.accent,
+        color: colors.accent,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const Text(
+            Text(
               "Audit",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: GonyetiColors.text,
+                color: colors.text,
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
+            Text(
               "Recent platform activity",
-              style: TextStyle(fontSize: 11, color: GonyetiColors.textMuted),
+              style: TextStyle(fontSize: 11, color: colors.textMuted),
             ),
             const SizedBox(height: 16),
             Row(
@@ -642,31 +637,31 @@ class _AuditTabState extends State<_AuditTab> {
                   icon: Icons.business_rounded,
                   label: "COMPANIES",
                   value: "${_companies.length}",
-                  color: GonyetiColors.blue,
+                  color: context.colors.blue,
                 ),
                 const SizedBox(width: 10),
                 GStatCard(
                   icon: Icons.people_alt_rounded,
                   label: "USERS",
                   value: "${_users.length}",
-                  color: GonyetiColors.success,
+                  color: context.colors.success,
                 ),
                 const SizedBox(width: 10),
                 GStatCard(
                   icon: Icons.warning_rounded,
                   label: "ATTENTION",
                   value: "$warnedOrBlocked",
-                  color: GonyetiColors.warn,
+                  color: context.colors.warn,
                 ),
               ],
             ),
             const SizedBox(height: 14),
             if (_loading)
-              const Padding(
-                padding: EdgeInsets.only(top: 16),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
                 child: Center(
                   child: CircularProgressIndicator(
-                    color: GonyetiColors.accent,
+                    color: context.colors.accent,
                     strokeWidth: 2,
                   ),
                 ),
@@ -707,18 +702,18 @@ class _AuditTabState extends State<_AuditTab> {
                                 children: [
                                   Text(
                                     event.title,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w700,
-                                      color: GonyetiColors.text,
+                                      color: context.colors.text,
                                     ),
                                   ),
                                   const SizedBox(height: 3),
                                   Text(
                                     event.sub,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 11,
-                                      color: GonyetiColors.textSub,
+                                      color: context.colors.textSub,
                                     ),
                                   ),
                                 ],
@@ -726,9 +721,9 @@ class _AuditTabState extends State<_AuditTab> {
                             ),
                             Text(
                               "${event.at.year}-${event.at.month.toString().padLeft(2, "0")}-${event.at.day.toString().padLeft(2, "0")}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 10,
-                                color: GonyetiColors.textMuted,
+                                color: context.colors.textMuted,
                               ),
                             ),
                           ],
