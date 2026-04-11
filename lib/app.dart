@@ -15,21 +15,30 @@ import "features/company_admin/admin_dashboard.dart";
 import "features/staff/staff_dashboard.dart";
 import "features/super_admin/super_dashboard.dart";
 import "shared/theme/gonyeti_theme.dart";
+import "core/theme_provider.dart";
 
 class GonyetiApp extends StatelessWidget {
   const GonyetiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthProvider()..init(),
-      child: MaterialApp(
-        title: "Gonyeti TLS",
-        theme: GonyetiTheme.light,
-        darkTheme: GonyetiTheme.dark,
-        initialRoute: "/login",
-        routes: _routes,
-        onGenerateRoute: _onGenerateRoute,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()..init()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()..init()),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            title: "Gonyeti TLS",
+            theme: GonyetiTheme.light,
+            darkTheme: GonyetiTheme.dark,
+            themeMode: themeProvider.themeMode,
+            initialRoute: "/login",
+            routes: _routes,
+            onGenerateRoute: _onGenerateRoute,
+          );
+        },
       ),
     );
   }
@@ -52,11 +61,11 @@ class GonyetiApp extends StatelessWidget {
 
   static Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
-      builder: (_) => const Scaffold(
+      builder: (context) => Scaffold(
         body: Center(
           child: Text(
             "Page not found",
-            style: TextStyle(color: GonyetiColors.textSub),
+            style: TextStyle(color: context.colors.textSub),
           ),
         ),
       ),
@@ -130,10 +139,10 @@ class _Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: CircularProgressIndicator(
-          color: GonyetiColors.accent,
+          color: context.colors.accent,
           strokeWidth: 2.5,
         ),
       ),

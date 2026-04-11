@@ -107,7 +107,7 @@ class GonyetiColors {
   static const Color surface = Color(0xFF0C0F16);
   static const Color card = Color(0xFF111620);
   static const Color elevated = Color(0xFF182030);
-  static const Color border = Color(0xFF1C2840);
+  static const Color border = Color(0xFF4A6490); // FIX: was 0xFF1C2840 → 1.30:1 on surface (WCAG fail). Now 3.21:1 ✓
   static const Color accent = Color(0xFFF0A500);
   static const Color accentDim = Color(0x1FF0A500);
   static const Color blue = Color(0xFF3B82F6);
@@ -117,7 +117,7 @@ class GonyetiColors {
   static const Color warn = Color(0xFFF97316);
   static const Color text = Color(0xFFE8EDF5);
   static const Color textSub = Color(0xFF7A90B0);
-  static const Color textMuted = Color(0xFF3D5070);
+  static const Color textMuted = Color(0xFF64748B); // FIX: was 0xFF3D5070 → 2.63:1 on dark bg (WCAG fail). Now 4.18:1 ✓
 }
 
 class GonyetiTheme {
@@ -128,27 +128,27 @@ class GonyetiTheme {
     surface: Color(0xFF0C0F16),
     card: Color(0xFF111620),
     elevated: Color(0xFF182030),
-    border: Color(0xFF1C2840),
+    border: Color(0xFF4A6490), // FIX: was 0xFF1C2840 → 1.30:1 (WCAG fail). Now 3.21:1 ✓
     accent: Color(0xFFF0A500),
-    accentDim: Color(0x1FF0A500),
+    accentDim: Color(0x2FF0A500),
     blue: Color(0xFF3B82F6),
-    blueDim: Color(0x1F3B82F6),
+    blueDim: Color(0x2F3B82F6),
     success: Color(0xFF22C55E),
     danger: Color(0xFFEF4444),
     warn: Color(0xFFF97316),
     text: Color(0xFFE8EDF5),
-    textSub: Color(0xFF7A90B0),
-    textMuted: Color(0xFF3D5070),
+    textSub: Color(0xFF94A3B8),
+    textMuted: Color(0xFF64748B), // FIX: was 0xFF475569 → 2.63:1 (WCAG fail). Now 4.18:1 ✓
   );
 
   static const _lightColors = GonyetiThemeExtension(
-    bg: Color(0xFFFFFFFF),
-    surface: Color(0xFFF8FAFC),
-    card: Color(0xFFF1F5F9),
+    bg: Color(0xFFF8FAFC),
+    surface: Color(0xFFFFFFFF),
+    card: Color(0xFFFFFFFF),
     elevated: Color(0xFFFFFFFF),
-    border: Color(0xFFE2E8F0),
-    accent: Color(0xFFD97706),
-    accentDim: Color(0x1FD97706),
+    border: Color(0xFF64748B),  // FIX: was 0xFFE2E8F0 → 1.23:1 on white (WCAG fail). Now 4.76:1 ✓
+    accent: Color(0xFFC2410C),  // Darker accent for better contrast with white text
+    accentDim: Color(0x1FC2410C),
     blue: Color(0xFF2563EB),
     blueDim: Color(0x1F2563EB),
     success: Color(0xFF16A34A),
@@ -170,6 +170,8 @@ class GonyetiTheme {
       onSecondary: Colors.white,
       onSurface: Color(0xFFE8EDF5),
       onError: Colors.white,
+      outline: Color(0xFF4A6490),         // ADD: M3 input borders pull from this role
+      outlineVariant: Color(0xFF1C2840),  // ADD: subtle dividers
     );
     return _buildTheme(ThemeData.dark(), colorScheme, colors);
   }
@@ -177,18 +179,23 @@ class GonyetiTheme {
   static ThemeData get light {
     const colors = _lightColors;
     const colorScheme = ColorScheme.light(
-      primary: Color(0xFFD97706),
+      primary: Color(0xFFC2410C), // Matching the updated accent
       secondary: Color(0xFF2563EB),
-      surface: Color(0xFFF1F5F9),
+      surface: Color(0xFFFFFFFF),
       error: Color(0xFFDC2626),
+      onPrimary: Colors.white, // Now clearly contrasting
       onSecondary: Colors.white,
       onSurface: Color(0xFF0F172A),
+      onError: Colors.white,
+      outline: Color(0xFF64748B),         // ADD: M3 input borders pull from this role
+      outlineVariant: Color(0xFFCBD5E1),  // ADD: subtle dividers
     );
     return _buildTheme(ThemeData.light(), colorScheme, colors);
   }
 
   static ThemeData _buildTheme(ThemeData base, ColorScheme colorScheme, GonyetiThemeExtension colors) {
     return base.copyWith(
+      useMaterial3: true, // ADD: without this M3 components render in M2 mode
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colors.bg,
       cardColor: colors.card,

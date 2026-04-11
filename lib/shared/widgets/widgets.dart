@@ -33,7 +33,7 @@ class GButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ?? GonyetiColors.accent;
+    final c = color ?? context.colors.accent;
 
     final child = loading
         ? SizedBox(
@@ -43,8 +43,8 @@ class GButton extends StatelessWidget {
               strokeWidth: 2.5,
               color: outline
                   ? c
-                  : (c == GonyetiColors.accent
-                        ? const Color(0xFF070400)
+                  : (c == context.colors.accent
+                        ? Theme.of(context).colorScheme.onPrimary
                         : Colors.white),
             ),
           )
@@ -78,8 +78,8 @@ class GButton extends StatelessWidget {
           )
         : ElevatedButton.styleFrom(
             backgroundColor: c,
-            foregroundColor: c == GonyetiColors.accent
-                ? const Color(0xFF070400)
+            foregroundColor: c == context.colors.accent
+                ? Theme.of(context).colorScheme.onPrimary
                 : Colors.white,
             minimumSize: const Size(48, 48),
             padding: EdgeInsets.symmetric(vertical: vPad, horizontal: hPad),
@@ -162,30 +162,30 @@ class GBadge extends StatelessWidget {
   final String label;
   final Color color;
 
-  static Color colorForStatus(String status) {
+  static Color colorForStatus(BuildContext context, String status) {
     switch (status.toLowerCase()) {
       case "active":
       case "valid":
       case "paid":
       case "available":
       case "completed":
-        return GonyetiColors.success;
+        return context.colors.success;
       case "warned":
       case "expiring":
       case "pending":
       case "in_transit":
-        return GonyetiColors.warn;
+        return context.colors.warn;
       case "banned":
       case "expired":
       case "unpaid":
       case "maintenance":
       case "cancelled":
-        return GonyetiColors.danger;
+        return context.colors.danger;
       case "on_trip":
       case "active_trip":
-        return GonyetiColors.blue;
+        return context.colors.blue;
       default:
-        return GonyetiColors.textSub;
+        return context.colors.textSub;
     }
   }
 
@@ -223,7 +223,7 @@ class GChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ?? GonyetiColors.textSub;
+    final c = color ?? context.colors.textSub;
     return Semantics(
       label: label,
       child: Row(
@@ -314,12 +314,12 @@ class GAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cfg = {
-      "danger": (GonyetiColors.danger, Icons.error_rounded),
-      "warn": (GonyetiColors.warn, Icons.warning_rounded),
-      "info": (GonyetiColors.blue, Icons.info_rounded),
-      "success": (GonyetiColors.success, Icons.check_circle_rounded),
+      "danger": (context.colors.danger, Icons.error_rounded),
+      "warn": (context.colors.warn, Icons.warning_rounded),
+      "info": (context.colors.blue, Icons.info_rounded),
+      "success": (context.colors.success, Icons.check_circle_rounded),
     };
-    final (color, icon) = cfg[type] ?? (GonyetiColors.blue, Icons.info_rounded);
+    final (color, icon) = cfg[type] ?? (context.colors.blue, Icons.info_rounded);
 
     return Semantics(
       liveRegion: type == "danger",
@@ -353,8 +353,8 @@ class GAlert extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       sub!,
-                      style: const TextStyle(
-                        color: GonyetiColors.textSub,
+                      style: TextStyle(
+                        color: context.colors.textSub,
                         fontSize: 11,
                       ),
                     ),
@@ -540,35 +540,35 @@ class _SideNav extends StatelessWidget {
     return SizedBox(
       width: 190,
       child: Container(
-        color: GonyetiColors.bg,
+        color: context.colors.bg,
         child: Column(
           children: [
             // Brand
             Container(
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
-              decoration: const BoxDecoration(
-                border: Border(bottom: BorderSide(color: GonyetiColors.border)),
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: context.colors.border)),
               ),
               child: Row(
                 children: [
                   Container(
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
-                      color: GonyetiColors.accentDim,
+                      color: context.colors.accentDim,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: GonyetiColors.accent.withAlpha(50),
+                        color: context.colors.accent.withAlpha(50),
                       ),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.local_shipping_rounded,
                       size: 16,
-                      color: GonyetiColors.accent,
+                      color: context.colors.accent,
                       semanticLabel: "",
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -576,14 +576,14 @@ class _SideNav extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w900,
-                          color: GonyetiColors.accent,
+                          color: context.colors.accent,
                         ),
                       ),
                       Text(
                         "TLS",
                         style: TextStyle(
                           fontSize: 8,
-                          color: GonyetiColors.textMuted,
+                          color: context.colors.textMuted,
                           letterSpacing: 3,
                         ),
                       ),
@@ -613,12 +613,12 @@ class _SideNav extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: selected
-                              ? GonyetiColors.accentDim
+                              ? context.colors.accentDim
                               : Colors.transparent,
                           border: Border(
                             left: BorderSide(
                               color: selected
-                                  ? GonyetiColors.accent
+                                  ? context.colors.accent
                                   : Colors.transparent,
                               width: 2,
                             ),
@@ -630,8 +630,8 @@ class _SideNav extends StatelessWidget {
                               destinations[i].icon,
                               size: 16,
                               color: selected
-                                  ? GonyetiColors.accent
-                                  : GonyetiColors.textMuted,
+                                  ? context.colors.accent
+                                  : context.colors.textMuted,
                               semanticLabel: "",
                             ),
                             const SizedBox(width: 10),
@@ -639,8 +639,8 @@ class _SideNav extends StatelessWidget {
                               destinations[i].label,
                               style: TextStyle(
                                 color: selected
-                                    ? GonyetiColors.accent
-                                    : GonyetiColors.textSub,
+                                    ? context.colors.accent
+                                    : context.colors.textSub,
                                 fontSize: 12,
                                 fontWeight: selected
                                     ? FontWeight.w700
@@ -660,18 +660,18 @@ class _SideNav extends StatelessWidget {
             Consumer<AuthProvider>(
               builder: (_, auth, _) => Container(
                 padding: const EdgeInsets.all(14),
-                decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: GonyetiColors.border)),
+                decoration: BoxDecoration(
+                  border: Border(top: BorderSide(color: context.colors.border)),
                 ),
                 child: Row(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 14,
-                      backgroundColor: GonyetiColors.elevated,
+                      backgroundColor: context.colors.elevated,
                       child: Icon(
                         Icons.person,
                         size: 14,
-                        color: GonyetiColors.textSub,
+                        color: context.colors.textSub,
                         semanticLabel: "",
                       ),
                     ),
@@ -682,18 +682,18 @@ class _SideNav extends StatelessWidget {
                         children: [
                           Text(
                             auth.username,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: GonyetiColors.text,
+                              color: context.colors.text,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             auth.role.replaceAll("_", " "),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 9,
-                              color: GonyetiColors.textMuted,
+                              color: context.colors.textMuted,
                             ),
                           ),
                         ],
@@ -736,9 +736,9 @@ class _GChangePasswordBannerState extends State<GChangePasswordBanner> {
       if (result == true && mounted) {
         // Password changed — banner will auto-dismiss when mustChangePw becomes false
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Password updated"),
-            backgroundColor: GonyetiColors.success,
+          SnackBar(
+            content: const Text("Password updated"),
+            backgroundColor: context.colors.success,
           ),
         );
       }

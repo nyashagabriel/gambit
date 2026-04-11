@@ -23,9 +23,8 @@ import "../../shared/theme/gonyeti_theme.dart";
 import "../../shared/widgets/widgets.dart";
 
 // ── AA-SAFE COLOUR OVERRIDE ───────────────────────────────────
-// GonyetiColors.textSub (#7A90B0) = 3.8:1 — FAILS AA at small sizes.
 // Use this locally until the theme is patched globally.
-const _kTextAA = Color(0xFF8FA3BF); // 4.6:1 on #07090E — passes AA
+// DEPRECATED: We now use context.colors.textSub directly.
 
 // Background images — one is shown on the login screen.
 // Rotate or swap by changing _kLoginBg.
@@ -132,9 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextButton(
                           onPressed: () =>
                               Navigator.pushNamed(context, "/sign-in-help"),
-                          child: const Text(
+                          child: Text(
                             "Trouble signing in?",
-                            style: TextStyle(color: _kTextAA, fontSize: 13),
+                            style: TextStyle(color: context.colors.textSub, fontSize: 13),
                           ),
                         ),
                       ),
@@ -176,36 +175,36 @@ class _Brand extends StatelessWidget {
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              color: GonyetiColors.accentDim,
+              color: context.colors.accentDim,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
-                color: GonyetiColors.accent.withAlpha(80),
+                color: context.colors.accent.withAlpha(80),
                 width: 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: GonyetiColors.accent.withAlpha(40),
+                  color: context.colors.accent.withAlpha(40),
                   blurRadius: 20,
                   spreadRadius: 2,
                 ),
               ],
             ),
-            child: const Icon(
+            child: Icon(
               Icons.local_shipping_rounded,
               size: 34,
-              color: GonyetiColors.accent,
+              color: context.colors.accent,
               semanticLabel: "Gonyeti TLS",
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             "GONYETI TLS",
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w900,
-              color: GonyetiColors.accent,
+              color: context.colors.accent,
               letterSpacing: -.5,
-              shadows: [
+              shadows: const [
                 Shadow(
                   color: Color(0x80000000),
                   blurRadius: 8,
@@ -215,13 +214,13 @@ class _Brand extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
+          Text(
             "TRANSPORT · LOGISTICS · SYSTEM",
             style: TextStyle(
               fontSize: 9,
-              color: _kTextAA, // AA-safe
+              color: context.colors.textSub,
               letterSpacing: 3,
-              shadows: [
+              shadows: const [
                 Shadow(
                   color: Color(0x80000000),
                   blurRadius: 6,
@@ -358,18 +357,18 @@ class _Field extends StatelessWidget {
         obscureText: obscure,
         textInputAction: textInputAction,
         onSubmitted: onSubmitted,
-        style: const TextStyle(color: GonyetiColors.text, fontSize: 14),
+        style: TextStyle(color: context.colors.text, fontSize: 14),
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
-          hintStyle: const TextStyle(color: GonyetiColors.textMuted),
-          labelStyle: const TextStyle(
-            color: _kTextAA, // AA-safe
+          hintStyle: TextStyle(color: context.colors.textMuted),
+          labelStyle: TextStyle(
+            color: context.colors.textSub,
             fontSize: 11,
             letterSpacing: 0.5,
             fontWeight: FontWeight.w600,
           ),
-          prefixIcon: Icon(prefixIcon, color: GonyetiColors.textMuted),
+          prefixIcon: Icon(prefixIcon, color: context.colors.textMuted),
           // Suffix — only rendered when provided.
           // Uses Semantics + IconButton for proper 48dp tap target.
           suffixIcon: suffixIcon != null
@@ -377,7 +376,7 @@ class _Field extends StatelessWidget {
                   button: true,
                   label: suffixLabel ?? "",
                   child: IconButton(
-                    icon: Icon(suffixIcon, color: _kTextAA, size: 20),
+                    icon: Icon(suffixIcon, color: context.colors.textSub, size: 20),
                     onPressed: onSuffixTap,
                     splashRadius: 20,
                     // Enforce minimum tap target
@@ -479,25 +478,25 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.lock_reset_rounded,
                       size: 32,
-                      color: GonyetiColors.accent,
+                      color: context.colors.accent,
                       semanticLabel: "Set new password",
                     ),
                     const SizedBox(height: 12),
-                    const Text(
+                    Text(
                       "Set New Password",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
-                        color: GonyetiColors.text,
+                        color: context.colors.text,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
+                    Text(
                       "You must change your password before continuing.",
-                      style: TextStyle(color: _kTextAA, fontSize: 12),
+                      style: TextStyle(color: context.colors.textSub, fontSize: 12),
                     ),
                     const SizedBox(height: 20),
 
@@ -556,7 +555,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       icon: Icons.check_rounded,
                       loading: _loading,
                       fullWidth: true,
-                      color: GonyetiColors.success,
+                      color: context.colors.success,
                       onPressed: _done ? null : _submit,
                     ),
                   ],
